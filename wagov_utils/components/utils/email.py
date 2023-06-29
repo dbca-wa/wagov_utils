@@ -43,7 +43,7 @@ class TemplateEmailBase(object):
         return self.send(user.email, context=context)
 
 
-    def send(self, to_addresses, from_address=None, context=None, attachments=None, cc=None, bcc=None):
+    def send(self, to_addresses, from_address=None, context=None, attachments=None, cc=None, bcc=None, headers=None):
         """
         Send an email using EmailMultiAlternatives with text and html.
         :param to_addresses: a string or a list of addresses
@@ -95,10 +95,11 @@ class TemplateEmailBase(object):
         _attachments = []
         for attachment in attachments:
             _attachments.append(attachment)
-
+            
+        headers['System-Environment'] = email_instance
         msg = EmailMultiAlternatives(self.subject, txt_body, from_email=from_address, to=to_addresses,
                 attachments=_attachments, cc=cc, bcc=bcc, 
-                headers={'System-Environment': email_instance}
+                headers=header
                 )
         msg.attach_alternative(html_body, 'text/html')
         try:
