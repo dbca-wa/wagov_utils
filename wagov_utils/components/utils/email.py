@@ -99,7 +99,7 @@ class TemplateEmailBase(object):
         headers['System-Environment'] = email_instance
         msg = EmailMultiAlternatives(self.subject, txt_body, from_email=from_address, to=to_addresses,
                 attachments=_attachments, cc=cc, bcc=bcc, 
-                headers=header
+                headers=headers
                 )
         msg.attach_alternative(html_body, 'text/html')
         try:
