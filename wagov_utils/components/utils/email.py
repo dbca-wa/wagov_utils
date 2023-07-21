@@ -57,7 +57,7 @@ class TemplateEmailBase(object):
         :return:
         """
         email_delivery = 'off'
-
+        headers = {}
         if hasattr(settings, 'EMAIL_DELIVERY'):        
             email_delivery = settings.EMAIL_DELIVERY
         
