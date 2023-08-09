@@ -20,7 +20,7 @@ def proxy_view(request, url, requests_args=None, basic_auth=None, cookies=None):
     """
     requests_args = (requests_args or {}).copy()
     #headers = get_headers(request.META)
-    api_headers = { 
+    headers = { 
         "User-agent" : "Mozilla/5.0",
     }
     params = request.GET.copy()
