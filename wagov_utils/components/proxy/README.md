@@ -4,7 +4,7 @@ Overview
 Includes a view function that can be used directly from a URL spec:
 
 ```python
-from proxy.views import proxy_view
+from wagov_utils.components.proxy.views import proxy_view
 
 urlpatterns = patterns(
 	...
@@ -17,13 +17,13 @@ In the views.py
 
 ```python
 from django.views.decorators.csrf import csrf_exempt
-from proxy.views import proxy_view
+from wagov_utils.components.proxy.views import proxy_view
 
 @csrf_exempt
 def myview(request, path):
 	extra_requests_args = {...}
 	remoteurl = 'http://<host_name>/' + path
-	return proxy_view(request, remoteurl, extra_requests_args)
+	return proxy_view(request, remoteurl,  basic_auth=None, cookies=None, extra_requests_args)
 
 urlpatterns = patterns(
 	...
