@@ -19,7 +19,10 @@ def proxy_view(request, url, requests_args=None, basic_auth=None, cookies=None):
     them in the requests_args dictionary.
     """
     requests_args = (requests_args or {}).copy()
-    headers = get_headers(request.META)
+    #headers = get_headers(request.META)
+    api_headers = { 
+        "User-agent" : "Mozilla/5.0",
+    }
     params = request.GET.copy()
 
     if 'headers' not in requests_args:
