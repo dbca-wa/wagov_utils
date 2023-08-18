@@ -1,21 +1,14 @@
 import logging
-import mimetypes
 import hashlib
 import datetime
 import os
-
-#from confy import env
-
 import six
-from django.conf import settings
-from django.core.mail import EmailMultiAlternatives, EmailMessage
 
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from django.template import loader, Template
-from django.utils.encoding import smart_text
 from django.utils.html import strip_tags
 
-# Typing
-from typing import Any, Optional, Union
 
 logger = logging.getLogger(__name__)
 
@@ -106,7 +99,7 @@ class TemplateEmailBase(object):
             email_log(str(log_hash)+' '+self.subject)
             msg.send(fail_silently=False)          
             email_log(str(log_hash)+' Successfully sent to mail gateway')
-            logger.exception("Success sending email to {}".format(to_addresses,))
+            logger.info("Success sending email to {}".format(to_addresses,))
             return msg
         except Exception as e:
             email_log(str(log_hash)+' Error Sending - '+str(e))
