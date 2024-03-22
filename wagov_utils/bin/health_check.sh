@@ -13,7 +13,7 @@ fi
 wget -q -O - "$URL";
 status=$?
 if [ $status -ne 0 ]; then
-  echo "URL Failed $URL with error code $status"
+  echo "HEALTHCHECK_URL Failed $URL with error code $status"
   exit 1
 fi
 exit 0
