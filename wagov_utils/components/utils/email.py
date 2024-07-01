@@ -59,16 +59,21 @@ class TemplateEmailBase(object):
         if hasattr(settings, 'EMAIL_INSTANCE'):  
             email_instance = settings.EMAIL_INSTANCE
         # The next line will throw a TemplateDoesNotExist if html template cannot be found
-        html_template = loader.get_template(self.html_template)
-        # render html
-        html_body = _render(html_template, context)
+
+        html_body = None
+        if self.html_template:
+            html_template = loader.get_template(self.html_template)
+
+            # render html
+            html_body = _render(html_template, context)
+
         if self.txt_template is not None:
             txt_template = loader.get_template(self.txt_template)
             txt_body = _render(txt_template, context)
         else:
             txt_body = strip_tags(html_body)
 
-        email_log(str(log_hash)+' '+self.subject+":"+str(to_addresses)+":"+self.html_template)
+        email_log(str(log_hash)+' '+self.subject+":"+str(to_addresses)+":"+str(self.html_template))
         if email_delivery != 'on':
             print ("EMAIL DELIVERY IS OFF NO EMAIL SENT -- email.py ")
             return False
@@ -94,7 +99,8 @@ class TemplateEmailBase(object):
                 attachments=_attachments, cc=cc, bcc=bcc, 
                 headers=headers
                 )
-        msg.attach_alternative(html_body, 'text/html')
+        if html_body:
+            msg.attach_alternative(html_body, 'text/html')
         try:
             email_log(str(log_hash)+' '+self.subject)
             msg.send(fail_silently=False)          
