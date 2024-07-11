@@ -7,7 +7,7 @@ import sys
 import os
 import re
 
-version = "1.0.2"
+version = "1.0.3"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 logfile_path = ""
@@ -300,11 +300,11 @@ while True:
                         if int(current_minute) == start_minute:                        
                             minute_run = True                           
                         start_minute = start_minute + 1              
-
-            # Will help with debugging time issues      
-            # print (dow_run,month_run,dom_run,hour_run,minute_run)          
-            thread = threading.Thread(target=runjob, args=(execute_script,))                 
-            thread.start()  
+            
+            # print (dow_run,month_run,dom_run,hour_run,minute_run)  <--  Will help with debugging time issues 
+            if dow_run is True and month_run is True and dom_run is True and hour_run is True and minute_run is True:
+                thread = threading.Thread(target=runjob, args=(execute_script,))                 
+                thread.start()  
 
         last_run_time = current_run_time
 
