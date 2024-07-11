@@ -7,7 +7,7 @@ import sys
 import os
 import re
 
-version = "1.0.1"
+version = "1.0.2"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 logfile_path = ""
