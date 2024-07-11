@@ -7,6 +7,7 @@ import sys
 import os
 import re
 
+version = "1.0.1"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 logfile_path = ""
@@ -137,10 +138,7 @@ def runjob(cmd):
             addlog(str(e))
 
 
-
-
-
-addlog("Starting Python Cron")
+addlog("Starting Python Cron "+version)
 f = open(cronfile_path, "r")
 cron_lines  = f.read()
 cron_array = cron_lines.splitlines()
@@ -314,7 +312,3 @@ while True:
 
     time.sleep(15)
     count = count + 1
-
-  
-
-
