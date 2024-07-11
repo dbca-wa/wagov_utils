@@ -13,9 +13,9 @@ NOTE: If you are copy of and existing cron remember to remove the user column
 # |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
 # |  |  |  |  |
 # *  *  *  *  * Command
-  
-* */2 * 1,10,20 1-5  execute.sh / execute.py script etc
 
+* */2 * 1,10,20 1-5  execute.sh / execute.py script etc
+```
 
 To start the scheduler
 
