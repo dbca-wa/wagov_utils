@@ -7,7 +7,7 @@ import sys
 import os
 import re
 
-version = "1.0.3"
+version = "1.0.4"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 logfile_path = ""
@@ -151,9 +151,9 @@ while True:
     current_day = datetime.datetime.today().strftime("%-d") 
     current_hour = datetime.datetime.today().strftime("%-H")
     current_minute = datetime.datetime.today().strftime("%-M")
-
-    current_run_time = str(current_dow)+str(current_month)+str(current_day)+str(current_hour)+str(current_minute)
     
+    current_run_time = str(current_dow)+str(current_month)+str(current_day)+str(current_hour)+str(current_minute)
+
     if last_run_time != current_run_time:
 
         for line in cron_array:
@@ -167,7 +167,6 @@ while True:
             #    print ("Found Empty Line")
                 continue        
                 
-
             line_space_split = re.split(r"\s+", line)
             execute_script = re.sub(r"^[\d|/|*|,|-]+\s+[\d|/|*|,|-]+\s+[\d|/|*|,|-]+\s+[\d|/|*|,|-]+\s+[\d|/|*|,|-]+\s+", "", line)
             minute = line_space_split[0]
@@ -206,6 +205,10 @@ while True:
                             if int(current_dow) == start_dow:
                                 dow_run = True                           
                             start_dow = start_dow + 1
+                elif dow.isnumeric() is True:
+                    if int(current_dow) == int(dow):
+                        dow_run = True
+
             # Month
             if month == '*':
                 month_run = True
@@ -228,7 +231,9 @@ while True:
                         if int(current_month) == start_month:
                             month_run = True                           
                         start_month = start_month + 1                                  
-
+                elif month.isnumeric() is True:
+                    if int(current_month) == int(month):
+                        month_run = True
 
             # Day of Month
             if dom == '*':
@@ -252,12 +257,14 @@ while True:
                         if int(current_day) == start_dom:                        
                             dom_run = True                           
                         start_dom = start_dom + 1  
+                elif dom.isnumeric() is True:
+                    if int(current_day) == int(dom):
+                        dom_run = True
 
             # Hour
             if hour == '*':
                 hour_run = True
-            else:
-                
+            else:                
                 if "/" in hour:                  
                     hour_split = hour.split("/")
                     bmi = build_hour_interval(hour_split[1])                                          
@@ -276,7 +283,9 @@ while True:
                         if int(current_hour) == start_hour:                        
                             hour_run = True                           
                         start_hour = start_hour + 1  
-
+                elif hour.isnumeric() is True:
+                    if int(current_hour) == int(hour):
+                        hour_run = True
 
             # Minute
             if minute == '*':
@@ -292,16 +301,20 @@ while True:
                     for d in minute_split:
                         if int(current_minute) == int(d):                                               
                             minute_run = True  
-                elif "-" in hour:
+                elif "-" in minute:
                     minute_split = minute.split("-")
                     
                     start_minute = int(minute_split[0])
                     while start_minute <= int(minute_split[1]):                         
                         if int(current_minute) == start_minute:                        
                             minute_run = True                           
-                        start_minute = start_minute + 1              
-            
-            # print (dow_run,month_run,dom_run,hour_run,minute_run)  <--  Will help with debugging time issues 
+                        start_minute = start_minute + 1   
+                elif minute.isnumeric() is True:
+                    if int(current_minute) == int(minute):
+                        minute_run = True 
+
+            #print (execute_script)
+            #print (dow_run,month_run,dom_run,hour_run,minute_run)  #<--  Will help with debugging time issues 
             if dow_run is True and month_run is True and dom_run is True and hour_run is True and minute_run is True:
                 thread = threading.Thread(target=runjob, args=(execute_script,))                 
                 thread.start()  
