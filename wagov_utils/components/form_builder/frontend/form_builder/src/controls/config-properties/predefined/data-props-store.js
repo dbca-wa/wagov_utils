@@ -58,11 +58,11 @@ export const datasourceDataPropertiesStore = {
           options: undefined,
           value: '',
         },
-        label: {
-          name: 'label',
-          title: 'Label',
+        text: {
+          name: 'text',
+          title: 'Text',
           type: 'string',
-          placeholder: 'Enter a label',
+          placeholder: 'Enter a text',
           required: true,
           options: undefined,
           value: '',

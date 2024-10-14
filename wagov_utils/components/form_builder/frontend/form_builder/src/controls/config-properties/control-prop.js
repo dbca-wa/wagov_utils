@@ -1,5 +1,6 @@
 import { generateRandomId, markup } from '../../js/utils';
 import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
+
 import { dataPropertiesStore, datasourceDataPropertiesStore } from './predefined/data-props-store';
 import { propertiesStore } from './predefined/props-store';
 
@@ -36,6 +37,7 @@ export default class ControlProp {
           value: this.prop.value,
           name: this.prop.name,
           placeholder: this.prop.placeholder,
+          structure   : this.prop.structure
         },
         this.prop.options,
         this.prop.required,
@@ -62,7 +64,7 @@ export default class ControlProp {
 }
 
 function _renderProp(basicProps, options = [], required = false) {
-  const { id, type, value, placeholder } = basicProps;
+  const { id, type, value, placeholder, } = basicProps;
   const inputType = type === 'boolean' ? 'checkbox' : type === 'string' ? 'text' : type;
 
   if (inputType === 'select') {
@@ -90,8 +92,92 @@ function _renderProp(basicProps, options = [], required = false) {
   }
 
   if (inputType === 'array') {
-    return markup('h3', 'Array type here');
+    const {structure } = basicProps
+   try {
+     
+    const table = new EditableDynamicTableControl(structure, value, true);
+    return table.render();
+
+  } catch (error) {
+    console.error(error);
+    return markup('h3', 'Invalid table data.');
+    
+   }
   }
 
   return markup('input', '', { id, type: inputType, value, placeholder, required, class: 'form-control' });
+}
+
+export class EditableDynamicTableControl {
+  name;
+  id;
+  constructor(structure, values) {
+    this.id = "table-"+generateRandomId();
+    this.structure = structure;
+    this.values = values === "" ? [] : values
+    this.columns = ['id'].concat(Object.keys(structure).map((key) => structure[key].name)).concat('actions');
+
+  }
+
+  static _createColumn(column) {
+      return markup('th', column, { scope: 'col' });
+  }
+  _createRow(row) {
+    if(!row) return;
+    const rowEl = markup('tr', markup('td', markup('span', 'X', {class: 'btn btn-default ' + this.name})));
+    for (const column of this.columns) {
+      if (column === 'actions') {
+        rowEl.appendChild(markup('td', row[column]));
+        continue;
+      }
+      if(this.structure[column]){
+        rowEl.appendChild(markup('td', _renderProp({...this.structure[column], value: row[column]})));
+      }
+    }
+    return rowEl
+  }
+
+    render () {
+    const table = markup('table', [{
+      tag: 'thead',
+      content : [
+        {tag: 'tr', content: this.columns.map((column) => EditableDynamicTableControl._createColumn(column))}
+      ]
+    }], { class: 'table table-bordered', id: this.id });
+    
+    
+    const tbody = markup('tbody', '',);
+    table.appendChild(tbody);
+    const tableBody = this.values.map(val=> {
+      
+      return {
+        ...val,
+        actions: markup('button', 'Edit', {class: 'btn btn-primary ' + this.name, events: {
+          click: (e) => {
+            e.preventDefault()
+            console.log('Edit', e);
+          }
+        }})
+      }
+    })
+    for (let i = 0; this.values.length; i++) {
+      
+      table.querySelector('tbody').appendChild(this._createRow(tableBody[i]));
+    }
+    const addRowButton = markup('button', 'Add row', {class: 'btn btn-primary '});
+    addRowButton.addEventListener('click', this, (e) => {
+      e.preventDefault();
+      // const _this = e.data;
+      // const newRow = {};
+      // Object.keys(_this.structure).map((key) => {
+      //   newRow[key] = _this.structure[key].value;  
+      // })
+      
+      // const row = _this._createRow(newRow);
+      // $(_this.id).querySelector('tbody').appendChild(row);
+    })
+    table.querySelector('tbody').appendChild(addRowButton);
+    return table;
+  }
+
 }

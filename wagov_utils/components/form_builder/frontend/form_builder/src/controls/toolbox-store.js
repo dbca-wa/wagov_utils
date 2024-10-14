@@ -29,7 +29,9 @@ export const CONTROLS_STORE = {
       type: INPUT_TYPES.NUMBER,
       placeholder: 'Enter a number',
       required: true,
+      defaultValue : 100
     },
+    
     attr: {
       type: INPUT_TYPES.NUMBER,
     },
@@ -42,6 +44,10 @@ export const CONTROLS_STORE = {
       name: 'Select Control',
       label: 'Select an option',
       required: true,
+      values: [
+        { text: 'Select Option 1', value: 'option1' },
+        { text: 'Select Option 2', value: 'option2' },
+      ],
       options: [
         { text: 'Select Option 1', value: 'option1' },
         { text: 'Select Option 2', value: 'option2' },

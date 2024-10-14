@@ -28,6 +28,7 @@ export class SelectDataProperties extends BaseControlProps {
     super(selectelementProps);
     this.fillInProps(props);
     this.selectDatasource(this.props[CONTROL_DATA_PROPS_TYPES.DATASOURCE]?.prop.value);
+    this.datasourceProperties.fillInProps(props);
   }
 
   selectDatasource(selectedDS) {
@@ -40,10 +41,12 @@ export class SelectDataProperties extends BaseControlProps {
     } else if (selectedDS === DATASOURCE_PROPS_TYPES.URL) {
       this.datasourceProperties = new BaseControlProps(dsURL, datasourceDataPropertiesStore[DATASOURCE_VALUES.URL]);
     }
-    this.datasourceProperties.fillInProps({
-      [CONTROL_DATA_PROPS_TYPES.DATASOURCE]: selectedDS,
-    });
+    // this.datasourceProperties.fillInProps({
+    //   [CONTROL_DATA_PROPS_TYPES.DATASOURCE]: selectedDS,
+    // });
   }
+
+  defaultEvents()  {}
 
   render() {
     const container = super.render();
