@@ -24,7 +24,7 @@
 
 // Text selection
 @mixin text-selection($color-selection, $color-selection-bg) {
-  ::-moz-selection { // sass-lint:disable-line no-vendor-prefixes
+  ::-moz-selection {
     background: $color-selection-bg;
     color: $color-selection;
     text-shadow: none;
@@ -41,7 +41,7 @@
 //Usage:
 //@include placeholder;
 @mixin placeholder {
-  // sass-lint:disable no-vendor-prefixes
+
   ::-webkit-input-placeholder {@content}
   :-moz-placeholder           {@content}
   ::-moz-placeholder          {@content}
