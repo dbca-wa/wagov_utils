@@ -1,16 +1,15 @@
-import { generateRandomId, markup } from '../../js/utils';
+import { markup } from '../../js/utils';
 import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
-import { DynamicTableControl } from './components-control-props/dynamic-table-control';
 
-import { dataPropertiesStore, datasourceDataPropertiesStore } from './predefined/data-props-store';
+import { dataPropertiesStore } from './predefined/data-props-store';
 import { propertiesStore } from './predefined/props-store';
 
-const allProps = {
+export const defaultAllProps = {
   ...propertiesStore,
   ...dataPropertiesStore,
 };
 
-export default class ControlProp {
+export class ControlProp {
   prop; // Property object from propertiesStore
   /* name */
   /* title */
@@ -19,10 +18,9 @@ export default class ControlProp {
   /* required */
   /* options */
   /* value */
-  changeHandler;
 
   constructor(type, customPropsStore) {
-    this.prop = customPropsStore !== undefined ? { ...customPropsStore[type] } : { ...allProps[type] };
+    this.prop = customPropsStore !== undefined ? { ...customPropsStore[type] } : { ...defaultAllProps[type] };
     this.id = `cp-${this.prop.name}`;
   }
 
@@ -61,11 +59,6 @@ export default class ControlProp {
       $(`#${this.id}`).on('change', { context, prop: this.prop }, cb);
     } else if (this.prop.type === 'string') {
       $(`#${this.id}`).on('input', { context, prop: this.prop }, cb);
-    } else if (this.prop.type === 'array') {
-      this.changeHandler = {
-        fn: cb,
-        context,
-      };
     }
   }
 }
@@ -99,14 +92,7 @@ export function _renderProp(basicProps, options = [], required = false) {
   }
 
   if (inputType === 'array') {
-    const { id, structure } = basicProps;
-    try {
-      const table = new DynamicTableControl({ id }, { structure, values: value });
-      return table.render();
-    } catch (error) {
-      console.error(error);
-      return markup('h3', 'Invalid table data.');
-    }
+    return markup('h3', 'Invalid table data.');
   }
 
   return markup('input', '', {

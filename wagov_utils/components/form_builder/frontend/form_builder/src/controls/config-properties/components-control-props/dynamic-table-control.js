@@ -4,6 +4,8 @@ import { _renderProp } from '../control-prop';
 export class DynamicTableControl {
   id;
   sortable = false;
+  changeHandler;
+
   constructor(props, tableData = { structure: {}, values: [] }) {
     const { structure, values } = tableData;
     this.id = props.id;
@@ -12,6 +14,42 @@ export class DynamicTableControl {
     this.values = values === '' ? [] : values;
     this.columns = ['id'].concat(Object.keys(structure).map((key) => structure[key].name)).concat('actions');
     console.log(structure);
+  }
+
+  addChangeEventHandler({ fn, context }) {
+    this.changeHandler = {
+      fn,
+      context,
+    };
+
+    this.addInputElementChange($(`#${this.id} .data-row td input[data-key]`));
+  }
+
+  addInputElementChange(selector) {
+    $(selector).on('change', this, (e) => {
+      const _this = e.data;
+      _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
+    });
+  }
+
+  extractData() {
+    const data = [];
+    const rows = document.querySelectorAll(`#${this.id} .data-row`);
+
+    for (const row of rows) {
+      const rowId = row.id;
+      const rowValues = { id: rowId };
+      const cells = row.querySelectorAll('td input[data-key]');
+      for (let i = 0; i < cells.length; i++) {
+        const cell = cells[i];
+        const key = cell.dataset.key;
+        const value = cell.tagName.toLowerCase() === 'input' ? cell.value : cell.textContent;
+        rowValues[key] = value;
+      }
+      data.push(rowValues);
+    }
+    console.log({ extracted: data });
+    return data;
   }
 
   _createHeaders() {
@@ -61,16 +99,21 @@ export class DynamicTableControl {
     return {
       ...val,
       id: rowId,
-      actions: markup('button', 'X', {
+      actions: markup('button', 'x', {
         class: 'btn btn-primary ',
         'data-rowId': rowId,
         events: {
-          click: (e) => {
-            e.preventDefault();
-            const { rowId } = e.target.dataset;
-            if (rowId) {
-              document.getElementById(rowId).remove();
-            }
+          click: {
+            context: this,
+            fn: (e) => {
+              const { context: _this } = e.data;
+              e.preventDefault();
+              const { rowId } = e.target.dataset;
+              if (rowId) {
+                document.getElementById(rowId).remove();
+              }
+              _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
+            },
           },
         },
       }),
@@ -81,7 +124,7 @@ export class DynamicTableControl {
     const table = this._createHeaders();
     const tbody = markup('tbody', '');
     table.appendChild(tbody);
-    const tableBody = this.values.map(this._parseRowData);
+    const tableBody = this.values.map((val) => this._parseRowData(val));
     for (let i = 0; i < tableBody.length; i++) {
       const row = this._createDataRow(tableBody[i]);
       table.querySelector('tbody').appendChild(row);
@@ -98,17 +141,17 @@ export class DynamicTableControl {
             class: 'btn btn-primary',
             events: {
               click: {
-                data: {
-                  saludo: 'Hola Juanchito',
-                },
+                context: this,
                 fn: (e) => {
+                  const { context: _this } = e.data;
                   e.preventDefault();
                   const initial = Object.fromEntries(
-                    Object.entries(this.structure).map(([key, { value }]) => [key, value]),
+                    Object.entries(_this.structure).map(([key, { value }]) => [key, value]),
                   );
-                  const newRow = this._parseRowData(initial);
-                  const row = this._createDataRow(newRow);
+                  const newRow = _this._parseRowData(initial);
+                  const row = _this._createDataRow(newRow);
                   e.target.closest('tr').insertAdjacentElement('beforebegin', row);
+                  _this.addInputElementChange($(`#${row.id} td input[data-key]`));
                 },
               },
             },

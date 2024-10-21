@@ -1,5 +1,5 @@
 import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
-import BaseControlProps from './base-control-props';
+import { BaseControlProps } from './base-control-props';
 
 const textProps = [
   CONTROL_PROPS_TYPES.LABEL,

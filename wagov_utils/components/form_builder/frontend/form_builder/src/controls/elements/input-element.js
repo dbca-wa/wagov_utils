@@ -2,7 +2,7 @@ import InputControl from '../fb-input-control';
 import { markup } from '../../js/utils';
 import { INPUT_TYPES } from '../utils/input-types';
 import { InputFieldDisplayProps } from '../config-properties/input-properties';
-import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
+import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 
 const defaultSettings = {
   type: 'text',
@@ -36,6 +36,7 @@ export default class InputElement extends InputControl {
 
   renderControl() {
     const props = this.displayControlProps.getPropsValues();
+    Object.assign(props, this.dataControlProps.getPropsValues());
 
     return this.render({
       id: this.id,
@@ -44,6 +45,7 @@ export default class InputElement extends InputControl {
       [CONTROL_PROPS_TYPES.PLACEHOLDER]: props[CONTROL_PROPS_TYPES.PLACEHOLDER],
       [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '',
       [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
+      [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE] ?? 'ff',
     });
   }
 
@@ -55,6 +57,7 @@ export default class InputElement extends InputControl {
       value: this.value,
       placeholder: props[CONTROL_PROPS_TYPES.PLACEHOLDER] ?? '',
       class: (this.attr.class ?? '').concat(' ', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? ''),
+      value: props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE],
     };
 
     if (this.type === 'radio') {

@@ -43,7 +43,7 @@ export default class ControlEdition extends Control {
     const $m = $(modalIdSelector);
 
     if (_this.control && _this.control.displayControlProps) {
-      _this.control.dataControlProps.setEditor($m.find('#data-tab-pane form'), this);
+      _this.control.dataControlProps.setEditor($m.find('#data-tab-pane form'), _this);
       $m.find('#display-tab-pane form').empty().append(_this.control.displayControlProps.render());
       _this.control.dataControlProps.renderInParent();
       _this.control.displayControlProps.addChangeEvents(_this, _this._onPropsChange);
@@ -84,6 +84,7 @@ export default class ControlEdition extends Control {
       return;
     }
     _this.control.displayControlProps.fillInProps(Object.assign({}, _this.initialProps));
+    _this.control.dataControlProps.fillInProps(Object.assign({}, _this.initialProps));
     _this.modal.hide();
     _this.controller.onSave(_this);
   }

@@ -42,7 +42,7 @@ export const dataPropertiesStore = {
 
 export const datasourceDataPropertiesStore = {
   [DATASOURCE_VALUES.VALUES]: {
-    [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_VALUE_PROPS },
+    [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_VALUE_PROPS, type: 'select', options: [] },
     [DATASOURCE_PROPS_TYPES.VALUES]: {
       name: 'values',
       title: 'Enter Values',

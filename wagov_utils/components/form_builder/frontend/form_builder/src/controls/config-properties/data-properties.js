@@ -1,5 +1,5 @@
 import { CONTROL_DATA_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
-import BaseControlProps from './base-control-props';
+import { BaseControlProps } from './base-control-props';
 import { DATASOURCE_VALUES, datasourceDataPropertiesStore } from './predefined/data-props-store';
 
 const multiSelectProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE, CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
@@ -10,7 +10,35 @@ const selectelementProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_T
 const dsValues = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.VALUES];
 const dsURL = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.URL];
 
-export class BasicDataProperties extends BaseControlProps {
+class BaseDataProps extends BaseControlProps {
+  $p;
+  editor;
+
+  constructor(props) {
+    super(props);
+  }
+
+  renderInParent() {
+    if (this.$p) {
+      this.$p.empty().append(this.render());
+    }
+    super.addChangeEvents(this, this._onDataPropsChange);
+  }
+
+  setEditor(parentContainer = {}, editor = {}) {
+    this.$p = parentContainer;
+    this.editor = editor;
+  }
+
+  _onDataPropsChange(e) {
+    const { context: _this, prop } = e.data;
+
+    const value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e.value;
+    _this.editor.initialProps[prop.name] = value;
+  }
+}
+
+export class BasicDataProperties extends BaseDataProps {
   datasourceProperties;
 
   constructor(props) {
@@ -23,17 +51,36 @@ export class BasicDataProperties extends BaseControlProps {
   }
 }
 
-export class SelectDataProperties extends BaseControlProps {
-  $p;
-  editor;
+export class SelectDataProperties extends BaseDataProps {
+  datasource;
+
   constructor(props) {
     super(selectelementProps);
     this.fillInProps(props);
     this.selectDatasource(this.props[CONTROL_DATA_PROPS_TYPES.DATASOURCE]?.prop.value);
     this.datasourceProperties.fillInProps(props);
+    if (this.datasource === DATASOURCE_PROPS_TYPES.VALUES) {
+      this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE].prop.options = [...props.options] ?? [];
+    }
+  }
+
+  fillInProps(hostProps) {
+    super.fillInProps(hostProps);
+    if (this.datasourceProperties) {
+      this.datasourceProperties.fillInProps(hostProps);
+    }
+  }
+
+  getPropsValues() {
+    const props = super.getPropsValues();
+    if (this.datasourceProperties) {
+      Object.assign(props, this.datasourceProperties.getPropsValues());
+    }
+    return props;
   }
 
   selectDatasource(selectedDS) {
+    this.datasource = selectedDS;
     this.modifyProp(CONTROL_DATA_PROPS_TYPES.DATASOURCE, selectedDS);
     if (selectedDS === DATASOURCE_PROPS_TYPES.VALUES) {
       this.datasourceProperties = new BaseControlProps(
@@ -74,20 +121,22 @@ export class SelectDataProperties extends BaseControlProps {
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
 
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    const value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e.value;
     _this.editor.initialProps[prop.name] = value;
 
     if (this.id === 'cp-dataSource') {
-      console.log('Data Source field value ', prop.name, ' changed to: ', value);
       _this.selectDatasource(value);
       _this.renderInParent();
     }
 
-    if (this.id === 'cp-values') {
-      console.log('Values field value ', prop.name, ' changed to: ', value);
+    if (prop.name === 'values') {
+      _this.datasourceProperties.fillInProps(_this.editor.initialProps);
+      _this.editor._renderPreviewControl();
+      if (_this.datasource === DATASOURCE_PROPS_TYPES.VALUES) {
+        _this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE].prop.options = value;
+        _this.renderInParent(); // TODO: Just render the default value prop
+      }
     }
-
-    // $('#preview-edition').empty().append(_this.control.render(_this.initialProps));
   }
 
   render() {

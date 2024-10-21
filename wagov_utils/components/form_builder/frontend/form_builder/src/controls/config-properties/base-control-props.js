@@ -1,14 +1,15 @@
 import { markup } from '../../js/utils';
-import ControlProp from './control-prop';
 
-export default class BaseControlProps {
+import { ControlPropFactory } from './control-prop-factory';
+
+export class BaseControlProps {
   props = {};
   initialProps = {};
 
   constructor(propsList = [], customPropsStore) {
     for (let i = 0; i < propsList.length; i++) {
       const prop = propsList[i];
-      let cp = new ControlProp(prop, customPropsStore);
+      let cp = ControlPropFactory.createControlProp(prop, customPropsStore);
       this.props[prop] = cp;
     }
   }

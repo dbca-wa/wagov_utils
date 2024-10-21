@@ -2,7 +2,7 @@ import InputControl from '../fb-input-control';
 import { markup } from '../../js/utils';
 import { ELEMENT_TYPES } from '../utils/element-types';
 
-import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
+import { CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
 import { SelectDataProperties } from '../config-properties/data-properties';
 import { SelectDisplayProps } from '../config-properties/input-properties';
 
@@ -51,17 +51,22 @@ export default class SelectElement extends InputControl {
 
   renderControl() {
     const props = this.displayControlProps.getPropsValues();
+    Object.assign(props, this.dataControlProps.getPropsValues());
 
     return this.render({
       [CONTROL_PROPS_TYPES.LABEL]: props[CONTROL_PROPS_TYPES.LABEL],
       [CONTROL_PROPS_TYPES.PLACEHOLDER]: props[CONTROL_PROPS_TYPES.PLACEHOLDER],
       [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS],
       [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
+      [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE],
+      [DATASOURCE_PROPS_TYPES.VALUES]: props[DATASOURCE_PROPS_TYPES.VALUES],
     });
   }
 
   render(customProps, attr) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
+
+    const options = props?.values ?? this.options;
 
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];
     this.label.display = !!!props[CONTROL_PROPS_TYPES.HIDE_LABEL];
@@ -86,13 +91,17 @@ export default class SelectElement extends InputControl {
       );
     }
 
-    this.options.forEach((option) => {
-      selectEl.appendChild(
-        markup('option', option.text, {
+    if (Array.isArray(options)) {
+      options.forEach((option) => {
+        const attributes = {
           value: option.value,
-        }),
-      );
-    });
+        };
+        if (option.value === props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]) {
+          attributes.selected = true;
+        }
+        selectEl.appendChild(markup('option', option.text, attributes));
+      });
+    }
     return super.render(selectEl);
   }
 }
