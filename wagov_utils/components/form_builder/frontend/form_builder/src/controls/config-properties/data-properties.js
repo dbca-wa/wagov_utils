@@ -24,6 +24,8 @@ export class BasicDataProperties extends BaseControlProps {
 }
 
 export class SelectDataProperties extends BaseControlProps {
+  $p;
+  editor;
   constructor(props) {
     super(selectelementProps);
     this.fillInProps(props);
@@ -46,7 +48,47 @@ export class SelectDataProperties extends BaseControlProps {
     // });
   }
 
-  defaultEvents()  {}
+  setEditor(parentContainer, editor) {
+    this.$p = parentContainer;
+    this.editor = editor;
+  }
+
+  clearEditor() {
+    this.$p = null;
+  }
+
+  defaultEvents() {}
+
+  renderInParent() {
+    if (this.$p) {
+      this.$p.empty().append(this.render());
+      super.addChangeEvents(this, this._onDataPropsChange);
+      this.datasourceProperties.addChangeEvents(this, this._onDataPropsChange);
+    }
+  }
+
+  addChangeEvents(context, cb) {
+    super.addChangeEvents(context, cb);
+  }
+
+  _onDataPropsChange(e) {
+    const { context: _this, prop } = e.data;
+
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    _this.editor.initialProps[prop.name] = value;
+
+    if (this.id === 'cp-dataSource') {
+      console.log('Data Source field value ', prop.name, ' changed to: ', value);
+      _this.selectDatasource(value);
+      _this.renderInParent();
+    }
+
+    if (this.id === 'cp-values') {
+      console.log('Values field value ', prop.name, ' changed to: ', value);
+    }
+
+    // $('#preview-edition').empty().append(_this.control.render(_this.initialProps));
+  }
 
   render() {
     const container = super.render();

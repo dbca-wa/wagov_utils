@@ -43,18 +43,16 @@ export default class ControlEdition extends Control {
     const $m = $(modalIdSelector);
 
     if (_this.control && _this.control.displayControlProps) {
+      _this.control.dataControlProps.setEditor($m.find('#data-tab-pane form'), this);
       $m.find('#display-tab-pane form').empty().append(_this.control.displayControlProps.render());
-      $m.find('#data-tab-pane form').empty().append(_this.control.dataControlProps.render());
+      _this.control.dataControlProps.renderInParent();
       _this.control.displayControlProps.addChangeEvents(_this, _this._onPropsChange);
-      _this.control.dataControlProps.addChangeEvents(_this, _this._onDataPropsChange);
+
       _this.initialProps = {
         ..._this.control.displayControlProps.getPropsValues(),
         ..._this.control.dataControlProps?.getPropsValues(),
       };
-      $m.find('#preview-edition').empty().append(_this.control.render(_this.initialProps));
-      // Fill in the values DONE
-      // Add events DONE
-      // Add validation?
+      _this._renderPreviewControl();
     }
     _this.modal = new Modal(document.querySelector(modalIdSelector), {
       keyboard: true,
@@ -70,22 +68,13 @@ export default class ControlEdition extends Control {
     const { context: _this, prop } = e.data;
 
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-    console.log('Field value ', prop.name, ' changed to: ', value);
-    _this.initialProps[prop.name] = value;
-    $('#preview-edition').empty().append(_this.control.render(_this.initialProps));
-  }
-  _onDataPropsChange(e) {
-    const { context: _this, prop } = e.data;
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-    _this.initialProps[prop.name] = value;
 
-    if (this.id === 'cp-dataSource') {
-      console.log('Data Source field value ', prop.name, ' changed to: ', value);
-      _this.control.dataControlProps.selectDatasource(value);
-      $('#data-tab-pane form').empty().append(_this.control.dataControlProps.render());
-      _this.control.dataControlProps.addChangeEvents(_this, _this._onDataPropsChange);
-    }
-    // $('#preview-edition').empty().append(_this.control.render(_this.initialProps));
+    _this.initialProps[prop.name] = value;
+    _this._renderPreviewControl();
+  }
+
+  _renderPreviewControl() {
+    $('#preview-edition').empty().append(this.control.render(this.initialProps));
   }
 
   _saveControl(event) {

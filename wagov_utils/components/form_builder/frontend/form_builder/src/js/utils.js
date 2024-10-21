@@ -89,7 +89,13 @@ export const bindEvents = (element, events) => {
   if (events) {
     for (const event in events) {
       if (events.hasOwnProperty(event)) {
-        element.addEventListener(event, (evt) => events[event](evt));
+        const eventObjType = getContentType(events[event]);
+        if (eventObjType === 'function') {
+          element.addEventListener(event, (evt) => events[event](evt));
+        } else if (eventObjType === 'object') {
+          const { fn, ...options } = events[event];
+          $(element).on(event, options, fn);
+        }
       }
     }
   }
