@@ -1,4 +1,4 @@
-import { CONTROLS_STORE } from '../controls/toolbox-store';
+import { CONTROLS_STORE, LAYOUT_STORE } from '../controls/toolbox-store';
 import ControlEdition from '../edition/control-edition';
 import baseModalTemplate from '../views/control-edition/base-modal.handlebars';
 import baseModalBodyEdition from '../views/control-edition/base-modal-edition.handlebars';
@@ -10,9 +10,14 @@ import Tab from 'bootstrap/js/dist/tab.js';
 import Control from './fb-control';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
+import { LAYOUT_TYPES } from '../controls/utils/layout-types';
 
 const formAreaSel = 'formarea';
+const CLASS_DROPABLE_BLOCKS = 'fb-dropable-blocks';
 const controlsSel = 'formcomponents';
+
+const BUILDER_TOOLBOX = Object.assign({}, CONTROLS_STORE, LAYOUT_STORE);
+
 export default class LayoutController {
   constructor(builderElement, body) {
     this.b = builderElement; // HTML
@@ -27,7 +32,7 @@ export default class LayoutController {
     let controlsPanel = markup('div', '', { id: controlsSel, class: controlsSel });
     let builderArea = markup('div', '', {
       id: formAreaSel,
-      class: formAreaSel,
+      class: [formAreaSel, CLASS_DROPABLE_BLOCKS].join(' '),
       'data-content': 'Drag a field from the right to this area',
     });
 
@@ -54,7 +59,7 @@ export default class LayoutController {
         try {
           const data = ui.item[0].dataset;
           const controlType = data.controlType;
-          const { attr, props, controlClass } = CONTROLS_STORE[controlType];
+          const { attr, props, controlClass } = BUILDER_TOOLBOX[controlType];
           const elm = new controlClass(attr, props);
           const nodeOffset = ui.offset.top;
           _this.insertControl(this, elm, nodeOffset);
@@ -72,7 +77,7 @@ export default class LayoutController {
       scroll: false,
       tolerance: 'pointer',
       placeholder: 'ui-state-highlight',
-      connectWith: `.${formAreaSel}`,
+      connectWith: `.${CLASS_DROPABLE_BLOCKS}`,
     });
 
     this.loadFormControls(controls, this.controlsPanel);
@@ -96,14 +101,15 @@ export default class LayoutController {
   renderForm() {
     this.formArea.append(markup('h2', 'Form Builder DBCA', {}));
     const defaultElements = [
-      ELEMENT_TYPES.INPUT,
-      ELEMENT_TYPES.INPUT_NUMBER,
-      ELEMENT_TYPES.SELECT,
-      ELEMENT_TYPES.CHECK_BOX,
-      ELEMENT_TYPES.RADIO,
+      // ELEMENT_TYPES.INPUT,
+      // ELEMENT_TYPES.INPUT_NUMBER,
+      // ELEMENT_TYPES.SELECT,
+      // ELEMENT_TYPES.CHECK_BOX,
+      // ELEMENT_TYPES.RADIO,
+      LAYOUT_TYPES.COLUMNS,
     ];
     defaultElements.forEach((element) => {
-      const { attr, props, controlClass } = CONTROLS_STORE[element];
+      const { attr, props, controlClass } = BUILDER_TOOLBOX[element];
       const elm = new controlClass(attr, props);
       this.insertControl(this.formArea, elm);
     });

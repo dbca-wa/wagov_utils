@@ -2,11 +2,13 @@ import { markup } from '../../js/utils';
 import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 
 import { dataPropertiesStore } from './predefined/data-props-store';
+import { layoutPropertiesStore } from './predefined/layout-props-store';
 import { propertiesStore } from './predefined/props-store';
 
 export const defaultAllProps = {
   ...propertiesStore,
   ...dataPropertiesStore,
+  ...layoutPropertiesStore,
 };
 
 export class ControlProp {

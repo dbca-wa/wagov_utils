@@ -1,9 +1,10 @@
-import Checkbox from './elements/checkbox';
 import InputElement from './elements/input-element';
 import SelectElement from './elements/select-element';
 import { ELEMENT_TYPES } from './utils/element-types';
 import RadioButton from './elements/radio-button';
 import { INPUT_TYPES } from './utils/input-types';
+import { LAYOUT_TYPES } from './utils/layout-types';
+import { ColumnsBlock } from './layout/columns-block';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -79,5 +80,28 @@ export const CONTROLS_STORE = {
     attr: {},
     icon: 'fa fa-font',
     controlClass: RadioButton,
+  },
+};
+
+export const LAYOUT_STORE = {
+  [LAYOUT_TYPES.COLUMNS]: {
+    description: 'A row with columns',
+    props: {
+      label: 'Columns displayed',
+      columns: [
+        {
+          size: 'md',
+          width: 6,
+        },
+        {
+          size: 'md',
+          width: 6,
+        },
+      ],
+    },
+    name: 'Columns',
+    attr: {},
+    icon: 'fa fa-font',
+    controlClass: ColumnsBlock,
   },
 };

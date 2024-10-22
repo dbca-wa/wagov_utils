@@ -4,4 +4,5 @@ export const CONTROL_TYPES = {
   GROUP: 'GROUP',
   ELEMENT: 'ELEMENT',
   BASIC: 'BASIC',
+  LAYOUT: 'LAYOUT',
 };

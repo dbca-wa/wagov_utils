@@ -22,7 +22,7 @@ export class DynamicTableControl {
       context,
     };
 
-    this.addInputElementChange($(`#${this.id} .data-row td input[data-key]`));
+    this.addInputElementChange($(`#${this.id} .data-row td *[data-key]`));
     $(`#${this.id} tbody`).sortable({
       handle: '.sort-handle',
 
@@ -50,11 +50,11 @@ export class DynamicTableControl {
     for (const row of rows) {
       const rowId = row.id;
       const rowValues = { id: rowId };
-      const cells = row.querySelectorAll('td input[data-key]');
+      const cells = row.querySelectorAll('td *[data-key]');
       for (let i = 0; i < cells.length; i++) {
         const cell = cells[i];
         const key = cell.dataset.key;
-        const value = cell.tagName.toLowerCase() === 'input' ? cell.value : cell.textContent;
+        const value = ['select', 'input'].includes(cell.tagName.toLowerCase()) ? cell.value : cell.textContent;
         rowValues[key] = value;
       }
       data.push(rowValues);
@@ -101,7 +101,13 @@ export class DynamicTableControl {
       }
       if (this.structure[column]) {
         rowEl.appendChild(
-          markup('td', _renderProp({ ...this.structure[column], value: row[column], dataKey: column })),
+          markup(
+            'td',
+            _renderProp(
+              { ...this.structure[column], value: row[column], dataKey: column },
+              this.structure[column].options ?? [],
+            ),
+          ),
         );
       }
     }
@@ -166,7 +172,7 @@ export class DynamicTableControl {
                   const newRow = _this._parseRowData(initial);
                   const row = _this._createDataRow(newRow);
                   e.target.closest('tr').insertAdjacentElement('beforebegin', row);
-                  _this.addInputElementChange($(`#${row.id} td input[data-key]`));
+                  _this.addInputElementChange($(`#${row.id} td *[data-key]`));
                   _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
                 },
               },

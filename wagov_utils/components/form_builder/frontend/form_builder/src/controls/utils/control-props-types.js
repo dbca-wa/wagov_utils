@@ -25,3 +25,11 @@ export const DATASOURCE_PROPS_TYPES = {
   VALUES: 'values',
   DEFAULT_VALUE: 'defaultValue',
 };
+
+export const LAYOUT_CONTROL_PROPS_TYPES = {
+  COLUMNS: 'columns',
+  TITLE: 'title',
+  NUM_ROWS: 'numRows',
+  NUM_COLS: 'numCols',
+  CONTENT: 'content',
+};

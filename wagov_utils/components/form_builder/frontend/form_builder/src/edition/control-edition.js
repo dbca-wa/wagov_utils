@@ -15,11 +15,11 @@ export default class ControlEdition extends Control {
     super({}, {}, CONTROL_TYPES.BLOCK);
     this.control = control;
     this.controller = controller;
-    if (control.element_type === 'select') {
-      this._editControl({
-        data: this,
-      });
-    }
+    // if (control.element_type === 'select') {
+    //   this._editControl({
+    //     data: this,
+    //   });
+    // }
   }
   render() {
     return markup(
@@ -66,9 +66,7 @@ export default class ControlEdition extends Control {
 
   _onPropsChange(e) {
     const { context: _this, prop } = e.data;
-
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-
+    const value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e.value;
     _this.initialProps[prop.name] = value;
     _this._renderPreviewControl();
   }
