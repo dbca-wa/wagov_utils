@@ -100,6 +100,7 @@ export default class LayoutController {
       ELEMENT_TYPES.INPUT_NUMBER,
       ELEMENT_TYPES.SELECT,
       ELEMENT_TYPES.CHECK_BOX,
+      ELEMENT_TYPES.RADIO,
     ];
     defaultElements.forEach((element) => {
       const { attr, props, controlClass } = CONTROLS_STORE[element];

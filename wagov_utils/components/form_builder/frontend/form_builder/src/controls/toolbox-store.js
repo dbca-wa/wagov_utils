@@ -48,10 +48,6 @@ export const CONTROLS_STORE = {
         { text: 'Select Option 1', value: 'option1' },
         { text: 'Select Option 2', value: 'option2' },
       ],
-      options: [
-        { text: 'Select Option 1', value: 'option1' },
-        { text: 'Select Option 2', value: 'option2' },
-      ],
     },
     attr: {
       type: 'select',
@@ -73,7 +69,10 @@ export const CONTROLS_STORE = {
     description: 'A simple radio control',
     props: {
       label: 'Pick a shoe',
-      options: [{ text: 'Radio Option 1' }, { text: 'Radio Option 2' }],
+      values: [
+        { text: 'Radio Option 1', value: 'opt-1' },
+        { text: 'Radio Option 2', value: 'opt-2' },
+      ],
       labelClass: 'form-check-label',
     },
     name: 'Radio Control',

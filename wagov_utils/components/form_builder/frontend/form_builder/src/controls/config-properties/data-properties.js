@@ -6,7 +6,9 @@ import { DATASOURCE_VALUES, datasourceDataPropertiesStore } from './predefined/d
 const multiSelectProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE, CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
 
 const defProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
+const defMultiChoiceProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_TYPES.DATASOURCE];
 const selectelementProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_TYPES.DATASOURCE];
+const radioButtonProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE];
 
 const dsValues = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.VALUES];
 const dsURL = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.URL];
@@ -72,16 +74,16 @@ export class InputFieldDataProperties extends BaseDataProps {
   }
 }
 
-export class SelectDataProperties extends BaseDataProps {
+class MultipleChoiceDataProperties extends BaseDataProps {
   datasource;
 
-  constructor(props) {
-    super(selectelementProps);
+  constructor(props, dataProps = defMultiChoiceProps) {
+    super(dataProps);
     this.fillInProps(props);
     this.selectDatasource(this.props[CONTROL_DATA_PROPS_TYPES.DATASOURCE]?.prop.value);
     this.datasourceProperties.fillInProps(props);
     if (this.datasource === DATASOURCE_PROPS_TYPES.VALUES) {
-      this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE].prop.options = [...props.options] ?? [];
+      this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE].prop.options = [...props.values] ?? [];
     }
   }
 
@@ -147,6 +149,9 @@ export class SelectDataProperties extends BaseDataProps {
         _this.renderInParent(); // TODO: Just render the default value prop
       }
     }
+    if (prop.name === 'defaultValue') {
+      _this.editor._renderPreviewControl();
+    }
   }
 
   render() {
@@ -157,5 +162,17 @@ export class SelectDataProperties extends BaseDataProps {
     }
 
     return container;
+  }
+}
+
+export class SelectDataProperties extends MultipleChoiceDataProperties {
+  constructor(props) {
+    super(props, selectelementProps);
+  }
+}
+
+export class RadioButtonsDataProperties extends MultipleChoiceDataProperties {
+  constructor(props) {
+    super(props, radioButtonProps);
   }
 }
