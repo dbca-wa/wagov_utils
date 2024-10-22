@@ -85,6 +85,11 @@ $main-panel-padding: 20px;
   width: 100%;
   cursor: move;
 }
+
+.fb-dropable-blocks {
+  width: 100%;
+  min-height: 30px;
+}
 .formarea-control {
   label {
     padding-top: calc(0.375rem + 1px);

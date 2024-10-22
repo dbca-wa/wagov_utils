@@ -105,3 +105,5 @@ export const LAYOUT_STORE = {
     controlClass: ColumnsBlock,
   },
 };
+
+export const BUILDER_TOOLBOX = Object.assign({}, CONTROLS_STORE, LAYOUT_STORE);

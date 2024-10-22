@@ -1,4 +1,4 @@
-import { CONTROLS_STORE, LAYOUT_STORE } from '../controls/toolbox-store';
+import { BUILDER_TOOLBOX, CONTROLS_STORE, LAYOUT_STORE } from '../controls/toolbox-store';
 import ControlEdition from '../edition/control-edition';
 import baseModalTemplate from '../views/control-edition/base-modal.handlebars';
 import baseModalBodyEdition from '../views/control-edition/base-modal-edition.handlebars';
@@ -11,18 +11,19 @@ import Control from './fb-control';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
 import { LAYOUT_TYPES } from '../controls/utils/layout-types';
+import { CLASS_DROPABLE_BLOCKS } from '../controls/utils/constants';
+import { DropableBlock } from '../controls/layout/dropable-control';
 
 const formAreaSel = 'formarea';
-const CLASS_DROPABLE_BLOCKS = 'fb-dropable-blocks';
-const controlsSel = 'formcomponents';
 
-const BUILDER_TOOLBOX = Object.assign({}, CONTROLS_STORE, LAYOUT_STORE);
+const controlsSel = 'formcomponents';
 
 export default class LayoutController {
   constructor(builderElement, body) {
     this.b = builderElement; // HTML
     this.body = body;
     this.formArea = undefined;
+    this.buildArea = new DropableBlock();
     this.controlsPanel = undefined;
   }
 
@@ -43,31 +44,33 @@ export default class LayoutController {
     formbuilderElement.append(builderArea);
     this.formArea = $(`#${formAreaSel}`);
 
+    this.buildArea.setContainer(this.formArea);
+
     this.controlsPanel = $(`#${controlsSel}`);
 
-    this.formArea.sortable({
-      placeholder: 'ui-state-highlight',
-      helper: 'clone',
-      cursor: 'move',
-      scroll: false,
-      tolerance: 'pointer',
-    });
-    this.formArea.on('sortupdate', this, function (event, ui) {
-      const _this = event.data;
-      if (ui.sender) {
-        ui.sender.sortable('cancel');
-        try {
-          const data = ui.item[0].dataset;
-          const controlType = data.controlType;
-          const { attr, props, controlClass } = BUILDER_TOOLBOX[controlType];
-          const elm = new controlClass(attr, props);
-          const nodeOffset = ui.offset.top;
-          _this.insertControl(this, elm, nodeOffset);
-        } catch (error) {
-          console.log("Couldn't append element", error);
-        }
-      }
-    });
+    // this.formArea.sortable({
+    //   placeholder: 'ui-state-highlight',
+    //   helper: 'clone',
+    //   cursor: 'move',
+    //   scroll: false,
+    //   tolerance: 'pointer',
+    // });
+    // this.formArea.on('sortupdate', this, function (event, ui) {
+    //   const _this = event.data;
+    //   if (ui.sender) {
+    //     ui.sender.sortable('cancel');
+    //     try {
+    //       const data = ui.item[0].dataset;
+    //       const controlType = data.controlType;
+    //       const { attr, props, controlClass } = BUILDER_TOOLBOX[controlType];
+    //       const elm = new controlClass(attr, props);
+    //       const nodeOffset = ui.offset.top;
+    //       _this.insertControl(this, elm, nodeOffset);
+    //     } catch (error) {
+    //       console.log("Couldn't append element", error);
+    //     }
+    //   }
+    // });
 
     $(`.${formAreaSel}`).disableSelection();
 
@@ -99,7 +102,7 @@ export default class LayoutController {
   }
 
   renderForm() {
-    this.formArea.append(markup('h2', 'Form Builder DBCA', {}));
+    this.buildArea.$c.append(markup('h2', 'Form Builder DBCA', {}));
     const defaultElements = [
       // ELEMENT_TYPES.INPUT,
       // ELEMENT_TYPES.INPUT_NUMBER,
@@ -111,7 +114,7 @@ export default class LayoutController {
     defaultElements.forEach((element) => {
       const { attr, props, controlClass } = BUILDER_TOOLBOX[element];
       const elm = new controlClass(attr, props);
-      this.insertControl(this.formArea, elm);
+      this.insertControl(this.buildArea.$c, elm);
     });
   }
 

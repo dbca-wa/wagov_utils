@@ -116,7 +116,7 @@ export class DynamicTableControl {
   }
 
   _parseRowData(val) {
-    const rowId = 'row-' + generateRandomId();
+    const rowId = val.id ?? 'row-' + generateRandomId();
     return {
       ...val,
       id: rowId,

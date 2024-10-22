@@ -8,11 +8,9 @@ import { BasicDataProperties } from './config-properties/data-properties';
 
 export default class LayoutControl extends Control {
   container_class = 'formarea-control';
-  element_type;
 
   constructor(attr, props, element_type) {
-    super(attr, props, CONTROL_TYPES.ELEMENT);
-    this.element_type = element_type || ELEMENT_TYPES.INPUT;
+    super(attr, props, CONTROL_TYPES.LAYOUT);
     this.label = new Label(props['label'] || ''); // Default label
     this._basicSetup();
   }
