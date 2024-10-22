@@ -1,6 +1,7 @@
 import InputControl from '../fb-input-control';
 import { generateRandomId, markup } from '../../js/utils';
 import { ELEMENT_TYPES } from '../utils/element-types';
+import { RadioDisplayProps } from '../config-properties/input-properties';
 
 const defaultSettings = {
   class: 'form-check-input',

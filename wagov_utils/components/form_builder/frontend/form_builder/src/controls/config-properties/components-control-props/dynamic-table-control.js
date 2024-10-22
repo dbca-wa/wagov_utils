@@ -23,6 +23,17 @@ export class DynamicTableControl {
     };
 
     this.addInputElementChange($(`#${this.id} .data-row td input[data-key]`));
+    $(`#${this.id} tbody`).sortable({
+      handle: '.sort-handle',
+
+      items: '.data-row',
+      placeholder: 'portlet-placeholder ',
+    });
+
+    $(`#${this.id} tbody`).on('sortupdate', this, function (e, ui) {
+      const _this = e.data;
+      _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
+    });
   }
 
   addInputElementChange(selector) {
@@ -74,10 +85,14 @@ export class DynamicTableControl {
 
   _createDataRow(row) {
     if (!row) return;
-    const rowEl = markup('tr', [{ tag: 'td', content: markup('span', 'X', { class: 'btn btn-default ' }) }], {
-      id: row.id,
-      class: 'data-row',
-    });
+    const rowEl = markup(
+      'tr',
+      [{ tag: 'td', content: markup('span', 'X', { class: 'btn btn-default btn-disabled sort-handle ' }) }],
+      {
+        id: row.id,
+        class: 'data-row',
+      },
+    );
     delete row.id;
     for (const column of this.columns) {
       if (column === 'actions') {
@@ -152,6 +167,7 @@ export class DynamicTableControl {
                   const row = _this._createDataRow(newRow);
                   e.target.closest('tr').insertAdjacentElement('beforebegin', row);
                   _this.addInputElementChange($(`#${row.id} td input[data-key]`));
+                  _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
                 },
               },
             },
@@ -159,6 +175,7 @@ export class DynamicTableControl {
         ],
         {
           colspan: this.columns.length,
+          class: 'not-sortable',
         },
       ),
     );

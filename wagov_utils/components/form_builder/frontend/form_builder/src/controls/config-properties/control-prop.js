@@ -51,7 +51,7 @@ export class ControlProp {
 
   addChangeEvent(context, cb) {
     if (!cb) return;
-    if (this.prop.type === 'boolean') {
+    if (this.prop.type === 'boolean' || this.prop.type === 'checkbox') {
       $(`#${this.id}`).on('change', { context, prop: this.prop }, cb);
     }
 

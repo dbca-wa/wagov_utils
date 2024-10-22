@@ -34,9 +34,15 @@ export class BaseControlProps {
     return props;
   }
 
-  modifyProp(propName, value) {
+  modifyPropValue(propName, value) {
     if (this.props[propName]) {
       this.props[propName].prop.value = value;
+    }
+  }
+
+  modifyProp(propName, values = {}) {
+    if (this.props[propName]) {
+      this.props[propName].prop = { ...this.props[propName].prop, ...values };
     }
   }
 

@@ -152,7 +152,7 @@ function appendControlEdition(parent, node, nodeOffset = null) {
     const childNodes = parent.childNodes;
     for (let i = 0; i < childNodes.length; i++) {
       const child = childNodes[i];
-      if (parent.offsetTop > nodeOffset) {
+      if (child.offsetTop > nodeOffset) {
         parent.insertBefore(node, child);
         return;
       }

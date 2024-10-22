@@ -152,3 +152,10 @@ $main-panel-padding: 20px;
   background-color: red !important;
   color: white !important;
 }
+
+// Sortable bits
+.portlet-placeholder {
+  border: 1px dotted black;
+  margin: 0 1em 1em 0;
+  height: 50px;
+}

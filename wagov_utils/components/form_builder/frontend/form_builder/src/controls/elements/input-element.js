@@ -3,6 +3,7 @@ import { markup } from '../../js/utils';
 import { INPUT_TYPES } from '../utils/input-types';
 import { InputFieldDisplayProps } from '../config-properties/input-properties';
 import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/control-props-types';
+import { InputFieldDataProperties } from '../config-properties/data-properties';
 
 const defaultSettings = {
   type: 'text',
@@ -21,6 +22,7 @@ export default class InputElement extends InputControl {
   setup() {
     this.type = this.props.type || defaultSettings.type;
     this.displayControlProps = new InputFieldDisplayProps(this.type, this.props);
+    this.dataControlProps = new InputFieldDataProperties(this.type, this.props);
     if (this.type === INPUT_TYPES.RADIO) {
       this.attr['class'] = 'form-check-input';
       this.id = this.props.id;
@@ -45,23 +47,31 @@ export default class InputElement extends InputControl {
       [CONTROL_PROPS_TYPES.PLACEHOLDER]: props[CONTROL_PROPS_TYPES.PLACEHOLDER],
       [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '',
       [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
-      [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE] ?? 'ff',
+      [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE] ?? '',
     });
   }
 
   render(customProps, attr) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
+    const value = props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
     const attributes = {
       id: props.id ?? this.id,
       type: this.type,
       value: this.value,
       placeholder: props[CONTROL_PROPS_TYPES.PLACEHOLDER] ?? '',
       class: (this.attr.class ?? '').concat(' ', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? ''),
-      value: props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE],
+      value: value,
     };
 
     if (this.type === 'radio') {
       attributes.name = this.props.name;
+      delete attributes.placeholder;
+      delete attributes.value;
+    }
+    if (this.type === 'checkbox') {
+      attributes.name = this.props.name;
+      attributes.checked = value === true;
+
       delete attributes.placeholder;
       delete attributes.value;
     }

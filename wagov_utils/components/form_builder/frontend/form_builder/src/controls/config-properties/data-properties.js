@@ -1,4 +1,5 @@
 import { CONTROL_DATA_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
+import { INPUT_TYPES } from '../utils/input-types';
 import { BaseControlProps } from './base-control-props';
 import { DATASOURCE_VALUES, datasourceDataPropertiesStore } from './predefined/data-props-store';
 
@@ -25,16 +26,20 @@ class BaseDataProps extends BaseControlProps {
     super.addChangeEvents(this, this._onDataPropsChange);
   }
 
-  setEditor(parentContainer = {}, editor = {}) {
+  setEditor(parentContainer, editor) {
     this.$p = parentContainer;
     this.editor = editor;
   }
 
+  clearEditor() {
+    this.$p = null;
+  }
+
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
-
     const value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e.value;
     _this.editor.initialProps[prop.name] = value;
+    console.log('Data Props Change', prop.name, value);
   }
 }
 
@@ -45,9 +50,25 @@ export class BasicDataProperties extends BaseDataProps {
     super(defProps);
     this.fillInProps(props);
   }
+}
 
-  render() {
-    return super.render();
+export class InputFieldDataProperties extends BaseDataProps {
+  datasourceProperties;
+
+  constructor(type = INPUT_TYPES.TEXT, props) {
+    super(defProps);
+    this.fillInProps(props);
+
+    this.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {
+      type: type === INPUT_TYPES.CHECK_BOX ? 'boolean' : type === INPUT_TYPES.TEXT ? 'string' : type,
+    });
+  }
+
+  _onDataPropsChange(e) {
+    const { context: _this, prop } = e.data;
+    const value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e.value;
+    _this.editor.initialProps[prop.name] = value;
+    _this.editor._renderPreviewControl();
   }
 }
 
@@ -81,7 +102,7 @@ export class SelectDataProperties extends BaseDataProps {
 
   selectDatasource(selectedDS) {
     this.datasource = selectedDS;
-    this.modifyProp(CONTROL_DATA_PROPS_TYPES.DATASOURCE, selectedDS);
+    this.modifyPropValue(CONTROL_DATA_PROPS_TYPES.DATASOURCE, selectedDS);
     if (selectedDS === DATASOURCE_PROPS_TYPES.VALUES) {
       this.datasourceProperties = new BaseControlProps(
         dsValues,
@@ -94,17 +115,6 @@ export class SelectDataProperties extends BaseDataProps {
     //   [CONTROL_DATA_PROPS_TYPES.DATASOURCE]: selectedDS,
     // });
   }
-
-  setEditor(parentContainer, editor) {
-    this.$p = parentContainer;
-    this.editor = editor;
-  }
-
-  clearEditor() {
-    this.$p = null;
-  }
-
-  defaultEvents() {}
 
   renderInParent() {
     if (this.$p) {

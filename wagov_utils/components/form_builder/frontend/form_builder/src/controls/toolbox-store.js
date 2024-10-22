@@ -29,9 +29,9 @@ export const CONTROLS_STORE = {
       type: INPUT_TYPES.NUMBER,
       placeholder: 'Enter a number',
       required: true,
-      defaultValue : 100
+      defaultValue: 100,
     },
-    
+
     attr: {
       type: INPUT_TYPES.NUMBER,
     },
@@ -62,7 +62,7 @@ export const CONTROLS_STORE = {
   [ELEMENT_TYPES.CHECK_BOX]: {
     description: 'A simple checkbox control',
     name: 'Checkbox Control',
-    props: { label: 'Checkbox', checked: true, type: INPUT_TYPES.CHECK_BOX },
+    props: { label: 'Checkbox', type: INPUT_TYPES.CHECK_BOX },
     attr: {
       type: INPUT_TYPES.CHECK_BOX,
     },
