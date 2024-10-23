@@ -29,6 +29,16 @@ export class ColumnsBlock extends LayoutControl {
     }
   }
 
+  renderInParent(parent = null) {
+    if (parent) this.setParent(parent);
+    if (this.$p) {
+      this.$p.empty().append(this.renderControl());
+      for (const key in this.dropables) {
+        this.dropables[key].renderInContainer();
+      }
+    }
+  }
+
   renderControl() {
     const props = this.displayControlProps.getPropsValues();
     const tempDropables = {};

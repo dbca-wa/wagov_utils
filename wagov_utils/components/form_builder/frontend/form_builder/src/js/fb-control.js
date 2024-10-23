@@ -13,6 +13,8 @@ export default class Control {
   displayControlProps;
   dataControlProps;
 
+  $p; // Parent element
+
   constructor(attr, props, controlType, id = null) {
     this.controlType = controlType;
     this.attr = attr;
@@ -31,6 +33,19 @@ export default class Control {
 
   getIdSelector() {
     return `#${this.id}`;
+  }
+
+  setParent(parent) {
+    this.$p = parent;
+  }
+
+  renderInParent(parent = null) {
+    if (parent) this.setParent(parent);
+    if (this.$p) this.$p.empty().append(this.renderControl());
+  }
+
+  afterRender() {
+    console.log('After render method called');
   }
 
   renderControl(children = [], containerClass = '') {

@@ -22,7 +22,6 @@ export default class LayoutController {
   constructor(builderElement, body) {
     this.b = builderElement; // HTML
     this.body = body;
-    this.formArea = undefined;
     this.buildArea = new DropableBlock();
     this.controlsPanel = undefined;
   }
@@ -42,35 +41,10 @@ export default class LayoutController {
     const formbuilderElement = $('#formbuilder');
     formbuilderElement.append(controlsPanel);
     formbuilderElement.append(builderArea);
-    this.formArea = $(`#${formAreaSel}`);
 
-    this.buildArea.setContainer(this.formArea);
+    this.buildArea.setContainer($(`#${formAreaSel}`), true);
 
     this.controlsPanel = $(`#${controlsSel}`);
-
-    // this.formArea.sortable({
-    //   placeholder: 'ui-state-highlight',
-    //   helper: 'clone',
-    //   cursor: 'move',
-    //   scroll: false,
-    //   tolerance: 'pointer',
-    // });
-    // this.formArea.on('sortupdate', this, function (event, ui) {
-    //   const _this = event.data;
-    //   if (ui.sender) {
-    //     ui.sender.sortable('cancel');
-    //     try {
-    //       const data = ui.item[0].dataset;
-    //       const controlType = data.controlType;
-    //       const { attr, props, controlClass } = BUILDER_TOOLBOX[controlType];
-    //       const elm = new controlClass(attr, props);
-    //       const nodeOffset = ui.offset.top;
-    //       _this.insertControl(this, elm, nodeOffset);
-    //     } catch (error) {
-    //       console.log("Couldn't append element", error);
-    //     }
-    //   }
-    // });
 
     $(`.${formAreaSel}`).disableSelection();
 
@@ -114,7 +88,7 @@ export default class LayoutController {
     defaultElements.forEach((element) => {
       const { attr, props, controlClass } = BUILDER_TOOLBOX[element];
       const elm = new controlClass(attr, props);
-      this.insertControl(this.buildArea.$c, elm);
+      this.buildArea.insertControl(this.buildArea.$c, elm);
     });
   }
 
@@ -136,37 +110,4 @@ export default class LayoutController {
       });
     });
   }
-
-  insertControl(areaContainer, control, nodeOffset = null) {
-    const fbControlWrapper = new ControlEdition(control, {
-      onSave: function (controlEditor) {
-        const { control } = controlEditor;
-        try {
-          $(controlEditor.getIdSelector()).find('.fb-wrapper-content').empty().append(control.renderControl());
-        } catch (error) {
-          console.log('Error saving control', error);
-        }
-      },
-    });
-
-    const renderedControl = fbControlWrapper.render();
-    $(renderedControl).find('.fb-wrapper-content').append(control.renderControl());
-    appendControlEdition(areaContainer, renderedControl, nodeOffset);
-    fbControlWrapper.addButtonEvents();
-    this.body.push(control);
-  }
-}
-
-function appendControlEdition(parent, node, nodeOffset = null) {
-  if (nodeOffset) {
-    const childNodes = parent.childNodes;
-    for (let i = 0; i < childNodes.length; i++) {
-      const child = childNodes[i];
-      if (child.offsetTop > nodeOffset) {
-        parent.insertBefore(node, child);
-        return;
-      }
-    }
-  }
-  parent.append(node);
 }
