@@ -1,5 +1,4 @@
-import { BUILDER_TOOLBOX, CONTROLS_STORE, LAYOUT_STORE } from '../controls/toolbox-store';
-import ControlEdition from '../edition/control-edition';
+import { BUILDER_TOOLBOX } from '../controls/toolbox-store';
 import baseModalTemplate from '../views/control-edition/base-modal.handlebars';
 import baseModalBodyEdition from '../views/control-edition/base-modal-edition.handlebars';
 
@@ -12,22 +11,21 @@ import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
 import { LAYOUT_TYPES } from '../controls/utils/layout-types';
 import { CLASS_DROPABLE_BLOCKS } from '../controls/utils/constants';
-import { DropableBlock } from '../controls/layout/dropable-control';
+import { BuildArea } from './fb-build-area';
 
 const formAreaSel = 'formarea';
 
 const controlsSel = 'formcomponents';
 
 export default class LayoutController {
-  constructor(builderElement, body) {
-    this.b = builderElement; // HTML
-    this.body = body;
-    this.buildArea = new DropableBlock();
+  constructor(formBuilder) {
+    this.b = formBuilder.$builder; // HTML
+    BuildArea.getInstance().setBuilder(formBuilder);
+    this.buildArea = BuildArea.getInstance();
     this.controlsPanel = undefined;
   }
 
   initialLayout(controls) {
-    this.body.push(new Control({}, { containerClass: 'container' }, CONTROL_TYPES.BLOCK, 'formbuilder'));
     let formbuilder = markup('div', '', { id: 'formbuilder' });
     let controlsPanel = markup('div', '', { id: controlsSel, class: controlsSel });
     let builderArea = markup('div', '', {
@@ -42,8 +40,7 @@ export default class LayoutController {
     formbuilderElement.append(controlsPanel);
     formbuilderElement.append(builderArea);
 
-    this.buildArea.setContainer($(`#${formAreaSel}`), true);
-
+    this.buildArea.setAreaContainer($(`#${formAreaSel}`));
     this.controlsPanel = $(`#${controlsSel}`);
 
     $(`.${formAreaSel}`).disableSelection();
@@ -76,19 +73,19 @@ export default class LayoutController {
   }
 
   renderForm() {
-    this.buildArea.$c.append(markup('h2', 'Form Builder DBCA', {}));
+    this.buildArea.area.$c.append(markup('h2', 'Form Builder DBCA', {}));
     const defaultElements = [
-      // ELEMENT_TYPES.INPUT,
-      // ELEMENT_TYPES.INPUT_NUMBER,
-      // ELEMENT_TYPES.SELECT,
-      // ELEMENT_TYPES.CHECK_BOX,
-      // ELEMENT_TYPES.RADIO,
+      ELEMENT_TYPES.INPUT,
+      ELEMENT_TYPES.INPUT_NUMBER,
+      ELEMENT_TYPES.SELECT,
+      ELEMENT_TYPES.CHECK_BOX,
+      ELEMENT_TYPES.RADIO,
       LAYOUT_TYPES.COLUMNS,
     ];
     defaultElements.forEach((element) => {
       const { attr, props, controlClass } = BUILDER_TOOLBOX[element];
       const elm = new controlClass(attr, props);
-      this.buildArea.addControl(this.buildArea.$c, elm);
+      this.buildArea.area.addControl(this.buildArea.area.$c, elm);
     });
   }
 

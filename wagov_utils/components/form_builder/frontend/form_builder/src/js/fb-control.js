@@ -2,7 +2,7 @@ import { generateRandomId, markup } from './utils';
 
 export default class Control {
   id = '';
-
+  parentAreaId;
   attr = {};
 
   props = {};
@@ -13,7 +13,7 @@ export default class Control {
   displayControlProps;
   dataControlProps;
 
-  $p; // Parent element
+  $p; // Parent element for rendering purposes
 
   constructor(attr, props, controlType, id = null) {
     this.controlType = controlType;

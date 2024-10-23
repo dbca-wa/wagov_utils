@@ -24,7 +24,7 @@ function FormBuilder(element, settings, $) {
 
   _.body = [];
 
-  _.layout = new LayoutController(_.$builder, _.body);
+  _.layout = new LayoutController(this);
 
   _.$controlFactory = undefined;
   _.options = $.extend({}, _.defaults, settings, dataSettings);

@@ -1,9 +1,9 @@
+import { BuildArea } from '../../js/fb-build-area';
 import { markup } from '../../js/utils';
 import { ColumnsDisplayProps } from '../config-properties/layout-properties';
-import LayoutControl from '../layout-setup';
+import LayoutControl from '../fb-layout-control';
 import { LAYOUT_CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { CONTROL_TYPES } from '../utils/control-types';
-import { DropableBlock } from './dropable-control';
 
 const defaultSettings = {
   values: [],
@@ -25,7 +25,7 @@ export class ColumnsBlock extends LayoutControl {
 
     for (let i = 0; i < props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS].length; i++) {
       const colData = props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS][i];
-      this.dropables[colData.id] = new DropableBlock();
+      this.dropables[colData.id] = BuildArea.getInstance().getDropableControl(colData.id);
     }
   }
 
@@ -47,7 +47,8 @@ export class ColumnsBlock extends LayoutControl {
       if (this.dropables[colData.id]) {
         tempDropables[colData.id] = this.dropables[colData.id];
       } else {
-        tempDropables[colData.id] = new DropableBlock();
+        tempDropables[colData.id] = BuildArea.getInstance().getDropableControl(colData.id);
+        // on addElement , removeElement
       }
     }
     this.dropables = tempDropables;
