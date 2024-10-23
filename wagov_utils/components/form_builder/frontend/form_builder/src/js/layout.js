@@ -88,7 +88,7 @@ export default class LayoutController {
     defaultElements.forEach((element) => {
       const { attr, props, controlClass } = BUILDER_TOOLBOX[element];
       const elm = new controlClass(attr, props);
-      this.buildArea.insertControl(this.buildArea.$c, elm);
+      this.buildArea.addControl(this.buildArea.$c, elm);
     });
   }
 

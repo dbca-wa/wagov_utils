@@ -61,22 +61,45 @@ export class DropableBlock extends LayoutControl {
               if (_this.children.length === 0) {
                 _this.$c.empty();
               }
-              _this.insertControl(this, elm, nodeOffset);
+              _this.addControl(this, elm, nodeOffset);
             } catch (error) {
               console.log("Couldn't append element", error);
             }
           }
         }
       });
-      this.$c.on('sortremove', function (event, ui) {
-        console.log('sorting between block');
+      this.$c.on('sortremove', this, function (event, ui) {
+        const _this = event.data;
+        if (ui.item && ui.item.length > 0) {
+          const { controlId } = ui.item[0].dataset;
+          const index = _this.children.findIndex((c) => c.id === controlId);
+          if (index > -1) {
+            _this.children.splice(index, 1);
+          }
+          _this.toggleEmptyDropableBlock();
+        }
       });
-      this.$c.on('sortreceive', function (event, ui) {
+      this.$c.on('sortreceive', this, function (event, ui) {
+        const _this = event.data;
+
         console.log('sorting between block');
       });
 
       $(`.${this.container_class}`).disableSelection();
     }
+  }
+
+  toggleEmptyDropableBlock() {
+    if (this.children.length === 0) {
+      this.$c.append(emptyDropableBlock.cloneNode(true));
+    } else {
+      this.$c.find([this.id, `.${CLASS_EMPTY_DROPABLE}`].join(' ')).remove();
+    }
+  }
+
+  addControl(areaContainer, control, nodeOffset = null) {
+    this.children.push(control);
+    this.insertControl(areaContainer, control, nodeOffset);
   }
 
   insertControl(areaContainer, control, nodeOffset = null) {
@@ -93,7 +116,6 @@ export class DropableBlock extends LayoutControl {
       },
     });
 
-    this.children.push(control);
     const renderedControl = fbControlWrapper.render();
     appendControlEdition(areaContainer, renderedControl, nodeOffset);
     control.renderInParent($(renderedControl).find('.fb-wrapper-content'));
@@ -101,22 +123,18 @@ export class DropableBlock extends LayoutControl {
   }
 
   render(customProps, attr) {
-    const container = markup('div', 'Drop a component here', {
-      class: [CLASS_EMPTY_DROPABLE, 'inner-block'].join(' '),
-      // 'data-content': 'Drag a field from the right to this area',
-    });
-    if (this.children.length === 0) {
-      this.$c.append(container);
-    } else {
-      for (let i = 0; i < this.children?.length; i++) {
-        const elm = this.children[i];
-        this.insertControl(this.$c, elm);
-      }
+    this.toggleEmptyDropableBlock();
+    for (let i = 0; i < this.children.length; i++) {
+      const elm = this.children[i];
+      this.insertControl(this.$c, elm);
     }
-
-    return container;
+    return markup('span');
   }
 }
+
+const emptyDropableBlock = markup('div', 'Drop a component here', {
+  class: [CLASS_EMPTY_DROPABLE, 'inner-block'].join(' '),
+});
 
 function appendControlEdition(parent, node, nodeOffset = null) {
   if (nodeOffset) {

@@ -109,11 +109,12 @@ $main-panel-padding: 20px;
 }
 .form-field {
   width: 100%;
-  margin-bottom: 4px;
-  border-radius: 10px;
-  background: #f7f7f7;
+  margin-bottom: 5px;
+  border-radius: 5px;
   padding-top: 4px;
   padding-left: 5px;
+  border: 1px dashed #dbdbdb;
+  background: #fff;
 
   .field-actions {
     display: none;

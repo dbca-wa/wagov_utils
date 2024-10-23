@@ -27,7 +27,7 @@ export default class ControlEdition extends Control {
       controlWrapperTemplate({
         title: 'Text Field',
       }),
-      { ...this.attr, id: this.id, class: 'form-field' },
+      { ...this.attr, id: this.id, class: 'form-field', 'data-controlId': this.control.id },
     );
   }
 
