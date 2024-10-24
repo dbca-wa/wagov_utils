@@ -60,6 +60,8 @@ export default class SelectElement extends InputControl {
       [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
       [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE],
       [DATASOURCE_PROPS_TYPES.VALUES]: props[DATASOURCE_PROPS_TYPES.VALUES],
+      [CONTROL_PROPS_TYPES.DESCRIPTION]: props[CONTROL_PROPS_TYPES.DESCRIPTION] ?? '',
+      [CONTROL_PROPS_TYPES.TOOLTIP]: props[CONTROL_PROPS_TYPES.TOOLTIP] ?? '',
     });
   }
 
@@ -70,6 +72,8 @@ export default class SelectElement extends InputControl {
 
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];
     this.label.display = !!!props[CONTROL_PROPS_TYPES.HIDE_LABEL];
+    this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
+    this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
 
     const attributes = {
       id: props.id ?? this.id,

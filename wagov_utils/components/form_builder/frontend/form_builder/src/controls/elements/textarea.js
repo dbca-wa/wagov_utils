@@ -38,6 +38,8 @@ export default class TextAreaElement extends InputControl {
       [CONTROL_PROPS_TYPES.LABEL]: props[CONTROL_PROPS_TYPES.LABEL],
       [CONTROL_PROPS_TYPES.PLACEHOLDER]: props[CONTROL_PROPS_TYPES.PLACEHOLDER],
       [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '',
+      [CONTROL_PROPS_TYPES.DESCRIPTION]: props[CONTROL_PROPS_TYPES.DESCRIPTION] ?? '',
+      [CONTROL_PROPS_TYPES.TOOLTIP]: props[CONTROL_PROPS_TYPES.TOOLTIP] ?? '',
       [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
       [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE] ?? '',
       [CONTROL_PROPS_TYPES.TEXTAREA_ROWS]: props[CONTROL_PROPS_TYPES.TEXTAREA_ROWS] ?? 5,
@@ -62,6 +64,8 @@ export default class TextAreaElement extends InputControl {
     }
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];
     this.label.display = !!!props[CONTROL_PROPS_TYPES.HIDE_LABEL];
+    this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
+    this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
 
     return super.render(markup('textarea', '', attributes));
   }

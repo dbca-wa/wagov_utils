@@ -144,6 +144,14 @@ $main-panel-padding: 20px;
   }
 }
 
+.label-tooltip {
+  cursor: pointer;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: #a3a3a3;
+  font-size: 13px;
+}
+
 .especial {
   background-color: red !important;
   color: white !important;

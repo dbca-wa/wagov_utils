@@ -1,4 +1,5 @@
 /* eslint-disable no-alert */
+import '@popperjs/core/dist/umd/popper.min.js';
 import '../scss/app.scss';
 import 'jquery-ui/dist/jquery-ui.js';
 

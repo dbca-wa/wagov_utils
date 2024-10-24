@@ -1,3 +1,4 @@
+import { Tooltip } from 'bootstrap';
 import { CONTROL_PROPS_TYPES } from '../controls/utils/control-props-types';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
 import Control from '../js/fb-control';
@@ -60,7 +61,7 @@ export default class ControlEdition extends Control {
       };
       _this._renderPreviewControl();
 
-      $('#display-tab').click();
+      $('#display-tab').trigger('click');
       $('#data-tab').show();
       if (Object.keys(_this.control.dataControlProps.props).length === 0) $('#data-tab').hide();
     }
@@ -84,6 +85,9 @@ export default class ControlEdition extends Control {
 
   _renderPreviewControl() {
     $('#preview-edition').empty().append(this.control.render(this.initialProps));
+
+    const tooltipTriggerList = document.querySelectorAll('#preview-edition [data-bs-toggle="tooltip"]');
+    [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
   }
 
   _saveControl(event) {

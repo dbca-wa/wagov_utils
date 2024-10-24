@@ -20,7 +20,8 @@ function extractLabelProps(props = {}) {
 export default class InputControl extends Control {
   container_class = 'formarea-control';
   element_type;
-
+  description;
+  tooltip;
   constructor(attr, props, element_type) {
     super(attr, props, CONTROL_TYPES.ELEMENT);
     this.element_type = element_type || ELEMENT_TYPES.INPUT;
@@ -65,12 +66,25 @@ export default class InputControl extends Control {
     if (!Array.isArray(children)) {
       children = [children];
     }
+    const tooltip = this.tooltip
+      ? markup('i', '', {
+          class: 'bi bi-question-circle-fill label-tooltip',
+          'data-bs-toggle': 'tooltip',
+          'data-bs-title': this.tooltip,
+        })
+      : undefined;
     if (this.isShowLabel()) {
       if (this.element_type === ELEMENT_TYPES.CHECK_BOX) {
         children.push(this.label.render());
+        if (tooltip) children.push(tooltip);
       } else {
+        if (tooltip) children.unshift(tooltip);
         children.unshift(this.label.render());
       }
+    }
+
+    if (this.description) {
+      children.push(markup('small', this.description, { class: 'form-text' }));
     }
 
     return markup('div', children, { class: this.container_class });

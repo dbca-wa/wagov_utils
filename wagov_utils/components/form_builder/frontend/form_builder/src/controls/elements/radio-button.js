@@ -36,7 +36,7 @@ export default class RadioButton extends InputControl {
     this.name = 'rb-' + generateRandomId();
     this.displayControlProps = new RadioDisplayProps(this.props);
     this.dataControlProps = new RadioButtonsDataProperties(this.props);
-
+    this.container_class = 'form-group';
     this.options = this.props.values || this.options;
   }
 
@@ -51,6 +51,8 @@ export default class RadioButton extends InputControl {
       [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '',
       [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
       [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE],
+      [CONTROL_PROPS_TYPES.DESCRIPTION]: props[CONTROL_PROPS_TYPES.DESCRIPTION] ?? '',
+      [CONTROL_PROPS_TYPES.TOOLTIP]: props[CONTROL_PROPS_TYPES.TOOLTIP] ?? '',
       [DATASOURCE_PROPS_TYPES.VALUES]: props[DATASOURCE_PROPS_TYPES.VALUES],
     });
   }
@@ -89,7 +91,10 @@ export default class RadioButton extends InputControl {
     }
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];
     this.label.display = !!!props[CONTROL_PROPS_TYPES.HIDE_LABEL];
+    this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
+    this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
 
-    return markup('div', [this.label.render(), ...radioButtons], { class: 'form-group' });
+    const elements = radioButtons;
+    return super.render(markup('div', elements, { class: this.container_class }));
   }
 }
