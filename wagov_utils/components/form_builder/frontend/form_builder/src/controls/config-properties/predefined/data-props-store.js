@@ -8,6 +8,7 @@ const DEFAULT_VALUE_PROPS = {
   required: false,
   options: undefined,
   value: '',
+  addEmptyOption: true,
 };
 
 export const DATASOURCE_VALUES = {

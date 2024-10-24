@@ -40,6 +40,7 @@ export class ControlProp {
           name: this.prop.name,
           placeholder: this.prop.placeholder,
           structure: this.prop.structure,
+          addEmptyOption: this.prop.addEmptyOption,
         },
         this.prop.options,
         this.prop.required,
@@ -71,18 +72,20 @@ export function _renderProp(basicProps, options = [], required = false) {
 
   if (inputType === 'select') {
     const selectEl = markup('select', '', { id, required, class: 'form-select', 'data-key': dataKey });
-    options.forEach((option) => {
+    if (basicProps.addEmptyOption) {
+      selectEl.appendChild(markup('option', '', { value: '' }));
+    }
+    for (let i = 0; i < options.length; i++) {
+      const option = options[i];
       const optionEl = document.createElement('option');
       for (const key in option) {
-        if (option.hasOwnProperty(key)) {
-          optionEl[key] = option[key];
-        }
+        optionEl[key] = option[key];
       }
       if (optionEl['value'] === value) {
         optionEl.selected = true;
       }
       selectEl.appendChild(optionEl);
-    });
+    }
     return selectEl;
   }
   if (inputType === 'checkbox') {
