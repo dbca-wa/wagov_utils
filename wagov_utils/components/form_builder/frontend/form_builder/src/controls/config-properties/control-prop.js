@@ -60,7 +60,7 @@ export class ControlProp {
 
     if (this.prop.name === CONTROL_PROPS_TYPES.CUSTOM_CLASS || this.prop.type === 'select') {
       $(`#${this.id}`).on('change', { context, prop: this.prop }, cb);
-    } else if (this.prop.type === 'string') {
+    } else if (['string', 'email', 'date'].includes(this.prop.type)) {
       $(`#${this.id}`).on('input', { context, prop: this.prop }, cb);
     }
   }
@@ -81,7 +81,7 @@ export function _renderProp(basicProps, options = [], required = false) {
       for (const key in option) {
         optionEl[key] = option[key];
       }
-      if (optionEl['value'] === value) {
+      if (option['value'] === value) {
         optionEl.selected = true;
       }
       selectEl.appendChild(optionEl);

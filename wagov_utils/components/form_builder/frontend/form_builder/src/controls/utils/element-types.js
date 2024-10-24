@@ -5,6 +5,12 @@ export const ELEMENT_TYPES = {
   CHECK_BOX: 'checkbox',
   RADIO: 'radio',
 
+  DATE_PICKER: 'date-picker',
+  TIME_PICKER: 'time-picker',
+  PASSWORD: 'password',
+  EMAIL: 'email',
+  TEXT_AREA: 'textarea',
+
   DIVIDER: 'divider',
   ROW: 'row',
   CONTAINER: 'container',

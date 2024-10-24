@@ -75,12 +75,12 @@ export default class LayoutController {
   renderForm() {
     this.buildArea.area.$c.append(markup('h2', 'Form Builder DBCA', {}));
     const defaultElements = [
-      ELEMENT_TYPES.INPUT,
-      LAYOUT_TYPES.COLUMNS,
-      ELEMENT_TYPES.INPUT_NUMBER,
-      ELEMENT_TYPES.SELECT,
-      ELEMENT_TYPES.CHECK_BOX,
-      ELEMENT_TYPES.RADIO,
+      ELEMENT_TYPES.TEXT_AREA,
+      // LAYOUT_TYPES.COLUMNS,
+      // ELEMENT_TYPES.INPUT_NUMBER,
+      // ELEMENT_TYPES.SELECT,
+      // ELEMENT_TYPES.CHECK_BOX,
+      // ELEMENT_TYPES.RADIO,
     ];
     defaultElements.forEach((element) => {
       const { attr, props, controlClass } = BUILDER_TOOLBOX[element];

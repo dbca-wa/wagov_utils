@@ -9,4 +9,7 @@ export const INPUT_TYPES = {
   SELECT: 'select',
   CHECK_BOX: 'checkbox',
   RADIO: 'radio',
+  DATE_PICKER: 'date-picker',
+  TIME_PICKER: 'time-picker',
+  TEXT_AREA: 'textarea',
 };

@@ -5,6 +5,7 @@ import RadioButton from './elements/radio-button';
 import { INPUT_TYPES } from './utils/input-types';
 import { LAYOUT_TYPES } from './utils/layout-types';
 import { ColumnsBlock } from './layout/columns-block';
+import TextAreaElement from './elements/textarea';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -83,6 +84,84 @@ export const CONTROLS_STORE = {
   },
 };
 
+export const SPECIAL_INPUT_STORE = {
+  [ELEMENT_TYPES.DATE_PICKER]: {
+    description: 'A simple date control',
+    props: {
+      name: 'Date Picker',
+      label: 'Select a date',
+      type: INPUT_TYPES.DATE,
+      placeholder: 'Select a date',
+      required: true,
+    },
+    attr: {
+      type: INPUT_TYPES.TEXT,
+    },
+    icon: 'fa fa-font',
+    controlClass: InputElement,
+  },
+  [ELEMENT_TYPES.TIME_PICKER]: {
+    description: 'A simple time control',
+    props: {
+      name: 'Time Picker',
+      label: 'Select a time',
+      type: INPUT_TYPES.TIME,
+      placeholder: 'Select a time',
+      required: true,
+    },
+    attr: {
+      type: INPUT_TYPES.TEXT,
+    },
+    icon: 'fa fa-font',
+    controlClass: InputElement,
+  },
+  [ELEMENT_TYPES.PASSWORD]: {
+    description: 'A simple password control',
+    props: {
+      name: 'Password',
+      label: 'Enter a password',
+      type: INPUT_TYPES.PASSWORD,
+      placeholder: 'Enter a password',
+      required: true,
+    },
+    attr: {
+      type: INPUT_TYPES.PASSWORD,
+    },
+    icon: 'fa fa-font',
+    controlClass: InputElement,
+  },
+  [ELEMENT_TYPES.EMAIL]: {
+    description: 'A simple email control',
+    props: {
+      name: 'Email',
+      label: 'Enter an email',
+      type: INPUT_TYPES.EMAIL,
+      placeholder: 'Enter an email',
+      required: true,
+    },
+    attr: {
+      type: INPUT_TYPES.EMAIL,
+    },
+    icon: 'fa fa-font',
+    controlClass: InputElement,
+  },
+  [ELEMENT_TYPES.TEXT_AREA]: {
+    description: 'A simple text area control',
+    props: {
+      name: 'Text Area',
+      label: 'Enter some text',
+      type: INPUT_TYPES.TEXT_AREA,
+      placeholder: 'Enter some text',
+      required: true,
+    },
+    attr: {
+      type: INPUT_TYPES.TEXT_AREA,
+    },
+    icon: 'fa fa-font',
+    controlClass: TextAreaElement,
+  },
+};
+
 export const LAYOUT_STORE = {
   [LAYOUT_TYPES.COLUMNS]: {
     description: 'A row with columns',
@@ -106,4 +185,4 @@ export const LAYOUT_STORE = {
   },
 };
 
-export const BUILDER_TOOLBOX = Object.assign({}, CONTROLS_STORE, LAYOUT_STORE);
+export const BUILDER_TOOLBOX = Object.assign({}, CONTROLS_STORE, SPECIAL_INPUT_STORE, LAYOUT_STORE);

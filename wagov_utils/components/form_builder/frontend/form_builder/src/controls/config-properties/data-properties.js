@@ -58,7 +58,12 @@ export class InputFieldDataProperties extends BaseDataProps {
   datasourceProperties;
 
   constructor(type = INPUT_TYPES.TEXT, props) {
-    super(defProps);
+    const definition = [];
+    if (type !== INPUT_TYPES.PASSWORD) {
+      definition.push(...defProps);
+    }
+
+    super(definition);
     this.fillInProps(props);
 
     this.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {

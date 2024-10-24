@@ -11,9 +11,10 @@ const defaultSettings = {
   value: '',
   [CONTROL_PROPS_TYPES.PLACEHOLDER]: 'Enter a value here',
   [CONTROL_PROPS_TYPES.LABEL]: 'Text field',
+  [CONTROL_PROPS_TYPES.TEXTAREA_ROWS]: 5,
 };
 
-export default class InputElement extends InputControl {
+export default class TextAreaElement extends InputControl {
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
     super(attr, _props, attr.type);
@@ -24,17 +25,7 @@ export default class InputElement extends InputControl {
     this.type = this.props.type || defaultSettings.type;
     this.displayControlProps = new InputFieldDisplayProps(this.type, this.props);
     this.dataControlProps = new InputFieldDataProperties(this.type, this.props);
-    if (this.type === INPUT_TYPES.RADIO) {
-      this.attr['class'] = 'form-check-input';
-      this.id = this.props.id;
-    } else if (INPUT_TYPES.CHECK_BOX == this.attr.type) {
-      this.attr['class'] = 'form-check-input';
-      this.label.attr.for = this.id;
-      this.label.attr.class = 'form-check-label';
-      this.container_class = 'form-check';
-    } else {
-      this.attr['class'] = 'form-control';
-    }
+    this.attr['class'] = 'form-control';
   }
 
   renderControl() {
@@ -49,6 +40,7 @@ export default class InputElement extends InputControl {
       [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '',
       [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
       [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE] ?? '',
+      [CONTROL_PROPS_TYPES.TEXTAREA_ROWS]: props[CONTROL_PROPS_TYPES.TEXTAREA_ROWS] ?? 5,
     });
   }
 
@@ -62,30 +54,15 @@ export default class InputElement extends InputControl {
       placeholder: props[CONTROL_PROPS_TYPES.PLACEHOLDER] ?? '',
       class: (this.attr.class ?? '').concat(' ', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? ''),
       value: value,
+      rows: props[CONTROL_PROPS_TYPES.TEXTAREA_ROWS],
     };
 
-    if (this.type === 'radio') {
-      attributes.name = this.props.name;
-      delete attributes.placeholder;
-      delete attributes.value;
-    }
-    if (this.type === 'checkbox') {
-      attributes.name = this.props.name;
-      attributes.checked = value === true;
-
-      delete attributes.placeholder;
-      delete attributes.value;
-    }
     if (props[CONTROL_PROPS_TYPES.DISABLED]) {
       attributes.disabled = true;
     }
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];
     this.label.display = !!!props[CONTROL_PROPS_TYPES.HIDE_LABEL];
 
-    if (this.type === ELEMENT_TYPES.TEXT_AREA) {
-      return super.render(markup('textarea', '', attributes));
-    }
-
-    return super.render(markup('input', '', attributes));
+    return super.render(markup('textarea', '', attributes));
   }
 }

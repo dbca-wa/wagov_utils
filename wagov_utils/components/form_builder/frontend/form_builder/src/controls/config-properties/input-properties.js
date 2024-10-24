@@ -15,6 +15,21 @@ const textProps = [
   CONTROL_PROPS_TYPES.HIDE_LABEL,
 ];
 
+const textAreaProps = [
+  CONTROL_PROPS_TYPES.LABEL,
+  CONTROL_PROPS_TYPES.PLACEHOLDER,
+  CONTROL_PROPS_TYPES.DESCRIPTION,
+  CONTROL_PROPS_TYPES.TOOLTIP,
+  CONTROL_PROPS_TYPES.CUSTOM_CLASS,
+  CONTROL_PROPS_TYPES.TEXTAREA_ROWS,
+  //   CONTROL_PROPS_TYPES.PREFIX,
+  //   CONTROL_PROPS_TYPES.SUFFIX,
+  //   CONTROL_PROPS_TYPES.TAB_INDEX,
+  CONTROL_PROPS_TYPES.HIDDEN,
+  CONTROL_PROPS_TYPES.DISABLED,
+  CONTROL_PROPS_TYPES.HIDE_LABEL,
+];
+
 const radioProps = [
   CONTROL_PROPS_TYPES.LABEL,
   //   CONTROL_PROPS_TYPES.TAB_INDEX,
@@ -45,12 +60,26 @@ const selectProps = [
   CONTROL_PROPS_TYPES.HIDE_LABEL,
 ];
 
+const dateProps = [
+  CONTROL_PROPS_TYPES.LABEL,
+  CONTROL_PROPS_TYPES.DESCRIPTION,
+  CONTROL_PROPS_TYPES.TOOLTIP,
+  CONTROL_PROPS_TYPES.CUSTOM_CLASS,
+  CONTROL_PROPS_TYPES.HIDDEN,
+  CONTROL_PROPS_TYPES.DISABLED,
+  CONTROL_PROPS_TYPES.HIDE_LABEL,
+];
+
 function getProps(type) {
   switch (type) {
     case 'radio':
       return radioProps;
     case 'checkbox':
       return checkboxProps;
+    case 'date':
+      return dateProps;
+    case 'textarea':
+      return textAreaProps;
     default:
       return textProps;
   }

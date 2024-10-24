@@ -59,7 +59,12 @@ export default class ControlEdition extends Control {
         ..._this.control.dataControlProps?.getPropsValues(),
       };
       _this._renderPreviewControl();
+
+      $('#display-tab').click();
+      $('#data-tab').show();
+      if (Object.keys(_this.control.dataControlProps.props).length === 0) $('#data-tab').hide();
     }
+
     _this.modal = new Modal(document.querySelector(modalIdSelector), {
       keyboard: true,
       backdrop: true,

@@ -11,6 +11,9 @@ export const CONTROL_PROPS_TYPES = {
   DISABLED: 'disabled',
   CHECKED: 'checked',
   HIDE_LABEL: 'hideLabel',
+  MAX_DATE: 'max',
+  MIN_DATE: 'min',
+  TEXTAREA_ROWS: 'rows',
 };
 
 export const CONTROL_DATA_PROPS_TYPES = {
