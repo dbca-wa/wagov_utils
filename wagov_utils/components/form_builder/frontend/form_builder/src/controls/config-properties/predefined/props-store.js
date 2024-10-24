@@ -129,9 +129,9 @@ export const propertiesStore = {
   },
   [CONTROL_PROPS_TYPES.TEXTAREA_ROWS]: {
     name: 'rows',
-    title: 'Rows',
+    title: 'Size',
     type: 'select',
-    placeholder: 'Enter a number of rows',
+    placeholder: 'Select a size',
     required: false,
     options: [
       { value: 1, text: 'Single' },

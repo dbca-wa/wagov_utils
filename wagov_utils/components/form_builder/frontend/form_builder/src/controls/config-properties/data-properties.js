@@ -49,7 +49,7 @@ export class BasicDataProperties extends BaseDataProps {
   datasourceProperties;
 
   constructor(props) {
-    super(defProps);
+    super([]);
     this.fillInProps(props);
   }
 }
