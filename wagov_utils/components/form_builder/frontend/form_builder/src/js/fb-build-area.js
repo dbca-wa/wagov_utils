@@ -36,16 +36,16 @@ export class BuildArea {
     };
   }
 
-  transferControl(controlId, soruceAreaId, targetAreaId) {
-    if (!this.dropables[soruceAreaId] || !this.dropables[targetAreaId]) {
+  transferControl(controlId, sourceAreaId, targetAreaId) {
+    if (!this.dropables[sourceAreaId] || !this.dropables[targetAreaId]) {
       console.error('Invalid source or target area ID');
       return;
     }
 
-    const control = this.dropables[soruceAreaId].getChildControl(controlId);
+    const control = this.dropables[sourceAreaId].getChildControl(controlId);
     if (control) {
       this.dropables[targetAreaId].addChildControl(control);
-      this.dropables[soruceAreaId].removeChildControl(control);
+      this.dropables[sourceAreaId].removeChildControl(controlId);
     }
   }
 
@@ -62,6 +62,13 @@ export class BuildArea {
     };
     this.dropables[parentId] = dropable;
     return dropable;
+  }
+
+  removeDropable(areaId) {
+    if (this.dropables[areaId]) {
+      console.log('Dropable removed', areaId);
+      delete this.dropables[areaId];
+    }
   }
 
   setAreaContainer(area) {

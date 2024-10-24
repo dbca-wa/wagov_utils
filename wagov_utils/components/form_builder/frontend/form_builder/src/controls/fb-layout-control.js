@@ -1,13 +1,13 @@
-import { ELEMENT_TYPES } from './utils/element-types';
 import { CONTROL_TYPES } from './utils/control-types';
 import Label from './elements/basics/label';
 import Control from '../js/fb-control';
 import { generateRandomId, markup } from '../js/utils';
-import { CONTROL_PROPS_TYPES } from './utils/control-props-types';
 import { BasicDataProperties } from './config-properties/data-properties';
 
 export default class LayoutControl extends Control {
   container_class = 'formarea-control';
+  children = [];
+  dropables = {};
   areaId;
 
   onDrop = () => {};

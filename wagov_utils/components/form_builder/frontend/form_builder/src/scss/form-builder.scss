@@ -129,10 +129,8 @@ $main-panel-padding: 20px;
   }
 }
 
-.form-field.active-control {
-  .field-actions {
-    display: flex;
-  }
+.form-field.active-control > div > .field-actions {
+  display: flex;
 }
 
 // MODAL

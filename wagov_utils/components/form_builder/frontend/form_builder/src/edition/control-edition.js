@@ -101,11 +101,10 @@ export default class ControlEdition extends Control {
   }
 
   _mouseAction(event) {
-    const _this = event.data;
-    if (event.type === 'mouseenter') {
-      $(_this.getIdSelector()).addClass('active-control');
+    if (event.type != 'mouseleave') {
+      $(`#${this.id}`).addClass('active-control');
     } else {
-      $(_this.getIdSelector()).removeClass('active-control');
+      $(`#${this.id}`).removeClass('active-control');
     }
   }
 }

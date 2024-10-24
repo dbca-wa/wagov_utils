@@ -10,7 +10,6 @@ import { CONTROL_TYPES } from '../utils/control-types';
 const defaultSettings = {};
 
 export class DropableControl extends LayoutControl {
-  children = [];
   $c;
 
   constructor(attr = {}, props = {}) {
@@ -100,10 +99,10 @@ export class DropableControl extends LayoutControl {
         if (!ui.sender.hasClass('fb-dropable-blocks')) return;
 
         if (_this.$c[0].id === ui.sender[0].id) return;
-        const { areaId: soruceAreaId } = ui.sender[0].dataset;
+        const { areaId: sourceAreaId } = ui.sender[0].dataset;
         const { areaId: targetAreaId } = _this.$c[0].dataset;
         const { controlId } = ui.item[0].dataset;
-        _this.area.transferControl(controlId, soruceAreaId, targetAreaId);
+        _this.area.transferControl(controlId, sourceAreaId, targetAreaId);
       });
 
       $(`.${this.container_class}`).disableSelection();
