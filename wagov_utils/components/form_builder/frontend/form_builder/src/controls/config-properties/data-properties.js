@@ -1,4 +1,5 @@
 import { CONTROL_DATA_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
+import { ELEMENT_TYPES } from '../utils/element-types';
 import { INPUT_TYPES } from '../utils/input-types';
 import { BaseControlProps } from './base-control-props';
 import { DATASOURCE_VALUES, datasourceDataPropertiesStore } from './predefined/data-props-store';
@@ -50,7 +51,7 @@ export class BasicDataProperties extends BaseDataProps {
   datasourceProperties;
 
   constructor(props) {
-    super([]);
+    super(defProps);
     this.fillInProps(props);
   }
 }
@@ -89,7 +90,10 @@ class MultipleChoiceDataProperties extends BaseDataProps {
     this.selectDatasource(this.props[CONTROL_DATA_PROPS_TYPES.DATASOURCE]?.prop.value);
     this.datasourceProperties.fillInProps(props);
     if (this.datasource === DATASOURCE_PROPS_TYPES.VALUES) {
-      this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE].prop.options = [...props.values] ?? [];
+      // this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE].prop.options = [...props.values] ?? [];
+      this.datasourceProperties.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {
+        options: [...props.values] ?? [],
+      });
     }
   }
 
@@ -156,6 +160,17 @@ class MultipleChoiceDataProperties extends BaseDataProps {
       }
     }
     if (prop.name === 'defaultValue') {
+      if (_this.initialProps?.type === ELEMENT_TYPES.SELECT_BOXES) {
+        const values = [];
+        document.querySelectorAll(`input[type="checkbox"][name="${e.target.name}"]`).forEach((el) => {
+          if (el.checked) {
+            values.push(el.value);
+          }
+        });
+        _this.editor.initialProps[prop.name] = values;
+        _this.editor._renderPreviewControl();
+      }
+
       _this.editor._renderPreviewControl();
     }
   }
@@ -186,5 +201,11 @@ export class RadioButtonsDataProperties extends MultipleChoiceDataProperties {
 export class SelectBoxesDataProperties extends MultipleChoiceDataProperties {
   constructor(props) {
     super(props, selectBoxesProps);
+    if (this.datasource === DATASOURCE_PROPS_TYPES.VALUES) {
+      this.datasourceProperties.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {
+        type: 'select-boxes',
+        value: [],
+      });
+    }
   }
 }

@@ -163,3 +163,31 @@ $main-panel-padding: 20px;
   margin: 0 1em 1em 0;
   height: 50px;
 }
+.sort-handle {
+  cursor: move;
+}
+
+.dynamic-table thead > tr > th {
+  background: #ebebeb !important;
+  padding: 15px;
+  text-transform: capitalize;
+  font-weight: bold;
+}
+.dynamic-table tbody > tr > td {
+  padding: 10px;
+  text-transform: capitalize;
+  font-weight: bold;
+  align-content: center;
+  text-align: center;
+  border-bottom: 1px solid #ececec;
+}
+
+.dynamic-table tbody > tr > td:last-child {
+  border-right: 1px solid #ececec;
+}
+.dynamic-table tbody > tr > td:first-child {
+  border-left: 1px solid #ececec;
+}
+.dynamic-table tbody > tr:last-child {
+  text-align: left;
+}

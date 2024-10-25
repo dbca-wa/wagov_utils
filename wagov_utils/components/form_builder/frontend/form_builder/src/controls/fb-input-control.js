@@ -31,7 +31,7 @@ export default class InputControl extends Control {
 
   _basicSetup() {
     this.container_class = this.props?.container_class || this.container_class;
-    this.dataControlProps = new BasicDataProperties({});
+    this.dataControlProps = {};
   }
 
   setup() {

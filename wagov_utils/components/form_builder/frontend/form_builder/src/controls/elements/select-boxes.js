@@ -7,7 +7,7 @@ import { ELEMENT_TYPES } from '../utils/element-types';
 
 const defaultSettings = {
   type: 'text',
-  value: '',
+  value: [],
   [CONTROL_PROPS_TYPES.PLACEHOLDER]: 'Enter a value here',
   [CONTROL_PROPS_TYPES.LABEL]: 'Text field',
 };

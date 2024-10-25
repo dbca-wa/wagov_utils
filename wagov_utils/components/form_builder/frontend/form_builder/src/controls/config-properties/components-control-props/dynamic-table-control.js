@@ -38,6 +38,8 @@ export class DynamicTableControl {
 
   addInputElementChange(selector) {
     $(selector).on('change', this, (e) => {
+      e.preventDefault();
+
       const _this = e.data;
       _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
     });
@@ -76,7 +78,7 @@ export class DynamicTableControl {
           content: [{ tag: 'tr', content: tHeaders }],
         },
       ],
-      { class: 'table table-bordered', id: this.id },
+      { class: 'table table-borderless table-hover dynamic-table', id: this.id },
     );
   }
   _createColumn(column) {
@@ -85,14 +87,11 @@ export class DynamicTableControl {
 
   _createDataRow(row) {
     if (!row) return;
-    const rowEl = markup(
-      'tr',
-      [{ tag: 'td', content: markup('span', 'X', { class: 'btn btn-default btn-disabled sort-handle ' }) }],
-      {
-        id: row.id,
-        class: 'data-row',
-      },
-    );
+    const rowId = row.id;
+    const rowEl = markup('tr', [{ tag: 'td', content: markup('i', '', { class: 'bi bi-arrows-move sort-handle ' }) }], {
+      id: rowId,
+      class: 'data-row',
+    });
     delete row.id;
     for (const column of this.columns) {
       if (column === 'actions') {
@@ -104,14 +103,13 @@ export class DynamicTableControl {
           markup(
             'td',
             _renderProp(
-              { ...this.structure[column], value: row[column], dataKey: column },
+              { ...this.structure[column], value: row[column], dataKey: column, dataRowId: rowId },
               this.structure[column].options ?? [],
             ),
           ),
         );
       }
     }
-
     return rowEl;
   }
 
@@ -120,24 +118,30 @@ export class DynamicTableControl {
     return {
       ...val,
       id: rowId,
-      actions: markup('button', 'x', {
-        class: 'btn btn-primary ',
-        'data-rowId': rowId,
-        events: {
-          click: {
-            context: this,
-            fn: (e) => {
-              const { context: _this } = e.data;
-              e.preventDefault();
-              const { rowId } = e.target.dataset;
-              if (rowId) {
-                document.getElementById(rowId).remove();
-              }
-              _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
+      actions: markup(
+        'button',
+        markup('i', '', {
+          class: 'bi bi-x',
+        }),
+        {
+          class: 'btn btn-danger btn-sm ',
+          'data-rowId': rowId,
+          events: {
+            click: {
+              context: this,
+              fn: (e) => {
+                const { context: _this } = e.data;
+                e.preventDefault();
+                const { rowId } = e.target.dataset;
+                if (rowId) {
+                  document.getElementById(rowId).remove();
+                }
+                // _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
+              },
             },
           },
         },
-      }),
+      ),
     };
   }
 
@@ -157,9 +161,9 @@ export class DynamicTableControl {
         [
           {
             tag: 'button',
-            content: 'Add Row',
+            content: [markup('i', '', { class: 'bi bi-plus ' }), ' Add Row'],
 
-            class: 'btn btn-primary',
+            class: 'btn btn-outline-primary btn-block',
             events: {
               click: {
                 context: this,
