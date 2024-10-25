@@ -89,6 +89,7 @@ $main-panel-padding: 20px;
 .fb-dropable-blocks {
   width: 100%;
   min-height: 50px;
+  border: 1px dashed #dbdbdb;
 }
 .formarea-control {
   label {
@@ -113,7 +114,6 @@ $main-panel-padding: 20px;
   border-radius: 5px;
   padding-top: 4px;
   padding-left: 5px;
-  border: 1px dashed #dbdbdb;
   background: #fff;
 
   .field-actions {

@@ -1,10 +1,8 @@
 import InputControl from '../fb-input-control';
 import { markup } from '../../js/utils';
-import { INPUT_TYPES } from '../utils/input-types';
 import { InputFieldDisplayProps } from '../config-properties/input-properties';
 import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { InputFieldDataProperties } from '../config-properties/data-properties';
-import { ELEMENT_TYPES } from '../utils/element-types';
 
 const defaultSettings = {
   type: 'text',
@@ -52,7 +50,6 @@ export default class TextAreaElement extends InputControl {
     const attributes = {
       id: props.id ?? this.id,
       type: this.type,
-      value: this.value,
       placeholder: props[CONTROL_PROPS_TYPES.PLACEHOLDER] ?? '',
       class: (this.attr.class ?? '').concat(' ', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? ''),
       value: value,
@@ -67,6 +64,6 @@ export default class TextAreaElement extends InputControl {
     this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
     this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
 
-    return super.render(markup('textarea', '', attributes));
+    return super.render(markup('textarea', value, attributes));
   }
 }

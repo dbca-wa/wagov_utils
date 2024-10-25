@@ -10,6 +10,7 @@ export const FORM_CONTROLS = [
   { label: 'Email', type: ELEMENT_TYPES.EMAIL },
   { label: 'Select', type: ELEMENT_TYPES.SELECT },
   { label: 'Checkbox', type: ELEMENT_TYPES.CHECK_BOX },
+  { label: 'Select Boxes', type: ELEMENT_TYPES.SELECT_BOXES },
   { label: 'Radio Button', type: ELEMENT_TYPES.RADIO },
   { label: 'Number', type: ELEMENT_TYPES.INPUT_NUMBER },
   { label: 'Columns', type: LAYOUT_TYPES.COLUMNS },

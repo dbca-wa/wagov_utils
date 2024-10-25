@@ -60,36 +60,31 @@ export class DropableControl extends LayoutControl {
       this.render();
 
       this.$c.sortable({
-        placeholder: 'ui-state-highlight',
         helper: 'clone',
         cursor: 'move',
         scroll: false,
         tolerance: 'pointer',
+        placeholder: 'ui-state-highlight',
         cancel: `.${CLASS_EMPTY_DROPABLE}`,
         connectWith: `.${this.container_class}`,
       });
       this.$c.on('sortupdate', this, function (event, ui) {
         const _this = event.data;
-        if (ui.sender) {
-          if (ui.sender.hasClass('fb-dropable-blocks')) {
-          } else {
-            if (this !== event.target) return; // This avoids duplication on multiple dropable blocks
+        if (!ui.sender || ui.sender.hasClass('fb-dropable-blocks') || this !== event.target) return;
 
-            ui.sender.sortable('cancel');
-            try {
-              const data = ui.item[0].dataset;
-              const controlType = data.controlType;
-              const { attr, props, controlClass } = BUILDER_TOOLBOX[controlType];
-              const elm = new controlClass(attr, props);
-              const nodeOffset = ui.offset.top;
-              if (_this.children.length === 0) {
-                _this.$c.empty();
-              }
-              _this.addControl(this, elm, nodeOffset);
-            } catch (error) {
-              console.log("Couldn't append element", error);
-            }
+        ui.sender.sortable('cancel');
+        try {
+          const data = ui.item[0].dataset;
+          const controlType = data.controlType;
+          const { attr, props, controlClass } = BUILDER_TOOLBOX[controlType];
+          const elm = new controlClass(attr, props);
+          const nodeOffset = ui.offset.top;
+          if (_this.children.length === 0) {
+            _this.$c.empty();
           }
+          _this.addControl(this, elm, nodeOffset);
+        } catch (error) {
+          console.log("Couldn't append element", error);
         }
       });
 

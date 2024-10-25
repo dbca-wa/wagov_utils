@@ -60,7 +60,7 @@ export class ControlProp {
 
     if (this.prop.name === CONTROL_PROPS_TYPES.CUSTOM_CLASS || this.prop.type === 'select') {
       $(`#${this.id}`).on('change', { context, prop: this.prop }, cb);
-    } else if (['string', 'email', 'date'].includes(this.prop.type)) {
+    } else if (['string', 'email', 'date', 'textarea'].includes(this.prop.type)) {
       $(`#${this.id}`).on('input', { context, prop: this.prop }, cb);
     }
   }
@@ -98,6 +98,17 @@ export function _renderProp(basicProps, options = [], required = false) {
 
   if (inputType === 'array') {
     return markup('h3', 'Invalid table data.');
+  }
+
+  if (inputType === 'textarea') {
+    return markup('textarea', value, {
+      id,
+      class: 'form-control',
+      rows: 3,
+      placeholder,
+      required,
+      'data-key': dataKey,
+    });
   }
 
   return markup('input', '', {

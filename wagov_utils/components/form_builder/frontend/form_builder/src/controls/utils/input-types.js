@@ -8,6 +8,7 @@ export const INPUT_TYPES = {
   DATETIME: 'datetime',
   SELECT: 'select',
   CHECK_BOX: 'checkbox',
+  SELECT_BOXES: 'select-boxes',
   RADIO: 'radio',
   DATE_PICKER: 'date-picker',
   TIME_PICKER: 'time-picker',

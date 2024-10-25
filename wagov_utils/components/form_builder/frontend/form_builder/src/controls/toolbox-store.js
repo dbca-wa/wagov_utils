@@ -6,6 +6,7 @@ import { INPUT_TYPES } from './utils/input-types';
 import { LAYOUT_TYPES } from './utils/layout-types';
 import { ColumnsBlock } from './layout/columns-block';
 import TextAreaElement from './elements/textarea';
+import SelectBoxes from './elements/select-boxes';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -52,7 +53,7 @@ export const CONTROLS_STORE = {
       ],
     },
     attr: {
-      type: 'select',
+      type: INPUT_TYPES.SELECT,
     },
     icon: 'fa fa-font',
     controlClass: SelectElement,
@@ -66,6 +67,23 @@ export const CONTROLS_STORE = {
     },
     icon: 'fa fa-font',
     controlClass: InputElement,
+  },
+  [ELEMENT_TYPES.SELECT_BOXES]: {
+    description: 'A simple select boxes control',
+    name: 'Select Boxes',
+    props: {
+      label: 'Select Boxes',
+      type: INPUT_TYPES.SELECT_BOXES,
+      values: [
+        { text: 'Select Box 1', value: 'select-box-1' },
+        { text: 'Select Box 2', value: 'select-box-2' },
+      ],
+    },
+    attr: {
+      type: INPUT_TYPES.SELECT_BOXES,
+    },
+    icon: 'fa fa-font',
+    controlClass: SelectBoxes,
   },
   [ELEMENT_TYPES.RADIO]: {
     description: 'A simple radio control',

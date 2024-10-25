@@ -60,7 +60,6 @@ export default class InputElement extends InputControl {
     const attributes = {
       id: props.id ?? this.id,
       type: this.type,
-      value: this.value,
       placeholder: props[CONTROL_PROPS_TYPES.PLACEHOLDER] ?? '',
       class: (this.attr.class ?? '').concat(' ', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? ''),
       value: value,

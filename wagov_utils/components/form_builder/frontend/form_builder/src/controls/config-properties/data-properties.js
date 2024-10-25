@@ -9,6 +9,7 @@ const defProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_TYPES.DEFAU
 const defMultiChoiceProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_TYPES.DATASOURCE];
 const selectelementProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_TYPES.DATASOURCE];
 const radioButtonProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE];
+const selectBoxesProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE];
 
 const dsValues = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.VALUES];
 const dsURL = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.URL];
@@ -179,5 +180,11 @@ export class SelectDataProperties extends MultipleChoiceDataProperties {
 export class RadioButtonsDataProperties extends MultipleChoiceDataProperties {
   constructor(props) {
     super(props, radioButtonProps);
+  }
+}
+
+export class SelectBoxesDataProperties extends MultipleChoiceDataProperties {
+  constructor(props) {
+    super(props, selectBoxesProps);
   }
 }

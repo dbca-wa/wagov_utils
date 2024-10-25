@@ -76,6 +76,8 @@ function getProps(type) {
       return radioProps;
     case 'checkbox':
       return checkboxProps;
+    case 'select-boxes':
+      return checkboxProps;
     case 'date':
       return dateProps;
     case 'textarea':
