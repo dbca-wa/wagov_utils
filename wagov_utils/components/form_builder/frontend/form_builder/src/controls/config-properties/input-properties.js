@@ -33,8 +33,21 @@ const textAreaProps = [
 const radioProps = [
   CONTROL_PROPS_TYPES.LABEL,
   //   CONTROL_PROPS_TYPES.TAB_INDEX,
-  // CONTROL_PROPS_TYPES.CHECKED,
   CONTROL_PROPS_TYPES.DESCRIPTION,
+  CONTROL_PROPS_TYPES.TOOLTIP,
+  CONTROL_PROPS_TYPES.DISABLED,
+];
+
+const buttonProps = [
+  CONTROL_PROPS_TYPES.LABEL,
+  //   CONTROL_PROPS_TYPES.TAB_INDEX,
+  CONTROL_PROPS_TYPES.ACTION,
+  CONTROL_PROPS_TYPES.SAVE_ON_ENTER,
+  CONTROL_PROPS_TYPES.THEME,
+  CONTROL_PROPS_TYPES.SIZE,
+  CONTROL_PROPS_TYPES.BLOCK_BUTTON,
+  CONTROL_PROPS_TYPES.LEFT_ICON,
+  CONTROL_PROPS_TYPES.RIGHT_ICON,
   CONTROL_PROPS_TYPES.TOOLTIP,
   CONTROL_PROPS_TYPES.DISABLED,
 ];
@@ -45,7 +58,6 @@ const checkboxProps = [
   CONTROL_PROPS_TYPES.TOOLTIP,
   CONTROL_PROPS_TYPES.CUSTOM_CLASS,
   //   CONTROL_PROPS_TYPES.TAB_INDEX,
-  // CONTROL_PROPS_TYPES.CHECKED,
   CONTROL_PROPS_TYPES.DISABLED,
 ];
 
@@ -103,20 +115,12 @@ export class InputFieldDisplayProps extends BaseControlProps {
     super(getProps(type));
     this.fillInProps(props);
   }
-
-  render() {
-    return super.render();
-  }
 }
 
 export class RadioDisplayProps extends BaseControlProps {
   constructor(props) {
     super(radioProps);
     this.fillInProps(props);
-  }
-
-  render() {
-    return super.render();
   }
 }
 
@@ -125,10 +129,6 @@ export class CheckboxDisplayProps extends BaseControlProps {
     super(checkboxProps);
     this.fillInProps(props);
   }
-
-  render() {
-    return super.render();
-  }
 }
 
 export class SelectDisplayProps extends BaseControlProps {
@@ -136,8 +136,11 @@ export class SelectDisplayProps extends BaseControlProps {
     super(selectProps);
     this.fillInProps(props);
   }
+}
 
-  render() {
-    return super.render();
+export class ButtonDisplayProps extends BaseControlProps {
+  constructor(props) {
+    super(buttonProps);
+    this.fillInProps(props);
   }
 }

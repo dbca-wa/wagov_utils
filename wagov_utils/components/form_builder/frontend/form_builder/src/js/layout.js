@@ -64,10 +64,19 @@ export default class LayoutController {
   loadFormControls(controls, parent) {
     controls.forEach((control) => {
       if (!control.label) return;
-      const controlElement = markup('div', markup('span', control.label), {
-        class: 'control draggable-control',
-        'data-controlType': control.type,
-      });
+      const controlElement = markup(
+        'div',
+        [
+          markup('i', '', { class: control.icon }),
+          markup('span', control.label, {
+            class: 'ml-2',
+          }),
+        ],
+        {
+          class: 'control draggable-control ',
+          'data-controlType': control.type,
+        },
+      );
 
       parent.append(controlElement);
     });
@@ -76,13 +85,14 @@ export default class LayoutController {
   renderForm() {
     // this.buildArea.area.$c.append(markup('h2', 'Form Builder DBCA', {}));
     const defaultElements = [
-      // ELEMENT_TYPES.SELECT_BOXES,
+      ELEMENT_TYPES.SELECT_BOXES,
       LAYOUT_TYPES.HTML_CONTENT,
-      // LAYOUT_TYPES.COLUMNS,
-      // ELEMENT_TYPES.INPUT_NUMBER,
-      // ELEMENT_TYPES.SELECT,
-      // ELEMENT_TYPES.CHECK_BOX,
-      // ELEMENT_TYPES.RADIO,
+      LAYOUT_TYPES.COLUMNS,
+      ELEMENT_TYPES.INPUT_NUMBER,
+      ELEMENT_TYPES.SELECT,
+      ELEMENT_TYPES.CHECK_BOX,
+      ELEMENT_TYPES.RADIO,
+      ELEMENT_TYPES.BUTTON,
     ];
     defaultElements.forEach((element) => {
       const { attr, props, controlClass } = BUILDER_TOOLBOX[element];

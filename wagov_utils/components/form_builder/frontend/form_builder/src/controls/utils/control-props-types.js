@@ -15,6 +15,13 @@ export const CONTROL_PROPS_TYPES = {
   MIN_DATE: 'min',
   TEXTAREA_ROWS: 'rows',
   HTML_CONTENT: 'htmlContent',
+  ACTION: 'action',
+  SAVE_ON_ENTER: 'saveOnEnter',
+  THEME: 'theme',
+  SIZE: 'size',
+  BLOCK_BUTTON: 'blockButton',
+  LEFT_ICON: 'leftIcon',
+  RIGHT_ICON: 'rightIcon',
 };
 
 export const CONTROL_DATA_PROPS_TYPES = {

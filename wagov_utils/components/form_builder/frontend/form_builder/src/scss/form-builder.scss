@@ -56,6 +56,17 @@ $main-panel-padding: 20px;
   cursor: move;
   margin-bottom: 5px;
 }
+.control.draggable-control span {
+  margin-left: 5px;
+}
+.control.draggable-control {
+  span {
+    margin-left: 5px;
+  }
+  i {
+    color: #8d8d8d;
+  }
+}
 
 .control.draggable-control:hover {
   border: 1px solid #707070;

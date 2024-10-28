@@ -8,6 +8,7 @@ import { ColumnsBlock } from './layout/columns-block';
 import TextAreaElement from './elements/textarea';
 import SelectBoxes from './elements/select-boxes';
 import { HTMLComponent } from './layout/html-component';
+import ButtonElement from './elements/button-element';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -89,10 +90,10 @@ export const CONTROLS_STORE = {
   [ELEMENT_TYPES.RADIO]: {
     description: 'A simple radio control',
     props: {
-      label: 'Pick a shoe',
+      label: 'Radio',
       values: [
-        { text: 'Radio Option 1', value: 'opt-1' },
-        { text: 'Radio Option 2', value: 'opt-2' },
+        { text: 'Option 1', value: 'opt-1' },
+        { text: 'Option 2', value: 'opt-2' },
       ],
       labelClass: 'form-check-label',
     },
@@ -178,6 +179,18 @@ export const SPECIAL_INPUT_STORE = {
     },
     icon: 'fa fa-font',
     controlClass: TextAreaElement,
+  },
+  [ELEMENT_TYPES.BUTTON]: {
+    description: 'A simple button control',
+    props: {
+      name: 'Button',
+      label: 'Click me',
+
+      required: true,
+    },
+    attr: {},
+    icon: 'fa fa-font',
+    controlClass: ButtonElement,
   },
 };
 

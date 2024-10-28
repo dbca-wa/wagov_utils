@@ -58,7 +58,7 @@ export class ControlProp {
     if (this.prop.type === 'boolean') {
       children.reverse();
     }
-    return markup('div', children, { class: 'form-check mb-3' });
+    return markup('div', children, { class: ['mb-3', this.prop.type === 'boolean' ? 'form-check' : ''].join(' ') });
   }
 
   addChangeEvent(context, cb) {

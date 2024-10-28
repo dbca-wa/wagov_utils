@@ -15,9 +15,9 @@ export default class ControlEdition extends Control {
     super({}, {}, CONTROL_TYPES.BLOCK);
     this.control = control;
     this.controller = controller;
-    this._editControl({
-      data: this,
-    });
+    // this._editControl({
+    //   data: this,
+    // });
   }
   render() {
     return markup(
