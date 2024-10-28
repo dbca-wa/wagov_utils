@@ -5,7 +5,6 @@ import Control from '../js/fb-control';
 import { appSelectors } from '../js/selectors';
 import { generateRandomId, markup } from '../js/utils';
 import controlWrapperTemplate from '../views/control-edition/control-edition-wrapper.handlebars';
-import displayBlockTemplate from '../views/control-edition/display-block.handlebars';
 import Modal from 'bootstrap/js/dist/modal.js';
 
 export default class ControlEdition extends Control {
@@ -59,7 +58,7 @@ export default class ControlEdition extends Control {
       };
       _this._renderPreviewControl();
 
-      $('#data-tab').trigger('click');
+      $('#display-tab').trigger('click');
       $('#data-tab').show();
       if (Object.keys(_this.control.dataControlProps.props).length === 0) $('#data-tab').hide();
     }
@@ -104,6 +103,7 @@ export default class ControlEdition extends Control {
     const _this = event.data;
     $(_this.getIdSelector()).fadeOut('fast', () => {
       $(_this.getIdSelector()).remove();
+      _this.controller.onDelete(_this);
     });
   }
 

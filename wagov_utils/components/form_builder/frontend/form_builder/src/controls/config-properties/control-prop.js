@@ -10,6 +10,14 @@ export const defaultAllProps = {
   ...dataPropertiesStore,
   ...layoutPropertiesStore,
 };
+import brace from 'brace';
+import 'brace/mode/html';
+import 'brace/theme/monokai';
+import 'brace/theme/github';
+
+import 'brace/mode/coffee';
+import 'brace/theme/vibrant_ink';
+import 'brace/keybinding/vim';
 
 export class ControlProp {
   prop; // Property object from propertiesStore
@@ -20,6 +28,7 @@ export class ControlProp {
   /* required */
   /* options */
   /* value */
+  editor; // Only for HTML type
 
   constructor(type, customPropsStore) {
     this.prop = customPropsStore !== undefined ? { ...customPropsStore[type] } : { ...defaultAllProps[type] };
@@ -66,6 +75,28 @@ export class ControlProp {
     } else if (['string', 'number', 'email', 'date', 'textarea'].includes(this.prop.type)) {
       $(`#${this.id}`).on('input', { context, prop: this.prop }, cb);
     }
+    if (this.prop.type === 'html') {
+      const hiddenElementId = `#${this.id}-hidden`;
+      this.editor = brace.edit(this.id, 'session JC');
+      this.editor.setTheme('ace/theme/github');
+      this.editor.setValue(this.prop.value);
+      console.log(this.editor);
+
+      $(hiddenElementId).on('change', { context, prop: this.prop }, cb);
+      $(`#${this.id} textarea`).on(' keydown input', { editor: this.editor }, (event) => {
+        const { editor } = event.data;
+        const hiddenElementId = `#${this.id}-hidden`;
+
+        if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Shift'].includes(event.key)) {
+          return;
+        }
+        if (event.type != 'input' && !['Backspace', 'Delete'].includes(event.key)) {
+          return;
+        }
+        const value = (editor.session.doc.$lines ?? []).join('\n');
+        $(hiddenElementId).val(value).trigger('change');
+      });
+    }
   }
 }
 
@@ -73,13 +104,17 @@ export function _renderProp(basicProps, options = [], required = false) {
   const { id, type, value, placeholder, dataKey, dataRowId } = basicProps;
   const inputType = type === 'boolean' ? 'checkbox' : type === 'string' ? 'text' : type;
 
+  const generalProps = {
+    id,
+    required,
+    'data-key': dataKey,
+    'data-rowId': dataRowId,
+  };
+
   if (inputType === 'select') {
     const selectEl = markup('select', '', {
-      id,
-      required,
+      ...generalProps,
       class: 'form-select',
-      'data-key': dataKey,
-      'data-rowId': dataRowId,
     });
     if (basicProps.addEmptyOption) {
       selectEl.appendChild(markup('option', '', { value: '' }));
@@ -99,12 +134,9 @@ export function _renderProp(basicProps, options = [], required = false) {
   }
   if (inputType === 'checkbox') {
     const checkboxProps = {
-      id,
+      ...generalProps,
       type: inputType,
-      required,
       class: 'form-check-input',
-      'data-key': dataKey,
-      'data-rowId': dataRowId,
     };
     if (value) {
       checkboxProps.checked = value;
@@ -118,13 +150,10 @@ export function _renderProp(basicProps, options = [], required = false) {
 
   if (inputType === 'textarea') {
     return markup('textarea', value, {
-      id,
+      ...generalProps,
       class: 'form-control',
       rows: 3,
       placeholder,
-      required,
-      'data-key': dataKey,
-      'data-rowId': dataRowId,
     });
   }
 
@@ -161,14 +190,24 @@ export function _renderProp(basicProps, options = [], required = false) {
     return markup('div', selectBoxes, { id });
   }
 
+  if (inputType === 'html') {
+    const element = markup('div', value, {
+      ...generalProps,
+      class: 'html-editor',
+    });
+    const hiddenEditor = markup('input', '', {
+      value,
+      type: 'hidden',
+      id: `${id}-hidden`,
+    });
+    return markup('div', [element, hiddenEditor]);
+  }
+
   return markup('input', '', {
-    id,
+    ...generalProps,
     type: inputType,
     value,
     placeholder,
-    required,
     class: 'form-control',
-    'data-key': dataKey,
-    'data-rowId': dataRowId,
   });
 }

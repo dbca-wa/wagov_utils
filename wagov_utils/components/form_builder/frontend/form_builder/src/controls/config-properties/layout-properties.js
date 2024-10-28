@@ -3,6 +3,12 @@ import { LAYOUT_CONTROL_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/contro
 import { BaseControlProps } from './base-control-props';
 
 const columnsProps = [CONTROL_PROPS_TYPES.LABEL, LAYOUT_CONTROL_PROPS_TYPES.COLUMNS];
+const HTMLComponentProps = [
+  CONTROL_PROPS_TYPES.LABEL,
+  CONTROL_PROPS_TYPES.CUSTOM_CLASS,
+  LAYOUT_CONTROL_PROPS_TYPES.TAG,
+  LAYOUT_CONTROL_PROPS_TYPES.HTML_CONTENT,
+];
 
 export class ColumnsDisplayProps extends BaseControlProps {
   constructor(props) {
@@ -14,5 +20,12 @@ export class ColumnsDisplayProps extends BaseControlProps {
         props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS].map((col) => ({ ...col, id: ['row', generateRandomId()].join('-') })),
       );
     }
+  }
+}
+
+export class HTMLComponentDisplayProps extends BaseControlProps {
+  constructor(props) {
+    super(HTMLComponentProps);
+    this.fillInProps(props);
   }
 }

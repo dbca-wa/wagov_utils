@@ -131,6 +131,10 @@ export class DropableControl extends LayoutControl {
           console.log('Error saving control', error);
         }
       },
+      onDelete: function (controlEditor) {
+        const { control } = controlEditor;
+        BuildArea.getInstance().removeControl(control);
+      },
     });
 
     const renderedControl = fbControlWrapper.render();

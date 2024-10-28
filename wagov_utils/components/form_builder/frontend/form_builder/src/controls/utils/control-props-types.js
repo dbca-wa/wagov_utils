@@ -14,6 +14,7 @@ export const CONTROL_PROPS_TYPES = {
   MAX_DATE: 'max',
   MIN_DATE: 'min',
   TEXTAREA_ROWS: 'rows',
+  HTML_CONTENT: 'htmlContent',
 };
 
 export const CONTROL_DATA_PROPS_TYPES = {
@@ -34,5 +35,8 @@ export const LAYOUT_CONTROL_PROPS_TYPES = {
   TITLE: 'title',
   NUM_ROWS: 'numRows',
   NUM_COLS: 'numCols',
-  CONTENT: 'content',
+
+  HTML_CONTENT: 'htmlContent',
+  TAG: 'tag',
+  ATTRIBUTES: 'attributes',
 };

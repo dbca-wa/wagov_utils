@@ -75,8 +75,8 @@ export default class LayoutController {
   renderForm() {
     this.buildArea.area.$c.append(markup('h2', 'Form Builder DBCA', {}));
     const defaultElements = [
-      ELEMENT_TYPES.SELECT_BOXES,
-      // LAYOUT_TYPES.COLUMNS,
+      // ELEMENT_TYPES.SELECT_BOXES,
+      LAYOUT_TYPES.HTML_CONTENT,
       // LAYOUT_TYPES.COLUMNS,
       // ELEMENT_TYPES.INPUT_NUMBER,
       // ELEMENT_TYPES.SELECT,

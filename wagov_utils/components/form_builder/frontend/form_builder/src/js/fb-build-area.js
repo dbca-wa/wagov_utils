@@ -64,6 +64,12 @@ export class BuildArea {
     return dropable;
   }
 
+  removeControl(control) {
+    if (control.parentAreaId) {
+      this.dropables[control.parentAreaId].removeChildControl(control.id);
+    }
+  }
+
   removeDropable(areaId) {
     if (this.dropables[areaId]) {
       console.log('Dropable removed', areaId);

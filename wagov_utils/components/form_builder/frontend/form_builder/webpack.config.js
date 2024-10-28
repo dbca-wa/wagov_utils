@@ -83,9 +83,6 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
     }),
-    new webpack.ProvidePlugin({
-      popper: '@popperjs',
-    }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
     }),

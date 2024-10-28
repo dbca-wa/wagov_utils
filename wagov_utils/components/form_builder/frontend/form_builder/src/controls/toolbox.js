@@ -3,6 +3,7 @@ import { LAYOUT_TYPES } from './utils/layout-types';
 
 export const FORM_CONTROLS = [
   { label: 'Input Text', type: ELEMENT_TYPES.INPUT },
+  { label: 'HTML', type: LAYOUT_TYPES.HTML_CONTENT },
   { label: 'Date Picker', type: ELEMENT_TYPES.DATE_PICKER },
   { label: 'Text Area', type: ELEMENT_TYPES.TEXT_AREA },
   // { label: 'Time Picker', type: ELEMENT_TYPES.TIME_PICKER },

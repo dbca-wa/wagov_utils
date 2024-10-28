@@ -1,4 +1,4 @@
-import { CONTROL_PROPS_TYPES } from '../../utils/control-props-types';
+import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../../utils/control-props-types';
 
 export const propertiesStore = {
   [CONTROL_PROPS_TYPES.LABEL]: {
@@ -138,6 +138,24 @@ export const propertiesStore = {
       { value: 3, text: 'Medium' },
       { value: 5, text: 'Large' },
     ],
+    value: '',
+  },
+  [LAYOUT_CONTROL_PROPS_TYPES.TAG]: {
+    name: 'tag',
+    title: 'HTML tag',
+    type: 'string',
+    placeholder: 'Enter a HTML tag',
+    required: false,
+    options: undefined,
+    value: '',
+  },
+  [LAYOUT_CONTROL_PROPS_TYPES.HTML_CONTENT]: {
+    name: 'htmlContent',
+    title: 'Content',
+    type: 'html',
+    placeholder: 'Enter any HTML',
+    required: false,
+    options: undefined,
     value: '',
   },
 };

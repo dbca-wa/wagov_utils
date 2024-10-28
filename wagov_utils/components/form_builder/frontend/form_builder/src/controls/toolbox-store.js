@@ -7,6 +7,7 @@ import { LAYOUT_TYPES } from './utils/layout-types';
 import { ColumnsBlock } from './layout/columns-block';
 import TextAreaElement from './elements/textarea';
 import SelectBoxes from './elements/select-boxes';
+import { HTMLComponent } from './layout/html-component';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -200,6 +201,17 @@ export const LAYOUT_STORE = {
     attr: {},
     icon: 'fa fa-font',
     controlClass: ColumnsBlock,
+  },
+  [LAYOUT_TYPES.HTML_CONTENT]: {
+    description: 'A block of custom HTML code',
+    props: {
+      label: 'HTML',
+      tag: 'p',
+    },
+    name: 'HTML Component',
+    attr: {},
+    icon: 'fa fa-font',
+    controlClass: HTMLComponent,
   },
 };
 
