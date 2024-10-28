@@ -12,6 +12,7 @@ import { ELEMENT_TYPES } from '../controls/utils/element-types';
 import { LAYOUT_TYPES } from '../controls/utils/layout-types';
 import { CLASS_DROPABLE_BLOCKS } from '../controls/utils/constants';
 import { BuildArea } from './fb-build-area';
+import { HTMLComponent } from '../controls/layout/html-component';
 
 const formAreaSel = 'formarea';
 
@@ -73,7 +74,7 @@ export default class LayoutController {
   }
 
   renderForm() {
-    this.buildArea.area.$c.append(markup('h2', 'Form Builder DBCA', {}));
+    // this.buildArea.area.$c.append(markup('h2', 'Form Builder DBCA', {}));
     const defaultElements = [
       // ELEMENT_TYPES.SELECT_BOXES,
       LAYOUT_TYPES.HTML_CONTENT,
@@ -86,6 +87,10 @@ export default class LayoutController {
     defaultElements.forEach((element) => {
       const { attr, props, controlClass } = BUILDER_TOOLBOX[element];
       const elm = new controlClass(attr, props);
+
+      if (elm instanceof HTMLComponent) {
+        elm.displayControlProps.fillInProps({ tag: 'h2', htmlContent: 'Form Builder DBCA' });
+      }
       this.buildArea.area.addControl(this.buildArea.area.$c, elm);
     });
   }

@@ -44,13 +44,13 @@ export class HTMLComponent extends Control {
     const tag = props[LAYOUT_CONTROL_PROPS_TYPES.TAG] ?? this.props[LAYOUT_CONTROL_PROPS_TYPES.TAG];
 
     const elements = [];
-    if (tag) {
-      elements.push(markup(tag, '', { class: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] }));
-    }
     try {
       const parser = new DOMParser();
       const htmlDoc = parser.parseFromString(content, 'text/html');
-      elements.push(...htmlDoc.body.childNodes);
+      const element = markup(tag || 'div', '', { class: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] });
+      element.append(...htmlDoc.body.childNodes);
+
+      elements.push(element);
     } catch (error) {
       console.log(error);
     }

@@ -84,15 +84,14 @@ export class ControlProp {
 
       $(hiddenElementId).on('change', { context, prop: this.prop }, cb);
       $(`#${this.id} textarea`).on(' keydown input', { editor: this.editor }, (event) => {
-        const { editor } = event.data;
-        const hiddenElementId = `#${this.id}-hidden`;
-
         if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Shift'].includes(event.key)) {
           return;
         }
         if (event.type != 'input' && !['Backspace', 'Delete'].includes(event.key)) {
           return;
         }
+        const { editor } = event.data;
+        const hiddenElementId = `#${this.id}-hidden`;
         const value = (editor.session.doc.$lines ?? []).join('\n');
         $(hiddenElementId).val(value).trigger('change');
       });
