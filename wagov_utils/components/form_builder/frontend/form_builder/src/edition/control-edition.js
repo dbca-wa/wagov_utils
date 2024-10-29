@@ -15,9 +15,9 @@ export default class ControlEdition extends Control {
     super({}, {}, CONTROL_TYPES.BLOCK);
     this.control = control;
     this.controller = controller;
-    // this._editControl({
-    //   data: this,
-    // });
+    this._editControl({
+      data: this,
+    });
   }
   render() {
     return markup(
@@ -58,7 +58,7 @@ export default class ControlEdition extends Control {
       };
       _this._renderPreviewControl();
 
-      $('#display-tab').trigger('click');
+      $('#data-tab').trigger('click');
       $('#data-tab').show();
       if (Object.keys(_this.control.dataControlProps.props).length === 0) $('#data-tab').hide();
     }

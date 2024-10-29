@@ -14,6 +14,7 @@ const DEFAULT_VALUE_PROPS = {
 export const DATASOURCE_VALUES = {
   VALUES: 'values',
   URL: 'url',
+  RAW_JSON: 'rawJson',
 };
 
 export const dataPropertiesStore = {
@@ -26,6 +27,7 @@ export const dataPropertiesStore = {
     options: [
       { text: 'Values', value: DATASOURCE_VALUES.VALUES },
       { text: 'URL', value: DATASOURCE_VALUES.URL },
+      { text: 'Raw JSON', value: DATASOURCE_VALUES.RAW_JSON },
     ],
     value: 'values',
   },
@@ -82,6 +84,41 @@ export const datasourceDataPropertiesStore = {
       placeholder: 'Enter a URL',
       required: true,
       options: undefined,
+      value: '',
+    },
+    [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_VALUE_PROPS },
+  },
+  [DATASOURCE_VALUES.RAW_JSON]: {
+    [DATASOURCE_PROPS_TYPES.RAW_JSON]: {
+      name: 'rawJson',
+      title: 'Data Source Raw JSON',
+      type: 'html',
+      placeholder: 'Enter a JSON',
+      required: false,
+      options: undefined,
+      value: '""',
+      style: {
+        'min-height': '200px',
+      },
+    },
+
+    [DATASOURCE_PROPS_TYPES.ID_PATH]: {
+      name: 'idPath',
+      title: 'Id Path',
+      type: 'string',
+      placeholder: 'id',
+      required: true,
+      options: undefined,
+      value: 'id',
+    },
+    [DATASOURCE_PROPS_TYPES.VALUE_PROPERTY]: {
+      name: 'valueProperty',
+      title: 'Value Property',
+      type: 'string',
+      placeholder: '',
+      required: true,
+      options: undefined,
+      description: "The selected item's property to save.",
       value: '',
     },
     [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_VALUE_PROPS },

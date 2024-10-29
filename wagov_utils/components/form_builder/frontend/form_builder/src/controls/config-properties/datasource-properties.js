@@ -4,6 +4,12 @@ import { DATASOURCE_VALUES, datasourceDataPropertiesStore } from './predefined/d
 
 const dsValues = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.VALUES];
 const dsURL = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.URL];
+const dsJSON = [
+  DATASOURCE_PROPS_TYPES.DEFAULT_VALUE,
+  DATASOURCE_PROPS_TYPES.RAW_JSON,
+  DATASOURCE_PROPS_TYPES.ID_PATH,
+  DATASOURCE_PROPS_TYPES.VALUE_PROPERTY,
+];
 
 export class DatasourceProperties extends BaseControlProps {
   $p;
@@ -20,6 +26,9 @@ export class DatasourceProperties extends BaseControlProps {
         propsList = dsURL;
         propsStore = datasourceDataPropertiesStore[DATASOURCE_VALUES.URL];
         break;
+      case DATASOURCE_PROPS_TYPES.RAW_JSON:
+        propsList = dsJSON;
+        propsStore = datasourceDataPropertiesStore[DATASOURCE_VALUES.RAW_JSON];
       default:
         propsList = dsValues;
         propsStore = datasourceDataPropertiesStore[DATASOURCE_VALUES.VALUES];

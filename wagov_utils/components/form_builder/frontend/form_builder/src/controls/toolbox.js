@@ -3,7 +3,7 @@ import { LAYOUT_TYPES } from './utils/layout-types';
 
 export const FORM_CONTROLS = [
   { label: 'Input Text', type: ELEMENT_TYPES.INPUT, icon: 'bi bi-type' },
-  { label: 'HTML', type: LAYOUT_TYPES.HTML_CONTENT, icon: 'bi bi-type-code' },
+  { label: 'HTML', type: LAYOUT_TYPES.HTML_CONTENT, icon: 'bi bi-code' },
   { label: 'Date Picker', type: ELEMENT_TYPES.DATE_PICKER, icon: 'bi bi-calendar-date' },
   { label: 'Text Area', type: ELEMENT_TYPES.TEXT_AREA, icon: 'bi bi-alphabet' },
   // { label: 'Time Picker', type: ELEMENT_TYPES.TIME_PICKER , icon: 'bi bi-'},

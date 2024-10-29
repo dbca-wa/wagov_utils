@@ -28,13 +28,18 @@ export const CONTROL_DATA_PROPS_TYPES = {
   DATASOURCE: 'datasource',
   MULTI: 'multi',
   DEFAULT_VALUE: 'defaultValue',
+  ITEM_TEMPLATE: 'itemTemplate',
 };
 
 export const DATASOURCE_PROPS_TYPES = {
   TYPE: 'type',
   URL: 'url',
   VALUES: 'values',
+  RAW_JSON: 'rawJson',
   DEFAULT_VALUE: 'defaultValue',
+  JSON_INPUT: 'jsonInput',
+  ID_PATH: 'idPath',
+  VALUE_PROPERTY: 'valueProperty',
 };
 
 export const LAYOUT_CONTROL_PROPS_TYPES = {

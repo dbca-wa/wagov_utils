@@ -14,6 +14,12 @@ const selectBoxesProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE];
 
 const dsValues = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.VALUES];
 const dsURL = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.URL];
+const dsJSON = [
+  DATASOURCE_PROPS_TYPES.DEFAULT_VALUE,
+  DATASOURCE_PROPS_TYPES.RAW_JSON,
+  DATASOURCE_PROPS_TYPES.ID_PATH,
+  DATASOURCE_PROPS_TYPES.VALUE_PROPERTY,
+];
 
 class BaseDataProps extends BaseControlProps {
   $p;
@@ -115,13 +121,18 @@ class MultipleChoiceDataProperties extends BaseDataProps {
   selectDatasource(selectedDS) {
     this.datasource = selectedDS;
     this.modifyPropValue(CONTROL_DATA_PROPS_TYPES.DATASOURCE, selectedDS);
-    if (selectedDS === DATASOURCE_PROPS_TYPES.VALUES) {
+    if (selectedDS === DATASOURCE_VALUES.VALUES) {
       this.datasourceProperties = new BaseControlProps(
         dsValues,
         datasourceDataPropertiesStore[DATASOURCE_VALUES.VALUES],
       );
-    } else if (selectedDS === DATASOURCE_PROPS_TYPES.URL) {
+    } else if (selectedDS === DATASOURCE_VALUES.URL) {
       this.datasourceProperties = new BaseControlProps(dsURL, datasourceDataPropertiesStore[DATASOURCE_VALUES.URL]);
+    } else if (selectedDS === DATASOURCE_VALUES.RAW_JSON) {
+      this.datasourceProperties = new BaseControlProps(
+        dsJSON,
+        datasourceDataPropertiesStore[DATASOURCE_VALUES.RAW_JSON],
+      );
     }
     // this.datasourceProperties.fillInProps({
     //   [CONTROL_DATA_PROPS_TYPES.DATASOURCE]: selectedDS,
@@ -134,6 +145,13 @@ class MultipleChoiceDataProperties extends BaseDataProps {
       super.addChangeEvents(this, this._onDataPropsChange);
       this.datasourceProperties.addChangeEvents(this, this._onDataPropsChange);
     }
+  }
+
+  renderProp(prop) {
+    const renderedProp = this.$p.find(`#${prop.id}`).closest('.control-prop');
+    renderedProp.after(prop.renderProp());
+    renderedProp.remove();
+    prop.addChangeEvent(this, this._onDataPropsChange);
   }
 
   addChangeEvents(context, cb) {
@@ -156,7 +174,7 @@ class MultipleChoiceDataProperties extends BaseDataProps {
       _this.editor._renderPreviewControl();
       if (_this.datasource === DATASOURCE_PROPS_TYPES.VALUES) {
         _this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE].prop.options = value;
-        _this.renderInParent(); // TODO: Just render the default value prop
+        _this.renderProp(_this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]);
       }
     }
     if (prop.name === 'defaultValue') {
@@ -169,6 +187,7 @@ class MultipleChoiceDataProperties extends BaseDataProps {
         });
         _this.editor.initialProps[prop.name] = values;
         _this.editor._renderPreviewControl();
+        return;
       }
 
       _this.editor._renderPreviewControl();
