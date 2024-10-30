@@ -42,7 +42,16 @@ export class DropableControl extends LayoutControl {
   }
 
   addChildControl(control) {
-    this.children.push(control);
+    const nodePosition = $(`#${control.id}`).position().top;
+    let i = 0;
+    for (i = 0; i < this.children.length; i++) {
+      const childPosition = $(`#${this.children[i].id}`)?.position()?.top;
+      if (childPosition && childPosition > nodePosition) {
+        console.log('Inserting control at position', i);
+        break;
+      }
+    }
+    this.children.splice(i, 0, control);
     this.toggleEmptyDropableControl();
   }
 
@@ -71,7 +80,7 @@ export class DropableControl extends LayoutControl {
       this.$c.on('sortupdate', this, function (event, ui) {
         const _this = event.data;
         if (!ui.sender || ui.sender.hasClass('fb-dropable-blocks') || this !== event.target) return;
-
+        // TODO: Implement logic to reorder controls inside same dropable when ui.sender is null
         ui.sender.sortable('cancel');
         try {
           const data = ui.item[0].dataset;
@@ -114,9 +123,14 @@ export class DropableControl extends LayoutControl {
   }
 
   addControl(areaContainer, control, nodeOffset = null) {
-    this.children.push(control);
-    this.insertControl(areaContainer, control, nodeOffset);
+    const position = this.insertControl(areaContainer, control, nodeOffset);
+    this.children.splice(position, 0, control);
     this.onDrop(control);
+  }
+
+  onDrop(control) {
+    console.log('Control dropped on ' + this.areaId, control.controlType);
+    control.parentAreaId = this.areaId;
   }
 
   insertControl(areaContainer, control, nodeOffset = null) {
@@ -127,6 +141,7 @@ export class DropableControl extends LayoutControl {
           const container = $(controlEditor.getIdSelector()).find('.fb-wrapper-content').first();
 
           control.renderInParent(container);
+          console.log('Control saved', control.toJSON());
         } catch (error) {
           console.log('Error saving control', error);
         }
@@ -138,9 +153,10 @@ export class DropableControl extends LayoutControl {
     });
 
     const renderedControl = fbControlWrapper.render();
-    appendControlEdition(areaContainer, renderedControl, nodeOffset);
+    const position = appendControlEdition(areaContainer, renderedControl, nodeOffset);
     control.renderInParent($(renderedControl).find('.fb-wrapper-content'));
     fbControlWrapper.addButtonEvents();
+    return position;
   }
 
   render(customProps, attr) {
@@ -159,10 +175,11 @@ const emptyDropableControl = markup('div', 'Drop a component here', {
 });
 
 function appendControlEdition(parent, node, nodeOffset = null) {
+  let pos = 0;
   if (nodeOffset) {
     const childNodes = parent.childNodes;
-    for (let i = 0; i < childNodes.length; i++) {
-      const child = childNodes[i];
+    for (pos = 0; pos < childNodes.length; pos++) {
+      const child = childNodes[pos];
       if (child.offsetTop > nodeOffset) {
         parent.insertBefore(node, child);
         return;
@@ -170,4 +187,5 @@ function appendControlEdition(parent, node, nodeOffset = null) {
     }
   }
   parent.append(node);
+  return pos;
 }

@@ -22,11 +22,10 @@ export class HTMLComponent extends Control {
   setup() {
     this.container_class = this.props?.container_class || 'html-block';
     this.displayControlProps = new HTMLComponentDisplayProps(this.props);
-    this.dataControlProps = new BasicDataProperties(this.props);
+    this.dataControlProps = null;
   }
   renderControl() {
     const props = this.displayControlProps.getPropsValues();
-    Object.assign(props, this.dataControlProps.getPropsValues());
 
     return this.render({
       [CONTROL_PROPS_TYPES.LABEL]: props[CONTROL_PROPS_TYPES.LABEL] ?? '',
@@ -55,6 +54,6 @@ export class HTMLComponent extends Control {
       // console.log(error);
     }
 
-    return markup('div', elements, { id: props.id });
+    return markup('div', elements, { id: props.id ?? this.id });
   }
 }

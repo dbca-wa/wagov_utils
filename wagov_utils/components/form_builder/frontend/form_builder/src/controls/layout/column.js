@@ -2,14 +2,15 @@ import { markup } from '../../js/utils';
 import LayoutControl from '../fb-layout-control';
 import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { CONTROL_TYPES } from '../utils/control-types';
+import { LAYOUT_TYPES } from '../utils/layout-types';
 
 const defaultSettings = {};
 
 export class Column extends LayoutControl {
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
-
     super(attr, _props, CONTROL_TYPES.LAYOUT);
+    this.element_type = LAYOUT_TYPES.COLUMN;
     this.setup();
   }
 

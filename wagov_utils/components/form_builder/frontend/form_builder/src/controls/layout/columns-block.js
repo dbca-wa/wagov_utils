@@ -1,8 +1,10 @@
 import { BuildArea } from '../../js/fb-build-area';
+import { markup } from '../../js/utils';
 import { ColumnsDisplayProps } from '../config-properties/layout-properties';
 import LayoutControl from '../fb-layout-control';
 import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { CONTROL_TYPES } from '../utils/control-types';
+import { LAYOUT_TYPES } from '../utils/layout-types';
 import { Column } from './column';
 
 const defaultSettings = {
@@ -13,12 +15,14 @@ export class ColumnsBlock extends LayoutControl {
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
     super(attr, _props, CONTROL_TYPES.LAYOUT);
+    this.element_type = LAYOUT_TYPES.COLUMNS_ROW;
     this.setup();
   }
 
   setup() {
     this.container_class = 'row';
     this.displayControlProps = new ColumnsDisplayProps(this.props);
+    this.dataControlProps = null;
     const props = this.displayControlProps.getPropsValues();
 
     for (let i = 0; i < props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS].length; i++) {
@@ -78,6 +82,6 @@ export class ColumnsBlock extends LayoutControl {
         colData.children[0].setContainer($(node));
       }
     }
-    return super.render(nodes);
+    return markup('div', nodes, { class: this.container_class, id: this.id });
   }
 }

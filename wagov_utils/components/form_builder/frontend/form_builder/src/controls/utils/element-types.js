@@ -6,6 +6,7 @@ export const ELEMENT_TYPES = {
   RADIO: 'radio',
   SELECT_BOXES: 'select-boxes',
   BUTTON: 'button',
+  MOBILE_NUMBER: 'mobile-number',
 
   DATE_PICKER: 'date-picker',
   TIME_PICKER: 'time-picker',

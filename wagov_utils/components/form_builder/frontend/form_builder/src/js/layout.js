@@ -6,7 +6,6 @@ import { markup } from './utils';
 import { appSelectors } from './selectors';
 
 import Tab from 'bootstrap/js/dist/tab.js';
-import Control from './fb-control';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
 import { LAYOUT_TYPES } from '../controls/utils/layout-types';
@@ -87,7 +86,7 @@ export default class LayoutController {
     const defaultElements = [
       // ELEMENT_TYPES.SELECT_BOXES,
       // LAYOUT_TYPES.HTML_CONTENT,
-      // LAYOUT_TYPES.COLUMNS,
+      LAYOUT_TYPES.COLUMNS_ROW,
       // ELEMENT_TYPES.INPUT_NUMBER,
       // ELEMENT_TYPES.SELECT,
       // ELEMENT_TYPES.CHECK_BOX,

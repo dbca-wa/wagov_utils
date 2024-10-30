@@ -105,6 +105,6 @@ export default class SelectBoxes extends InputControl {
     this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
 
     const elements = selectBoxes;
-    return super.render(markup('div', elements, { class: this.container_class }));
+    return super.render(markup('div', elements, { class: this.container_class, id: props.id ?? this.id }));
   }
 }

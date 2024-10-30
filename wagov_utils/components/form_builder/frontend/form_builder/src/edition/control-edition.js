@@ -16,9 +16,9 @@ export default class ControlEdition extends Control {
     super({}, {}, CONTROL_TYPES.BLOCK);
     this.control = control;
     this.controller = controller;
-    this._editControl({
+    /* this._editControl({
       data: this,
-    });
+    }); */
   }
   render() {
     return markup(
@@ -49,9 +49,9 @@ export default class ControlEdition extends Control {
     const $m = $(modalIdSelector);
 
     if (_this.control && _this.control.displayControlProps) {
-      _this.control.dataControlProps.setEditor($m.find('#data-tab-pane form'), _this);
+      _this.control.dataControlProps?.setEditor($m.find('#data-tab-pane form'), _this);
       $m.find('#display-tab-pane form').empty().append(_this.control.displayControlProps.render());
-      _this.control.dataControlProps.renderInParent();
+      _this.control.dataControlProps?.renderInParent();
       _this.control.displayControlProps.addChangeEvents(_this, _this._onPropsChange);
 
       _this.initialProps = {
@@ -60,9 +60,12 @@ export default class ControlEdition extends Control {
       };
       _this._renderPreviewControl();
 
-      $('#data-tab').trigger('click');
+      $('#display-tab').trigger('click');
       $('#data-tab').show();
-      if (Object.keys(_this.control.dataControlProps.props).length === 0) $('#data-tab').hide();
+      if (!_this.control.dataControlProps || Object.keys(_this.control.dataControlProps.props).length === 0) {
+        $m.find('#data-tab-pane form').empty();
+        $('#data-tab').hide();
+      }
     }
 
     _this.modal = new Modal(document.querySelector(modalIdSelector), {
@@ -122,7 +125,7 @@ export default class ControlEdition extends Control {
   _closeModal() {
     if (this.hasSaved) return;
     this.control.displayControlProps.fillInProps(Object.assign({}, this.initialProps));
-    this.control.dataControlProps.fillInProps(Object.assign({}, this.initialProps));
+    this.control.dataControlProps?.fillInProps(Object.assign({}, this.initialProps));
   }
 
   _mouseAction(event) {

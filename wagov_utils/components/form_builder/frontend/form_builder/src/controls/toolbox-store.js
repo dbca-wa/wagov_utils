@@ -26,6 +26,21 @@ export const CONTROLS_STORE = {
     icon: 'fa fa-font',
     controlClass: InputElement,
   },
+  [ELEMENT_TYPES.MOBILE_NUMBER]: {
+    description: 'A simple mobile number control',
+    props: {
+      name: 'Mobile Number',
+      label: 'Mobile Number',
+      placeholder: '',
+      required: true,
+      type: INPUT_TYPES.MOBILE_NUMBER,
+    },
+    attr: {
+      type: INPUT_TYPES.MOBILE_NUMBER,
+    },
+    icon: 'fa fa-font',
+    controlClass: InputElement,
+  },
   [ELEMENT_TYPES.INPUT_NUMBER]: {
     description: 'A simple number control',
     props: {
@@ -195,7 +210,7 @@ export const SPECIAL_INPUT_STORE = {
 };
 
 export const LAYOUT_STORE = {
-  [LAYOUT_TYPES.COLUMNS]: {
+  [LAYOUT_TYPES.COLUMNS_ROW]: {
     description: 'A row with columns',
     props: {
       label: 'Columns displayed',

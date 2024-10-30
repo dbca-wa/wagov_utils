@@ -9,7 +9,7 @@ export default class LayoutControl extends Control {
   children = [];
   dropables = {};
   areaId;
-
+  element_type;
   onDrop = () => {};
   onRemove = () => {};
 
@@ -22,11 +22,34 @@ export default class LayoutControl extends Control {
 
   _basicSetup() {
     this.container_class = this.props?.container_class || this.container_class;
-    this.dataControlProps = new BasicDataProperties({});
   }
 
   setup() {
     console.log('Setup method called');
+  }
+
+  getPropsObject() {
+    return {
+      ...this.displayControlProps?.getPropsValues(),
+      ...this.dataControlProps?.getPropsValues(),
+      ...this.props,
+    };
+  }
+
+  toJSON() {
+    const json = {
+      id: this.id,
+      controlType: this.controlType,
+      // attr: this.attr,
+      props: this.getPropsObject(),
+      areaId: this.areaId,
+      parentAreaId: this.parentAreaId,
+    };
+    if (this.children.length) {
+      json.children = this.children.map((c) => c.toJSON());
+    }
+
+    return json;
   }
 
   renderControl(children = []) {

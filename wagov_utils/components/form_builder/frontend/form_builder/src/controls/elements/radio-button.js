@@ -99,7 +99,7 @@ export default class RadioButton extends InputControl {
             markup('input', '', customProps),
             markup('label', text, { for: `${this.name}-${i}`, class: 'form-check-label' }),
           ],
-          { class: 'form-check' },
+          { class: 'form-check', id: props.id ?? this.id },
         ),
       );
     }

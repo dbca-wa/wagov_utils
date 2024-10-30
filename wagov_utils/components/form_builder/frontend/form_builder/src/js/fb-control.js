@@ -49,8 +49,23 @@ export default class Control {
     }
   }
 
-  afterRender() {
-    console.log('After render method called');
+  getPropsObject() {
+    return {
+      ...this.displayControlProps?.getPropsValues(),
+      ...this.dataControlProps?.getPropsValues(),
+      ...this.props,
+    };
+  }
+
+  toJSON() {
+    const json = {
+      id: this.id,
+      controlType: this.controlType,
+      // attr: this.attr,
+      props: this.getPropsObject(),
+      parentAreaId: this.parentAreaId,
+    };
+    return json;
   }
 
   renderControl(children = [], containerClass = '') {

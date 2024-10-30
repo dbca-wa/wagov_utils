@@ -78,7 +78,7 @@ export class ControlProp {
 
     if (this.prop.name === CONTROL_PROPS_TYPES.CUSTOM_CLASS || this.prop.type === 'select') {
       $(`#${this.id}`).on('change', { context, prop: this.prop }, cb);
-    } else if (['string', 'number', 'email', 'date', 'textarea'].includes(this.prop.type)) {
+    } else if (['string', 'number', 'email', 'date', 'textarea', 'tel'].includes(this.prop.type)) {
       $(`#${this.id}`).on('input', { context, prop: this.prop }, cb);
     }
     if (this.prop.type === 'html') {

@@ -13,4 +13,5 @@ export const INPUT_TYPES = {
   DATE_PICKER: 'date-picker',
   TIME_PICKER: 'time-picker',
   TEXT_AREA: 'textarea',
+  MOBILE_NUMBER: 'tel',
 };
