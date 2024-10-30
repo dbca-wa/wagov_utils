@@ -1,8 +1,9 @@
+import Handlebars from 'handlebars';
 import InputControl from '../fb-input-control';
 import { generateRandomId, markup } from '../../js/utils';
 import { ELEMENT_TYPES } from '../utils/element-types';
 
-import { CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
+import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
 import { RadioDisplayProps } from '../config-properties/input-properties';
 import { RadioButtonsDataProperties } from '../config-properties/data-properties';
 
@@ -50,17 +51,24 @@ export default class RadioButton extends InputControl {
       [CONTROL_PROPS_TYPES.LABEL]: props[CONTROL_PROPS_TYPES.LABEL],
       [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '',
       [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
-      [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE],
       [CONTROL_PROPS_TYPES.DESCRIPTION]: props[CONTROL_PROPS_TYPES.DESCRIPTION] ?? '',
       [CONTROL_PROPS_TYPES.TOOLTIP]: props[CONTROL_PROPS_TYPES.TOOLTIP] ?? '',
+
+      [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE],
       [DATASOURCE_PROPS_TYPES.VALUES]: props[DATASOURCE_PROPS_TYPES.VALUES],
+      [DATASOURCE_PROPS_TYPES.JSON_VALUE]: props[DATASOURCE_PROPS_TYPES.JSON_VALUE],
+      [DATASOURCE_PROPS_TYPES.VALUE_PROPERTY]: props[DATASOURCE_PROPS_TYPES.VALUE_PROPERTY],
+      [CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE]: props[CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE],
     });
   }
 
   render(customProps, attr) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
-    const options = props?.values ?? this.options;
+    const options = props[DATASOURCE_PROPS_TYPES.VALUES] || props[DATASOURCE_PROPS_TYPES.JSON_VALUE] || this.options;
+    const valueProperty = props[DATASOURCE_PROPS_TYPES.VALUE_PROPERTY] || 'value';
+    const itemTemplate = props[CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE] ?? '';
 
+    const template = Handlebars.compile(itemTemplate);
     const radioButtons = [];
     for (let i = 0; i < options.length; i++) {
       const opt = options[i];
@@ -68,14 +76,20 @@ export default class RadioButton extends InputControl {
         type: 'radio',
         id: `${this.name}-${i}`,
         name: this.name,
-        value: opt.value,
+        value: opt[valueProperty],
         class: 'form-check-input',
       };
       if (props[CONTROL_PROPS_TYPES.DISABLED]) {
         customProps.disabled = true;
       }
-      if (props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE] === opt.value) {
+      if (props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE] === opt[valueProperty]) {
         customProps.checked = true;
+      }
+      let text = '';
+      try {
+        text = template({ item: opt });
+      } catch (error) {
+        text = opt.text;
       }
 
       radioButtons.push(
@@ -83,7 +97,7 @@ export default class RadioButton extends InputControl {
           'div',
           [
             markup('input', '', customProps),
-            markup('label', opt.text, { for: `${this.name}-${i}`, class: 'form-check-label' }),
+            markup('label', text, { for: `${this.name}-${i}`, class: 'form-check-label' }),
           ],
           { class: 'form-check' },
         ),

@@ -1,8 +1,9 @@
+import Handlebars from 'handlebars';
 import InputControl from '../fb-input-control';
 import { markup } from '../../js/utils';
 import { ELEMENT_TYPES } from '../utils/element-types';
 
-import { CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
+import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
 import { SelectDataProperties } from '../config-properties/data-properties';
 import { SelectDisplayProps } from '../config-properties/input-properties';
 
@@ -17,7 +18,7 @@ const defaultSettings = {
 const basicOptions = [
   {
     value: '',
-    text: '-- Select an option --',
+    text: '-- Selecta an option --',
     disabled: true,
     selected: true,
   },
@@ -58,17 +59,22 @@ export default class SelectElement extends InputControl {
       [CONTROL_PROPS_TYPES.PLACEHOLDER]: props[CONTROL_PROPS_TYPES.PLACEHOLDER],
       [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS],
       [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
-      [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE],
-      [DATASOURCE_PROPS_TYPES.VALUES]: props[DATASOURCE_PROPS_TYPES.VALUES],
       [CONTROL_PROPS_TYPES.DESCRIPTION]: props[CONTROL_PROPS_TYPES.DESCRIPTION] ?? '',
       [CONTROL_PROPS_TYPES.TOOLTIP]: props[CONTROL_PROPS_TYPES.TOOLTIP] ?? '',
+      [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE],
+      [DATASOURCE_PROPS_TYPES.VALUES]: props[DATASOURCE_PROPS_TYPES.VALUES],
+      [DATASOURCE_PROPS_TYPES.JSON_VALUE]: props[DATASOURCE_PROPS_TYPES.JSON_VALUE],
+      [DATASOURCE_PROPS_TYPES.VALUE_PROPERTY]: props[DATASOURCE_PROPS_TYPES.VALUE_PROPERTY],
+      [CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE]: props[CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE],
     });
   }
 
   render(customProps, attr) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
 
-    const options = props?.values ?? this.options;
+    const options = props[DATASOURCE_PROPS_TYPES.VALUES] || props[DATASOURCE_PROPS_TYPES.JSON_VALUE] || this.options;
+    const valueProperty = props[DATASOURCE_PROPS_TYPES.VALUE_PROPERTY] || 'value';
+    const itemTemplate = props[CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE] ?? '';
 
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];
     this.label.display = !!!props[CONTROL_PROPS_TYPES.HIDE_LABEL];
@@ -96,14 +102,19 @@ export default class SelectElement extends InputControl {
     }
 
     if (Array.isArray(options)) {
+      const template = Handlebars.compile(itemTemplate);
       options.forEach((option) => {
         const attributes = {
-          value: option.value,
+          value: option[valueProperty],
         };
-        if (option.value === props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]) {
+        if (option[valueProperty] === props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]) {
           attributes.selected = true;
         }
-        selectEl.appendChild(markup('option', option.text, attributes));
+        try {
+          selectEl.appendChild(markup('option', template({ item: option }), attributes));
+        } catch (error) {
+          selectEl.appendChild(markup('option', '-invalid template-', attributes));
+        }
       });
     }
     return super.render(selectEl);

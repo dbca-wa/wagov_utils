@@ -13,7 +13,6 @@ export class DynamicTableControl {
     this.structure = structure;
     this.values = values === '' ? [] : values;
     this.columns = ['id'].concat(Object.keys(structure).map((key) => structure[key].name)).concat('actions');
-    console.log(structure);
   }
 
   addChangeEventHandler({ fn, context }) {
@@ -22,7 +21,8 @@ export class DynamicTableControl {
       context,
     };
 
-    this.addInputElementChange($(`#${this.id} .data-row td *[data-key]`));
+    this.addInputElementChange($(`#${this.id} .data-row td input[data-key]`), 'input');
+    this.addInputElementChange($(`#${this.id} .data-row td select[data-key]`), 'change');
     $(`#${this.id} tbody`).sortable({
       handle: '.sort-handle',
 
@@ -36,8 +36,8 @@ export class DynamicTableControl {
     });
   }
 
-  addInputElementChange(selector) {
-    $(selector).on('change', this, (e) => {
+  addInputElementChange(selector, eventType) {
+    $(selector).on(eventType, this, (e) => {
       e.preventDefault();
 
       const _this = e.data;
@@ -61,7 +61,7 @@ export class DynamicTableControl {
       }
       data.push(rowValues);
     }
-    console.log({ extracted: data });
+    // console.log({ extracted: data });
     return data;
   }
 
@@ -176,7 +176,9 @@ export class DynamicTableControl {
                   const newRow = _this._parseRowData(initial);
                   const row = _this._createDataRow(newRow);
                   e.target.closest('tr').insertAdjacentElement('beforebegin', row);
-                  _this.addInputElementChange($(`#${row.id} td *[data-key]`));
+                  // _this.addInputElementChange($(`#${row.id} td *[data-key]`));
+                  this.addInputElementChange($(`#${row.id} td input[data-key]`), 'input');
+                  this.addInputElementChange($(`#${row.id} td select[data-key]`), 'change');
                   _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
                 },
               },

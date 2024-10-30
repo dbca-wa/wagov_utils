@@ -89,9 +89,9 @@ export default class LayoutController {
       // LAYOUT_TYPES.HTML_CONTENT,
       // LAYOUT_TYPES.COLUMNS,
       // ELEMENT_TYPES.INPUT_NUMBER,
-      ELEMENT_TYPES.SELECT,
+      // ELEMENT_TYPES.SELECT,
       // ELEMENT_TYPES.CHECK_BOX,
-      // ELEMENT_TYPES.RADIO,
+      ELEMENT_TYPES.RADIO,
       // ELEMENT_TYPES.BUTTON,
     ];
     defaultElements.forEach((element) => {

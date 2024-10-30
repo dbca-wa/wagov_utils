@@ -1,6 +1,6 @@
 import { CONTROL_DATA_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../../utils/control-props-types';
 
-const DEFAULT_VALUE_PROPS = {
+const DEFAULT_DEFAULT_VALUE_PROPS = {
   name: 'defaultValue',
   title: 'Default Value',
   type: 'string',
@@ -29,7 +29,7 @@ export const dataPropertiesStore = {
       { text: 'URL', value: DATASOURCE_VALUES.URL },
       { text: 'Raw JSON', value: DATASOURCE_VALUES.RAW_JSON },
     ],
-    value: 'values',
+    value: 'rawJson',
   },
   [CONTROL_DATA_PROPS_TYPES.MULTI]: {
     name: 'multipleValues',
@@ -40,12 +40,12 @@ export const dataPropertiesStore = {
     options: undefined,
     value: false,
   },
-  [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_VALUE_PROPS },
+  [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_DEFAULT_VALUE_PROPS },
 };
 
 export const datasourceDataPropertiesStore = {
   [DATASOURCE_VALUES.VALUES]: {
-    [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_VALUE_PROPS, type: 'select', options: [] },
+    [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_DEFAULT_VALUE_PROPS, type: 'select', options: [] },
     [DATASOURCE_PROPS_TYPES.VALUES]: {
       name: 'values',
       title: 'Enter Values',
@@ -86,7 +86,7 @@ export const datasourceDataPropertiesStore = {
       options: undefined,
       value: '',
     },
-    [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_VALUE_PROPS },
+    [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_DEFAULT_VALUE_PROPS },
   },
   [DATASOURCE_VALUES.RAW_JSON]: {
     [DATASOURCE_PROPS_TYPES.RAW_JSON]: {
@@ -96,10 +96,18 @@ export const datasourceDataPropertiesStore = {
       placeholder: 'Enter a JSON',
       required: false,
       options: undefined,
-      value: '""',
-      style: {
-        'min-height': '200px',
-      },
+      value: '[{"name": "John", "email": "john.doe@test.com"}, {"name": "Jane", "email": "jane.doe@test.com"}]',
+      className: 'code-editor-medium',
+    },
+
+    [DATASOURCE_PROPS_TYPES.JSON_VALUE]: {
+      name: 'jsonValue',
+      title: 'Enter Values',
+      placeholder: 'Enter values',
+      type: 'hidden',
+      required: true,
+      options: undefined,
+      value: [],
     },
 
     [DATASOURCE_PROPS_TYPES.ID_PATH]: {
@@ -119,8 +127,8 @@ export const datasourceDataPropertiesStore = {
       required: true,
       options: undefined,
       description: "The selected item's property to save.",
-      value: '',
+      value: 'value',
     },
-    [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_VALUE_PROPS },
+    [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_DEFAULT_VALUE_PROPS, type: 'select', options: [] },
   },
 };

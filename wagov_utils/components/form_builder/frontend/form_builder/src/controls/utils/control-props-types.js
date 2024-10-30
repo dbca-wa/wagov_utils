@@ -37,9 +37,9 @@ export const DATASOURCE_PROPS_TYPES = {
   VALUES: 'values',
   RAW_JSON: 'rawJson',
   DEFAULT_VALUE: 'defaultValue',
-  JSON_INPUT: 'jsonInput',
   ID_PATH: 'idPath',
   VALUE_PROPERTY: 'valueProperty',
+  JSON_VALUE: 'jsonValue',
 };
 
 export const LAYOUT_CONTROL_PROPS_TYPES = {

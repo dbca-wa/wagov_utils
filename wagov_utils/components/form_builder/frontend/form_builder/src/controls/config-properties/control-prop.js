@@ -39,7 +39,10 @@ export class ControlProp {
     const children = [
       markup('label', this.prop.title, {
         for: this.id,
-        class: this.prop.type === 'boolean' ? 'form-check-label' : 'form-label',
+        class: [
+          this.prop.type === 'boolean' ? 'form-check-label' : 'form-label',
+          this.prop.type === 'hidden' ? 'd-none' : '',
+        ].join(' '),
       }),
       _renderProp(
         {
@@ -50,6 +53,7 @@ export class ControlProp {
           placeholder: this.prop.placeholder,
           structure: this.prop.structure,
           addEmptyOption: this.prop.addEmptyOption,
+          className: this.prop.className,
         },
         this.prop.options,
         this.prop.required,
@@ -82,14 +86,13 @@ export class ControlProp {
       this.editor = brace.edit(this.id, 'session JC');
       this.editor.setTheme('ace/theme/github');
       this.editor.setValue(this.prop.value);
-      console.log(this.editor);
 
       $(hiddenElementId).on('change', { context, prop: this.prop }, cb);
-      $(`#${this.id} textarea`).on(' keydown input', { editor: this.editor }, (event) => {
+      $(`#${this.id} textarea`).on('keydown input paste', { editor: this.editor }, (event) => {
         if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Shift'].includes(event.key)) {
           return;
         }
-        if (event.type != 'input' && !['Backspace', 'Delete'].includes(event.key)) {
+        if (event.type != 'input' && event.key && !['Backspace', 'Delete'].includes(event.key)) {
           return;
         }
         const { editor } = event.data;
@@ -102,7 +105,7 @@ export class ControlProp {
 }
 
 export function _renderProp(basicProps, options = [], required = false) {
-  const { id, type, value, placeholder, dataKey, dataRowId } = basicProps;
+  const { id, type, value, placeholder, className, dataKey, dataRowId } = basicProps;
   const inputType = type === 'boolean' ? 'checkbox' : type === 'string' ? 'text' : type;
 
   const generalProps = {
@@ -110,12 +113,13 @@ export function _renderProp(basicProps, options = [], required = false) {
     required,
     'data-key': dataKey,
     'data-rowId': dataRowId,
+    class: className,
   };
 
   if (inputType === 'select') {
     const selectEl = markup('select', '', {
       ...generalProps,
-      class: 'form-select',
+      class: [className ?? '', 'form-select'].join(' '),
     });
     if (basicProps.addEmptyOption) {
       selectEl.appendChild(markup('option', '', { value: '' }));
@@ -137,7 +141,7 @@ export function _renderProp(basicProps, options = [], required = false) {
     const checkboxProps = {
       ...generalProps,
       type: inputType,
-      class: 'form-check-input',
+      class: [className ?? '', 'form-check-input'].join(' '),
     };
     if (value) {
       checkboxProps.checked = value;
@@ -152,7 +156,7 @@ export function _renderProp(basicProps, options = [], required = false) {
   if (inputType === 'textarea') {
     return markup('textarea', value, {
       ...generalProps,
-      class: 'form-control',
+      class: [className ?? '', 'form-control'].join(' '),
       rows: 3,
       placeholder,
     });
@@ -167,7 +171,7 @@ export function _renderProp(basicProps, options = [], required = false) {
         id: `id-${id}-${i}`,
         name: basicProps.name,
         value: opt.value,
-        class: 'form-check-input',
+        class: [className ?? '', 'form-check-input'].join(' '),
       };
 
       try {
@@ -194,7 +198,6 @@ export function _renderProp(basicProps, options = [], required = false) {
   if (inputType === 'html') {
     const element = markup('div', value, {
       ...generalProps,
-      class: 'html-editor',
     });
     const hiddenEditor = markup('input', '', {
       value,
@@ -204,11 +207,18 @@ export function _renderProp(basicProps, options = [], required = false) {
     return markup('div', [element, hiddenEditor]);
   }
 
+  if (inputType === 'hidden') {
+    return markup('input', '', {
+      ...generalProps,
+      type: inputType,
+    });
+  }
+
   return markup('input', '', {
     ...generalProps,
     type: inputType,
     value,
     placeholder,
-    class: 'form-control',
+    class: [className ?? '', 'form-control'].join(' '),
   });
 }

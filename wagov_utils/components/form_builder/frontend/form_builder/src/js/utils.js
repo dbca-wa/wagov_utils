@@ -142,6 +142,9 @@ export const markup = function (tag, content = '', attributes = {}) {
   for (const attr in attrs) {
     if (attrs.hasOwnProperty(attr)) {
       const name = safeAttrName(attr);
+      if (Array.isArray(attrs[attr])) {
+        debugger;
+      }
       let attrVal = Array.isArray(attrs[attr]) ? unique(attrs[attr].join(' ').split(' ')).join(' ') : attrs[attr];
 
       if (typeof attrVal === 'boolean') {
@@ -167,4 +170,8 @@ export const markup = function (tag, content = '', attributes = {}) {
   bindEvents(field, events);
 
   return field;
+};
+
+export const unique = (array) => {
+  return array.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 };

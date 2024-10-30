@@ -1,4 +1,6 @@
-import { CONTROL_DATA_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
+import Handlebars from 'handlebars';
+
+import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
 import { ELEMENT_TYPES } from '../utils/element-types';
 import { INPUT_TYPES } from '../utils/input-types';
 import { BaseControlProps } from './base-control-props';
@@ -7,18 +9,27 @@ import { DATASOURCE_VALUES, datasourceDataPropertiesStore } from './predefined/d
 const multiSelectProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE, CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
 
 const defProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
-const defMultiChoiceProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_TYPES.DATASOURCE];
-const selectelementProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_TYPES.DATASOURCE];
-const radioButtonProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE];
-const selectBoxesProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE];
+const defMultiChoiceProps = [
+  CONTROL_DATA_PROPS_TYPES.MULTI,
+  CONTROL_DATA_PROPS_TYPES.DATASOURCE,
+  CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE,
+];
+const selectelementProps = [
+  CONTROL_DATA_PROPS_TYPES.MULTI,
+  CONTROL_DATA_PROPS_TYPES.DATASOURCE,
+  CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE,
+];
+const radioButtonProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE, CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE];
+const selectBoxesProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE, CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE];
 
 const dsValues = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.VALUES];
 const dsURL = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.URL];
 const dsJSON = [
   DATASOURCE_PROPS_TYPES.DEFAULT_VALUE,
+  DATASOURCE_PROPS_TYPES.JSON_VALUE,
+  DATASOURCE_PROPS_TYPES.VALUE_PROPERTY,
   DATASOURCE_PROPS_TYPES.RAW_JSON,
   DATASOURCE_PROPS_TYPES.ID_PATH,
-  DATASOURCE_PROPS_TYPES.VALUE_PROPERTY,
 ];
 
 class BaseDataProps extends BaseControlProps {
@@ -47,9 +58,8 @@ class BaseDataProps extends BaseControlProps {
 
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
-    const value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e.value;
-    _this.editor.initialProps[prop.name] = value;
-    console.log('Data Props Change', prop.name, value);
+    const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
+    _this.modifyPropValue(prop.name, value);
   }
 }
 
@@ -81,8 +91,8 @@ export class InputFieldDataProperties extends BaseDataProps {
 
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
-    const value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e.value;
-    _this.editor.initialProps[prop.name] = value;
+    const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
+    _this.modifyPropValue(prop.name, value);
     _this.editor._renderPreviewControl();
   }
 }
@@ -94,13 +104,27 @@ class MultipleChoiceDataProperties extends BaseDataProps {
     super(dataProps);
     this.fillInProps(props);
     this.selectDatasource(this.props[CONTROL_DATA_PROPS_TYPES.DATASOURCE]?.prop.value);
+    this.prepareDatasourceData(props);
+  }
+
+  prepareDatasourceData(props) {
     this.datasourceProperties.fillInProps(props);
     if (this.datasource === DATASOURCE_PROPS_TYPES.VALUES) {
-      // this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE].prop.options = [...props.values] ?? [];
       this.datasourceProperties.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {
         options: [...props.values] ?? [],
       });
+    } else if (this.datasource === DATASOURCE_PROPS_TYPES.RAW_JSON) {
+      try {
+        const parsed = JSON.parse(this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.RAW_JSON].prop.value);
+        if (Array.isArray(parsed)) {
+          this.datasourceProperties.modifyPropValue(DATASOURCE_PROPS_TYPES.JSON_VALUE, parsed);
+          this.datasourceProperties.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {
+            options: parsed ?? [],
+          });
+        }
+      } catch (error) {}
     }
+    this.applyItemTemplateToDefaultValues();
   }
 
   fillInProps(hostProps) {
@@ -134,9 +158,6 @@ class MultipleChoiceDataProperties extends BaseDataProps {
         datasourceDataPropertiesStore[DATASOURCE_VALUES.RAW_JSON],
       );
     }
-    // this.datasourceProperties.fillInProps({
-    //   [CONTROL_DATA_PROPS_TYPES.DATASOURCE]: selectedDS,
-    // });
   }
 
   renderInParent() {
@@ -161,23 +182,30 @@ class MultipleChoiceDataProperties extends BaseDataProps {
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
 
-    const value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e.value;
-    _this.editor.initialProps[prop.name] = value;
+    const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
+    // This works because props names should always be different.
+    _this.datasourceProperties.modifyPropValue(prop.name, value);
+    _this.modifyPropValue(prop.name, value);
 
     if (this.id === 'cp-dataSource') {
       _this.selectDatasource(value);
+      _this.prepareDatasourceData(_this.getPropsValues());
       _this.renderInParent();
     }
 
-    if (prop.name === 'values') {
-      _this.datasourceProperties.fillInProps(_this.editor.initialProps);
+    if (prop.name === DATASOURCE_PROPS_TYPES.VALUES) {
+      // _this.datasourceProperties.fillInProps(_this.editor.initialProps);
       _this.editor._renderPreviewControl();
       if (_this.datasource === DATASOURCE_PROPS_TYPES.VALUES) {
-        _this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE].prop.options = value;
+        _this.datasourceProperties.modifyProp(DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, { options: value });
+        _this.datasourceProperties.modifyPropValue(DATASOURCE_PROPS_TYPES.VALUE_PROPERTY, 'value');
         _this.renderProp(_this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]);
+        _this.editor._renderPreviewControl();
+        _this.applyItemTemplateToDefaultValues(true);
+        return;
       }
     }
-    if (prop.name === 'defaultValue') {
+    if (prop.name === DATASOURCE_PROPS_TYPES.DEFAULT_VALUE) {
       if (_this.initialProps?.type === ELEMENT_TYPES.SELECT_BOXES) {
         const values = [];
         document.querySelectorAll(`input[type="checkbox"][name="${e.target.name}"]`).forEach((el) => {
@@ -185,13 +213,66 @@ class MultipleChoiceDataProperties extends BaseDataProps {
             values.push(el.value);
           }
         });
-        _this.editor.initialProps[prop.name] = values;
-        _this.editor._renderPreviewControl();
-        return;
+        _this.datasourceProperties.modifyPropValue(prop.name, values);
+      } else {
+        _this.datasourceProperties.modifyPropValue(prop.name, value);
       }
-
+      _this.editor._renderPreviewControl();
+      return;
+    }
+    if ([CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE, DATASOURCE_PROPS_TYPES.VALUE_PROPERTY].includes(prop.name)) {
+      _this.applyItemTemplateToDefaultValues(true);
       _this.editor._renderPreviewControl();
     }
+    if (prop.name === DATASOURCE_PROPS_TYPES.RAW_JSON) {
+      try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) {
+          _this.datasourceProperties.modifyPropValue(DATASOURCE_PROPS_TYPES.JSON_VALUE, parsed);
+          _this.renderProp(_this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.JSON_VALUE]);
+          _this.applyItemTemplateToDefaultValues(true);
+        }
+
+        _this.editor._renderPreviewControl();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    // console.log(_this.datasourceProperties.getPropsValues());
+  }
+
+  applyItemTemplateToDefaultValues(render = false) {
+    try {
+      const values = this.getPropsValues();
+      const valueProperty = values[DATASOURCE_PROPS_TYPES.VALUE_PROPERTY] || 'value';
+      const dataProp = values.hasOwnProperty(DATASOURCE_PROPS_TYPES.VALUES)
+        ? DATASOURCE_PROPS_TYPES.VALUES
+        : DATASOURCE_PROPS_TYPES.JSON_VALUE;
+      const items = values[dataProp];
+      const template = Handlebars.compile(values[CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE]);
+      const parser = new DOMParser();
+
+      this.datasourceProperties.modifyProp(DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, {
+        options: items.map((item) => {
+          let text = '';
+
+          try {
+            const content = template({ item });
+            const htmlDoc = parser.parseFromString(content, 'text/html');
+            htmlDoc.body.childNodes.forEach((node) => {
+              text += node.innerText;
+            });
+          } catch (error) {
+            text = item.text;
+          }
+          return {
+            value: item[valueProperty],
+            text,
+          };
+        }),
+      });
+      if (render) this.renderProp(this.datasourceProperties.props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]);
+    } catch (error) {}
   }
 
   render() {
@@ -220,7 +301,7 @@ export class RadioButtonsDataProperties extends MultipleChoiceDataProperties {
 export class SelectBoxesDataProperties extends MultipleChoiceDataProperties {
   constructor(props) {
     super(props, selectBoxesProps);
-    if (this.datasource === DATASOURCE_PROPS_TYPES.VALUES) {
+    if ([DATASOURCE_PROPS_TYPES.VALUES, DATASOURCE_PROPS_TYPES.RAW_JSON].includes(this.datasource)) {
       this.datasourceProperties.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {
         type: 'select-boxes',
         value: [],

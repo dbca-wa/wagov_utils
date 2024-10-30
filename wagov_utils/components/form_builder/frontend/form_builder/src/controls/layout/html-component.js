@@ -52,7 +52,7 @@ export class HTMLComponent extends Control {
 
       elements.push(element);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
 
     return markup('div', elements, { id: props.id });

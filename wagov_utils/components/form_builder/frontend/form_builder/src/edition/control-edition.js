@@ -11,6 +11,7 @@ export default class ControlEdition extends Control {
   id = 'element-wrapper-' + generateRandomId();
   modal = null;
   initialProps;
+  hasSaved = false;
   constructor(control, controller) {
     super({}, {}, CONTROL_TYPES.BLOCK);
     this.control = control;
@@ -43,6 +44,7 @@ export default class ControlEdition extends Control {
 
   _editControl(event) {
     const _this = event.data;
+    _this.hasSaved = false;
     const modalIdSelector = `#${appSelectors.modalControlEdition}`;
     const $m = $(modalIdSelector);
 
@@ -69,19 +71,30 @@ export default class ControlEdition extends Control {
     });
     _this.modal.toggle();
 
-    console.log('Adding Control values');
+    const myModalEl = document.getElementById(appSelectors.modalControlEdition);
+    myModalEl.addEventListener(
+      'hidden.bs.modal',
+      function (event) {
+        _this._closeModal();
+      },
+      { once: true },
+    );
     $m.find('.modal-footer .btn-primary').off('click').on('click', _this, _this._saveControl);
   }
 
   _onPropsChange(e) {
     const { context: _this, prop } = e.data;
     const value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e.value;
-    _this.initialProps[prop.name] = value;
+    _this.control.displayControlProps.modifyPropValue(prop.name, value);
     _this._renderPreviewControl();
   }
 
   _renderPreviewControl() {
-    $('#preview-edition').empty().append(this.control.render(this.initialProps));
+    const props = {
+      ...this.control.displayControlProps.getPropsValues(),
+      ...this.control.dataControlProps?.getPropsValues(),
+    };
+    $('#preview-edition').empty().append(this.control.render(props));
 
     const tooltipTriggerList = document.querySelectorAll('#preview-edition [data-bs-toggle="tooltip"]');
     [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
@@ -93,10 +106,9 @@ export default class ControlEdition extends Control {
       alert('Label is required');
       return;
     }
-    _this.control.displayControlProps.fillInProps(Object.assign({}, _this.initialProps));
-    _this.control.dataControlProps.fillInProps(Object.assign({}, _this.initialProps));
-    _this.modal.hide();
     _this.controller.onSave(_this);
+    _this.hasSaved = true;
+    _this.modal.hide();
   }
 
   _removeControl(event) {
@@ -105,6 +117,12 @@ export default class ControlEdition extends Control {
       $(_this.getIdSelector()).remove();
       _this.controller.onDelete(_this);
     });
+  }
+
+  _closeModal() {
+    if (this.hasSaved) return;
+    this.control.displayControlProps.fillInProps(Object.assign({}, this.initialProps));
+    this.control.dataControlProps.fillInProps(Object.assign({}, this.initialProps));
   }
 
   _mouseAction(event) {

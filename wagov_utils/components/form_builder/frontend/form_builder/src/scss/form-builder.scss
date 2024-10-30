@@ -204,6 +204,12 @@ $main-panel-padding: 20px;
 }
 
 // HTML Editor
-.html-editor {
+.code-editor-xsmall {
+  min-height: 40px;
+}
+.code-editor-small {
   min-height: 144px;
+}
+.code-editor-medium {
+  min-height: 200px;
 }

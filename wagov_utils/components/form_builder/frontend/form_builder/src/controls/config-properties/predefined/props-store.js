@@ -1,4 +1,8 @@
-import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../../utils/control-props-types';
+import {
+  CONTROL_DATA_PROPS_TYPES,
+  CONTROL_PROPS_TYPES,
+  LAYOUT_CONTROL_PROPS_TYPES,
+} from '../../utils/control-props-types';
 
 export const propertiesStore = {
   [CONTROL_PROPS_TYPES.LABEL]: {
@@ -31,20 +35,22 @@ export const propertiesStore = {
   [CONTROL_PROPS_TYPES.DESCRIPTION]: {
     name: 'description',
     title: 'Description',
-    type: 'string',
+    type: 'html',
     placeholder: 'Enter a description',
     required: false,
     options: undefined,
     value: '',
+    className: 'code-editor-xsmall',
   },
   [CONTROL_PROPS_TYPES.TOOLTIP]: {
     name: 'tooltip',
     title: 'Tooltip',
-    type: 'string',
+    type: 'html',
     placeholder: 'Enter a tooltip',
     required: false,
     options: undefined,
     value: '',
+    className: 'code-editor-xsmall',
   },
   [CONTROL_PROPS_TYPES.PREFIX]: {
     name: 'prefix',
@@ -245,5 +251,16 @@ export const propertiesStore = {
     required: false,
     options: undefined,
     value: '',
+    className: 'code-editor-small',
+  },
+  [CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE]: {
+    name: 'itemTemplate',
+    title: 'Item Template',
+    type: 'html',
+    placeholder: 'Enter an item template',
+    required: false,
+    options: undefined,
+    value: '<span>{{ item.label }}</span>',
+    className: 'code-editor-xsmall',
   },
 };
