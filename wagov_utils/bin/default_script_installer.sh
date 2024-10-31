@@ -14,5 +14,5 @@ chmod 755 /bin/scheduler.py
 mkdir /tmp/azcopy/
 wget https://aka.ms/downloadazcopy-v10-linux -O /tmp/azcopy/azcopy.tar.gz
 cd /tmp/azcopy/ ; tar -xzvf azcopy.tar.gz
-cp /tmp/azcopy/azcopy_linux_amd64_10.26.0/azcopy /bin/azcopy
+cp /tmp/azcopy/azcopy_linux_amd64_10.27.0/azcopy /bin/azcopy
 chmod 755 /bin/azcopy
