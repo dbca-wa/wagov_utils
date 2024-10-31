@@ -127,7 +127,7 @@ export const datasourceDataPropertiesStore = {
       required: true,
       options: undefined,
       description: "The selected item's property to save.",
-      value: 'value',
+      value: 'email',
     },
     [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_DEFAULT_VALUE_PROPS, type: 'select', options: [] },
   },

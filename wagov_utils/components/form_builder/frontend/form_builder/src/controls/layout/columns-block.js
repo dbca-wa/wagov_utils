@@ -12,10 +12,10 @@ const defaultSettings = {
 };
 
 export class ColumnsBlock extends LayoutControl {
+  element_type = LAYOUT_TYPES.COLUMNS_ROW;
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
     super(attr, _props, CONTROL_TYPES.LAYOUT);
-    this.element_type = LAYOUT_TYPES.COLUMNS_ROW;
     this.setup();
   }
 
@@ -41,7 +41,16 @@ export class ColumnsBlock extends LayoutControl {
     }
   }
 
-  renderControl() {
+  toDisplay(container) {
+    const parent = markup('div', '', { class: this.container_class, id: this.id });
+    container.append(parent);
+    for (let i = 0; i < this.children.length; i++) {
+      const column = this.children[i];
+      column.toDisplay(parent);
+    }
+  }
+
+  renderControl(isDisplayMode = false) {
     const props = this.displayControlProps.getPropsValues();
     const tempDropables = {};
     this.children = [];

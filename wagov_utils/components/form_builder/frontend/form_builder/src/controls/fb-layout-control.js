@@ -9,7 +9,6 @@ export default class LayoutControl extends Control {
   children = [];
   dropables = {};
   areaId;
-  element_type;
   onDrop = () => {};
   onRemove = () => {};
 
@@ -17,6 +16,8 @@ export default class LayoutControl extends Control {
     super(attr, props, CONTROL_TYPES.LAYOUT);
     this.label = new Label(props['label'] || ''); // Default label
     this.areaId = ['area-', generateRandomId()].join('');
+    if (element_type) this.element_type = element_type;
+
     this._basicSetup();
   }
 
@@ -40,6 +41,7 @@ export default class LayoutControl extends Control {
     const json = {
       id: this.id,
       controlType: this.controlType,
+      element_type: this.element_type,
       // attr: this.attr,
       props: this.getPropsObject(),
       areaId: this.areaId,
@@ -52,7 +54,16 @@ export default class LayoutControl extends Control {
     return json;
   }
 
-  renderControl(children = []) {
+  toDisplay(container) {
+    const parent = markup('div', '', { class: this.container_class, id: this.id });
+    container.append(parent);
+    for (let i = 0; i < this.children.length; i++) {
+      const column = this.children[i];
+      column.toDisplay(parent);
+    }
+  }
+
+  renderControl(displayMode) {
     return this.render(children);
   }
 

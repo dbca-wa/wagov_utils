@@ -1,4 +1,5 @@
 import { DropableControl } from '../controls/layout/dropable-control';
+import { markup } from './utils';
 
 export class BuildArea {
   static instance;
@@ -79,5 +80,17 @@ export class BuildArea {
 
   setAreaContainer(area) {
     this.area.setContainer(area, true);
+  }
+
+  viewForm(container) {
+    if (!this.area) {
+      throw new Error('No area defined');
+    }
+
+    if (!this.area.children.length) {
+      container.append(markup('h1', 'Nada por aquí'));
+      return;
+    }
+    this.area.toDisplay(container);
   }
 }

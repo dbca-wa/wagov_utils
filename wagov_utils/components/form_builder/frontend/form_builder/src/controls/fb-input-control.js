@@ -42,6 +42,17 @@ export default class InputControl extends Control {
     return this.label.text !== '' && !this.displayControlProps.props[CONTROL_PROPS_TYPES.HIDE_LABEL]?.value;
   }
 
+  toJSON() {
+    const json = {
+      id: this.id,
+      controlType: this.controlType,
+      element_type: this.element_type,
+      parentAreaId: this.parentAreaId,
+      // attr: this.attr,
+      props: this.getPropsObject(),
+    };
+    return json;
+  }
   getAttributes() {
     const attributes = {};
     for (let key in this.attr) {
@@ -50,16 +61,18 @@ export default class InputControl extends Control {
     return attributes;
   }
 
-  renderControl(children = []) {
-    if (!Array.isArray(children)) {
-      children = [children];
+  renderControl(isDisplayMode = false) {
+    const props = this.displayControlProps?.getPropsValues();
+    Object.assign(props, this.dataControlProps?.getPropsValues());
+    if (!isDisplayMode) {
+      delete props[CONTROL_PROPS_TYPES.HIDDEN];
+      delete props[CONTROL_PROPS_TYPES.HIDE_LABEL];
     }
-    if ([ELEMENT_TYPES.CHECK_BOX, ELEMENT_TYPES.RADIO].find(this.element_type)) {
-      children.push(this.label.render());
-    } else {
-      children.unshift(this.label.render());
-    }
-    return super.render([markup('div', children)], this.container_class);
+    return this.render({
+      id: this.id,
+      name: this.props.name,
+      ...props,
+    });
   }
 
   render(children = []) {

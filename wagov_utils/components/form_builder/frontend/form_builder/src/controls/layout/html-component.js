@@ -5,12 +5,14 @@ import { HTMLComponentDisplayProps } from '../config-properties/layout-propertie
 import { CONTROL_TYPES } from '../utils/control-types';
 import Label from '../elements/basics/label';
 import { BasicDataProperties } from '../config-properties/data-properties';
+import { LAYOUT_TYPES } from '../utils/layout-types';
 
 const defaultSettings = {
   tag: 'div',
 };
 
 export class HTMLComponent extends Control {
+  element_type = LAYOUT_TYPES.HTML_CONTENT;
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
 
@@ -24,14 +26,13 @@ export class HTMLComponent extends Control {
     this.displayControlProps = new HTMLComponentDisplayProps(this.props);
     this.dataControlProps = null;
   }
-  renderControl() {
-    const props = this.displayControlProps.getPropsValues();
-
+  renderControl(isDisplayMode = false) {
+    const props = this.displayControlProps?.getPropsValues();
+    Object.assign(props, this.dataControlProps?.getPropsValues());
     return this.render({
-      [CONTROL_PROPS_TYPES.LABEL]: props[CONTROL_PROPS_TYPES.LABEL] ?? '',
-      [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '',
-      [LAYOUT_CONTROL_PROPS_TYPES.HTML_CONTENT]: props[LAYOUT_CONTROL_PROPS_TYPES.HTML_CONTENT] ?? '',
-      [LAYOUT_CONTROL_PROPS_TYPES.TAG]: props[LAYOUT_CONTROL_PROPS_TYPES.TAG] ?? '',
+      id: this.id,
+      name: this.props.name,
+      ...props,
     });
   }
 

@@ -7,14 +7,24 @@ import { LAYOUT_TYPES } from '../utils/layout-types';
 const defaultSettings = {};
 
 export class Column extends LayoutControl {
+  element_type = LAYOUT_TYPES.COLUMN;
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
     super(attr, _props, CONTROL_TYPES.LAYOUT);
-    this.element_type = LAYOUT_TYPES.COLUMN;
     this.setup();
   }
 
-  renderControl() {
+  toDisplay(container) {
+    const props = this.props;
+    const column = markup('div', '', { id: props.id, class: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] });
+    container.append(column);
+    for (let i = 0; i < this.children.length; i++) {
+      const control = this.children[i];
+      control.toDisplay(column);
+    }
+  }
+
+  renderControl(isDisplayMode = false) {
     return this.render({
       ...this.props,
     });

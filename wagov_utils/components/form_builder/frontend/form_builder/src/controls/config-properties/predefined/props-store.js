@@ -260,7 +260,7 @@ export const propertiesStore = {
     placeholder: 'Enter an item template',
     required: false,
     options: undefined,
-    value: '<span>{{ item.label }}</span>',
+    value: '<span>{{ item.name }}</span>',
     className: 'code-editor-xsmall',
   },
 };

@@ -50,25 +50,6 @@ export default class SelectElement extends InputControl {
     this.attr['class'] = 'form-select';
   }
 
-  renderControl() {
-    const props = this.displayControlProps.getPropsValues();
-    Object.assign(props, this.dataControlProps.getPropsValues());
-
-    return this.render({
-      [CONTROL_PROPS_TYPES.LABEL]: props[CONTROL_PROPS_TYPES.LABEL],
-      [CONTROL_PROPS_TYPES.PLACEHOLDER]: props[CONTROL_PROPS_TYPES.PLACEHOLDER],
-      [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS],
-      [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
-      [CONTROL_PROPS_TYPES.DESCRIPTION]: props[CONTROL_PROPS_TYPES.DESCRIPTION] ?? '',
-      [CONTROL_PROPS_TYPES.TOOLTIP]: props[CONTROL_PROPS_TYPES.TOOLTIP] ?? '',
-      [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE],
-      [DATASOURCE_PROPS_TYPES.VALUES]: props[DATASOURCE_PROPS_TYPES.VALUES],
-      [DATASOURCE_PROPS_TYPES.JSON_VALUE]: props[DATASOURCE_PROPS_TYPES.JSON_VALUE],
-      [DATASOURCE_PROPS_TYPES.VALUE_PROPERTY]: props[DATASOURCE_PROPS_TYPES.VALUE_PROPERTY],
-      [CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE]: props[CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE],
-    });
-  }
-
   render(customProps, attr) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
 

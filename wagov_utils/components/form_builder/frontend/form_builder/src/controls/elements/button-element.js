@@ -27,21 +27,18 @@ export default class ButtonElement extends Control {
     this.dataControlProps = new BasicDataProperties({});
   }
 
-  renderControl() {
-    const props = this.displayControlProps.getPropsValues();
+  toDisplay(container) {
+    container.appendChild(this.render());
+  }
+
+  renderControl(isDisplayMode = false) {
+    const props = this.displayControlProps?.getPropsValues();
+    Object.assign(props, this.dataControlProps?.getPropsValues());
 
     return this.render({
-      [CONTROL_PROPS_TYPES.LABEL]: props[CONTROL_PROPS_TYPES.LABEL],
-      [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS],
-      [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
-      [CONTROL_PROPS_TYPES.ACTION]: props[CONTROL_PROPS_TYPES.ACTION],
-      [CONTROL_PROPS_TYPES.TOOLTIP]: props[CONTROL_PROPS_TYPES.TOOLTIP],
-
-      [CONTROL_PROPS_TYPES.THEME]: props[CONTROL_PROPS_TYPES.THEME],
-      [CONTROL_PROPS_TYPES.SIZE]: props[CONTROL_PROPS_TYPES.SIZE],
-      [CONTROL_PROPS_TYPES.BLOCK_BUTTON]: props[CONTROL_PROPS_TYPES.BLOCK_BUTTON],
-      [CONTROL_PROPS_TYPES.LEFT_ICON]: props[CONTROL_PROPS_TYPES.LEFT_ICON],
-      [CONTROL_PROPS_TYPES.RIGHT_ICON]: props[CONTROL_PROPS_TYPES.RIGHT_ICON],
+      id: this.id,
+      name: this.props.name,
+      ...props,
     });
   }
 

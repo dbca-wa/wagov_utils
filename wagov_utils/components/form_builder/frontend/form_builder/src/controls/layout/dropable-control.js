@@ -6,15 +6,17 @@ import LayoutControl from '../fb-layout-control';
 import { BUILDER_TOOLBOX } from '../toolbox-store';
 import { CLASS_DROPABLE_BLOCKS, CLASS_EMPTY_DROPABLE } from '../utils/constants';
 import { CONTROL_TYPES } from '../utils/control-types';
+import { LAYOUT_TYPES } from '../utils/layout-types';
 
 const defaultSettings = {};
 
 export class DropableControl extends LayoutControl {
+  element_type = LAYOUT_TYPES.DROPABLE;
   $c;
 
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
-    super(attr, _props, CONTROL_TYPES.LAYOUT);
+    super(attr, _props);
     this.area = BuildArea.getInstance();
     this.setup();
   }
@@ -109,7 +111,7 @@ export class DropableControl extends LayoutControl {
         _this.area.transferControl(controlId, sourceAreaId, targetAreaId);
       });
 
-      $(`.${this.container_class}`).disableSelection();
+      // $(`.${this.container_class}`).disableSelection();
     }
   }
 
@@ -157,6 +159,24 @@ export class DropableControl extends LayoutControl {
     control.renderInParent($(renderedControl).find('.fb-wrapper-content'));
     fbControlWrapper.addButtonEvents();
     return position;
+  }
+
+  toDisplay(parentContainer) {
+    const container = markup('div', '', {
+      class: 'col',
+      id: this.id,
+      'data-parentAreaId': this.parentAreaId,
+      'data-areaId': this.areaId,
+    });
+    for (let i = 0; i < this.children.length; i++) {
+      const elm = this.children[i];
+      elm.toDisplay(container);
+    }
+    if (parentContainer) {
+      parentContainer.append(container);
+    } else {
+      return container;
+    }
   }
 
   render(customProps, attr) {

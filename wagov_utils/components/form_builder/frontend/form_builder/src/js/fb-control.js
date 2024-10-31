@@ -11,6 +11,7 @@ export default class Control {
   className = '';
 
   controlType = 'BLOCK';
+  element_type; // More specific, directly related to the class
   displayControlProps;
   dataControlProps;
 
@@ -51,9 +52,9 @@ export default class Control {
 
   getPropsObject() {
     return {
+      ...this.props,
       ...this.displayControlProps?.getPropsValues(),
       ...this.dataControlProps?.getPropsValues(),
-      ...this.props,
     };
   }
 
@@ -68,8 +69,13 @@ export default class Control {
     return json;
   }
 
-  renderControl(children = [], containerClass = '') {
-    return markup('div', children, { class: containerClass });
+  toDisplay(container) {
+    container.append(this.renderControl(true));
+    // TODO: Add Events
+  }
+
+  renderControl() {
+    return this.render();
   }
 
   render(children = [], containerClass = '') {

@@ -24,7 +24,7 @@ function FormBuilder(element, settings, $) {
 
   _.body = [];
 
-  _.layout = new LayoutController(this);
+  _.layout = new LayoutController(this, FORM_CONTROLS);
 
   _.$controlFactory = undefined;
   _.options = $.extend({}, _.defaults, settings, dataSettings);
@@ -38,8 +38,7 @@ function FormBuilder(element, settings, $) {
 
 FormBuilder.prototype.init = function () {
   const _ = this;
-  _.layout.initialLayout(FORM_CONTROLS);
-  _.layout.renderForm();
+  _.layout.renderFormBuilder();
 };
 
 jQuery.fn.formBuilder = function (...args) {

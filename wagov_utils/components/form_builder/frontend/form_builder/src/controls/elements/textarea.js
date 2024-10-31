@@ -26,24 +26,6 @@ export default class TextAreaElement extends InputControl {
     this.attr['class'] = 'form-control';
   }
 
-  renderControl() {
-    const props = this.displayControlProps.getPropsValues();
-    Object.assign(props, this.dataControlProps.getPropsValues());
-
-    return this.render({
-      id: this.id,
-      name: this.props.name,
-      [CONTROL_PROPS_TYPES.LABEL]: props[CONTROL_PROPS_TYPES.LABEL],
-      [CONTROL_PROPS_TYPES.PLACEHOLDER]: props[CONTROL_PROPS_TYPES.PLACEHOLDER],
-      [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '',
-      [CONTROL_PROPS_TYPES.DESCRIPTION]: props[CONTROL_PROPS_TYPES.DESCRIPTION] ?? '',
-      [CONTROL_PROPS_TYPES.TOOLTIP]: props[CONTROL_PROPS_TYPES.TOOLTIP] ?? '',
-      [CONTROL_PROPS_TYPES.DISABLED]: props[CONTROL_PROPS_TYPES.DISABLED],
-      [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE] ?? '',
-      [CONTROL_PROPS_TYPES.TEXTAREA_ROWS]: props[CONTROL_PROPS_TYPES.TEXTAREA_ROWS] ?? 5,
-    });
-  }
-
   render(customProps, attr) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
     const value = props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
