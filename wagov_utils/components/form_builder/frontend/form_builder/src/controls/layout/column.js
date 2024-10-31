@@ -7,7 +7,7 @@ import { LAYOUT_TYPES } from '../utils/layout-types';
 const defaultSettings = {};
 
 export class Column extends LayoutControl {
-  element_type = LAYOUT_TYPES.COLUMN;
+  elementType = LAYOUT_TYPES.COLUMN;
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
     super(attr, _props, CONTROL_TYPES.LAYOUT);

@@ -12,7 +12,7 @@ const defaultSettings = {
 };
 
 export class HTMLComponent extends Control {
-  element_type = LAYOUT_TYPES.HTML_CONTENT;
+  elementType = LAYOUT_TYPES.HTML_CONTENT;
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
 

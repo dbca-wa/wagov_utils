@@ -16,7 +16,7 @@ const defaultSettings = {
 export default class InputElement extends InputControl {
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
-    super(attr, _props, attr.type);
+    super(attr, _props, ELEMENT_TYPES.INPUT);
     this.setup();
   }
 

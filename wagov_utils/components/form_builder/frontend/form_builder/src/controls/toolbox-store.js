@@ -130,7 +130,7 @@ export const SPECIAL_INPUT_STORE = {
       required: true,
     },
     attr: {
-      type: INPUT_TYPES.TEXT,
+      type: INPUT_TYPES.DATE,
     },
     icon: 'fa fa-font',
     controlClass: InputElement,
@@ -175,7 +175,7 @@ export const SPECIAL_INPUT_STORE = {
       required: true,
     },
     attr: {
-      type: INPUT_TYPES.EMAIL,
+      // type: INPUT_TYPES.EMAIL,
     },
     icon: 'fa fa-font',
     controlClass: InputElement,

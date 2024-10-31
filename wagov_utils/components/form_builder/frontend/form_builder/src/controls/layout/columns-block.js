@@ -12,7 +12,7 @@ const defaultSettings = {
 };
 
 export class ColumnsBlock extends LayoutControl {
-  element_type = LAYOUT_TYPES.COLUMNS_ROW;
+  elementType = LAYOUT_TYPES.COLUMNS_ROW;
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
     super(attr, _props, CONTROL_TYPES.LAYOUT);

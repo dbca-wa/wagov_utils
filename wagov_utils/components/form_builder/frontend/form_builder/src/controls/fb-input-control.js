@@ -19,12 +19,12 @@ function extractLabelProps(props = {}) {
 
 export default class InputControl extends Control {
   container_class = 'formarea-control';
-  element_type;
+  elementType;
   description;
   tooltip;
-  constructor(attr, props, element_type) {
+  constructor(attr, props, elementType) {
     super(attr, props, CONTROL_TYPES.ELEMENT);
-    this.element_type = element_type || ELEMENT_TYPES.INPUT;
+    this.elementType = elementType || ELEMENT_TYPES.INPUT;
     this.label = new Label(props['label'] || '', extractLabelProps(props)); // Default label
     this._basicSetup();
   }
@@ -46,9 +46,9 @@ export default class InputControl extends Control {
     const json = {
       id: this.id,
       controlType: this.controlType,
-      element_type: this.element_type,
+      elementType: this.elementType,
       parentAreaId: this.parentAreaId,
-      // attr: this.attr,
+      attr: this.attr,
       props: this.getPropsObject(),
     };
     return json;
@@ -87,7 +87,7 @@ export default class InputControl extends Control {
         })
       : undefined;
     if (this.isShowLabel()) {
-      if (this.element_type === ELEMENT_TYPES.CHECK_BOX) {
+      if (this.elementType === ELEMENT_TYPES.CHECK_BOX) {
         children.push(this.label.render());
         if (tooltip) children.push(tooltip);
       } else {

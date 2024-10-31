@@ -32,7 +32,6 @@ export class BuildArea {
   setupDropableArea() {
     this.area.onDrop = function (control) {
       control.parentAreaId = this.areaId;
-      console.log('Map Updated', this?.toJSON());
     };
     this.area.onRemove = function (control) {
       console.log('Remove event', control.controlType);
@@ -51,7 +50,6 @@ export class BuildArea {
       this.dropables[targetAreaId].addChildControl(control);
       this.dropables[sourceAreaId].removeChildControl(controlId);
       console.log('Control transferred from', sourceAreaId, 'to', targetAreaId);
-      console.log('Map Updated', this.area.toJSON());
     }
   }
 
@@ -80,6 +78,10 @@ export class BuildArea {
 
   setAreaContainer(area) {
     this.area.setContainer(area, true);
+  }
+
+  toJSON() {
+    return this.area.children.map((c) => c.toJSON());
   }
 
   viewForm(container) {

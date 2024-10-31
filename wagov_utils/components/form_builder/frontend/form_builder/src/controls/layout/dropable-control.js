@@ -11,7 +11,7 @@ import { LAYOUT_TYPES } from '../utils/layout-types';
 const defaultSettings = {};
 
 export class DropableControl extends LayoutControl {
-  element_type = LAYOUT_TYPES.DROPABLE;
+  elementType = LAYOUT_TYPES.DROPABLE;
   $c;
 
   constructor(attr = {}, props = {}) {

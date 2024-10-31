@@ -15,6 +15,7 @@ const defaultProps = {
 };
 
 export default class ButtonElement extends Control {
+  elementType = ELEMENT_TYPES.BUTTON;
   constructor(attr = { value: 'default' }, props = {}) {
     let _attr = Object.assign({}, defaultSettings, attr);
     let _props = Object.assign({}, defaultProps, props);

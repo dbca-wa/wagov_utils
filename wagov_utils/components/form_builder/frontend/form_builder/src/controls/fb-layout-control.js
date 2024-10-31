@@ -12,11 +12,11 @@ export default class LayoutControl extends Control {
   onDrop = () => {};
   onRemove = () => {};
 
-  constructor(attr, props, element_type) {
+  constructor(attr, props, elementType) {
     super(attr, props, CONTROL_TYPES.LAYOUT);
     this.label = new Label(props['label'] || ''); // Default label
     this.areaId = ['area-', generateRandomId()].join('');
-    if (element_type) this.element_type = element_type;
+    if (elementType) this.elementType = elementType;
 
     this._basicSetup();
   }
@@ -41,7 +41,7 @@ export default class LayoutControl extends Control {
     const json = {
       id: this.id,
       controlType: this.controlType,
-      element_type: this.element_type,
+      elementType: this.elementType,
       // attr: this.attr,
       props: this.getPropsObject(),
       areaId: this.areaId,

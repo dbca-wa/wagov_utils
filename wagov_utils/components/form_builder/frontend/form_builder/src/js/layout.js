@@ -68,26 +68,32 @@ export default class LayoutController {
     });
   }
 
-  renderFormBuilder() {
+  renderFormBuilder(initialJson = []) {
     this.initialBuilderLayout();
-    const defaultElements = [
-      // ELEMENT_TYPES.SELECT_BOXES,
-      // LAYOUT_TYPES.HTML_CONTENT,
-      // LAYOUT_TYPES.COLUMNS_ROW,
-      // ELEMENT_TYPES.INPUT_NUMBER,
-      ELEMENT_TYPES.SELECT,
-      // ELEMENT_TYPES.CHECK_BOX,
-      // ELEMENT_TYPES.RADIO,
-      // ELEMENT_TYPES.BUTTON,
-    ];
-    defaultElements.forEach((element) => {
-      const { attr, props, controlClass } = BUILDER_TOOLBOX[element];
-      const elm = new controlClass(attr, props);
 
-      if (elm instanceof HTMLComponent) {
-        elm.displayControlProps.fillInProps({ tag: 'h2', htmlContent: 'Form Builder DBCA' });
+    const instantiateControl = (control) => {
+      const children = [];
+      if (control.hasOwnProperty('children') && control.children.length > 0) {
+        children.concat(control.children.map((child) => instantiateControl(child)));
       }
-      this.buildArea.area.addControl(this.buildArea.area.$c, elm);
+      const { attr, props, controlClass } = BUILDER_TOOLBOX[control?.elementType];
+
+      if (!controlClass)
+        return `Could not find control class for ${control?.elementType} coming from ${JSON.stringify(control)}`;
+
+      const _attr = control?.attr ?? attr;
+      const _props = control?.props ?? props;
+
+      const element = new controlClass(_attr, _props);
+      if (children.length > 0) {
+        element.children = children;
+      }
+      return element;
+    };
+
+    initialJson.forEach((control) => {
+      const element = instantiateControl(control);
+      this.buildArea.area.addControl(this.buildArea.area.$c, element);
     });
   }
 
@@ -96,16 +102,34 @@ export default class LayoutController {
       const layout = event.data;
       layout.toggleMode();
     });
-    $('#btn-view-form').on('click', this, function (event) {});
     $('#btn-save-form').on('click', this, function (event) {
       const layout = event.data;
-      console.log('Btn Clicked');
+      const formJson = layout.buildArea.toJSON();
+      console.log('Saving form', formJson);
+      window.localStorage.setItem('storedForm', JSON.stringify(formJson));
     });
-    $('#btn-load-form').on('click', function (event) {
-      console.log('Btn Clicked');
+    $('#btn-load-form').on('click', this, function (event) {
+      const layout = event.data;
+      const storedForm = window.localStorage.getItem('storedForm');
+      if (!storedForm) return;
+      layout.renderFormBuilder(JSON.parse(storedForm));
     });
-    $('#btn-new-form').on('click', function (event) {
-      console.log('Btn Clicked');
+    $('#btn-new-form').on('click', this, function (event) {
+      window.localStorage.removeItem('storedForm');
+    });
+    $('#btn-load-default').on('click', this, function (event) {
+      const layout = event.data;
+      const defaultElements = [
+        LAYOUT_TYPES.HTML_CONTENT,
+        ELEMENT_TYPES.SELECT_BOXES,
+        LAYOUT_TYPES.COLUMNS_ROW,
+        ELEMENT_TYPES.INPUT_NUMBER,
+        ELEMENT_TYPES.SELECT,
+        ELEMENT_TYPES.CHECK_BOX,
+        ELEMENT_TYPES.RADIO,
+        ELEMENT_TYPES.BUTTON,
+      ];
+      layout.renderFormBuilder(defaultElements.map((el) => ({ elementType: el })));
     });
   }
 

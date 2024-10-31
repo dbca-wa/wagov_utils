@@ -11,7 +11,7 @@ export default class Control {
   className = '';
 
   controlType = 'BLOCK';
-  element_type; // More specific, directly related to the class
+  elementType; // More specific, directly related to the class
   displayControlProps;
   dataControlProps;
 
@@ -62,9 +62,9 @@ export default class Control {
     const json = {
       id: this.id,
       controlType: this.controlType,
+      elementType: this.elementType,
       // attr: this.attr,
       props: this.getPropsObject(),
-      parentAreaId: this.parentAreaId,
     };
     return json;
   }
