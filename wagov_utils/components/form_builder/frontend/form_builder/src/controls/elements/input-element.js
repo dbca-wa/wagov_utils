@@ -3,9 +3,14 @@ import { markup } from '../../js/utils';
 import { INPUT_TYPES } from '../utils/input-types';
 
 import { InputFieldDisplayProps } from '../config-properties/display-props/input-display-properties';
-import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/control-props-types';
+import {
+  CONTROL_DATA_PROPS_TYPES,
+  CONTROL_PROPS_TYPES,
+  CONTROL_VALIDATION_PROPS_TYPES,
+} from '../utils/control-props-types';
 import { InputFieldDataProperties } from '../config-properties/data-props/data-properties';
 import { ELEMENT_TYPES } from '../utils/element-types';
+import { InputFieldValidationProps } from '../config-properties/validation-props/input-validation-properties';
 
 const defaultSettings = {
   type: 'text',
@@ -25,6 +30,8 @@ export default class InputElement extends InputControl {
     this.type = this.props.type || defaultSettings.type;
     this.displayControlProps = new InputFieldDisplayProps(this.type, this.props);
     this.dataControlProps = new InputFieldDataProperties(this.type, this.props);
+    this.validationControlProps = new InputFieldValidationProps(this.type, this.props);
+
     if (this.type === INPUT_TYPES.RADIO) {
       this.attr['class'] = 'form-check-input';
       this.id = this.props.id;
@@ -48,6 +55,10 @@ export default class InputElement extends InputControl {
       class: (this.attr.class ?? '').concat(' ', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? ''),
       value: value,
     };
+
+    if (props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]) {
+      attributes.required = true;
+    }
 
     if (this.type === 'radio') {
       attributes.name = this.props.name;

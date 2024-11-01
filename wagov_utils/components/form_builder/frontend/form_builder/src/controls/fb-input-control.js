@@ -4,6 +4,8 @@ import Label from './elements/basics/label';
 import Control from '../js/fb-control';
 import { markup } from '../js/utils';
 import { CONTROL_PROPS_TYPES } from './utils/control-props-types';
+import { BasicAPIProps } from './config-properties/api-props/basic-api-properties';
+import { InputFieldValidationProps } from './config-properties/validation-props/input-validation-properties';
 
 function extractLabelProps(props = {}) {
   const labelProps = {};
@@ -31,6 +33,8 @@ export default class InputControl extends Control {
   _basicSetup() {
     this.container_class = this.props?.container_class || this.container_class;
     this.dataControlProps = {};
+    this.validationControlProps = new InputFieldValidationProps(this.elementType, this.props);
+    this.apiControlProps = new BasicAPIProps(this.elementType, this.props);
   }
 
   setup() {

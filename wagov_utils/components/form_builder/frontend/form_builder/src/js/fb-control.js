@@ -13,6 +13,8 @@ export default class Control {
   elementType; // More specific, directly related to the class
   displayControlProps;
   dataControlProps;
+  validationControlProps;
+  apiControlProps;
 
   $p; // Parent element for rendering purposes
 
@@ -53,6 +55,8 @@ export default class Control {
       ...this.props,
       ...this.displayControlProps?.getPropsValues(),
       ...this.dataControlProps?.getPropsValues(),
+      ...this.validationControlProps?.getPropsValues(),
+      ...this.apiControlProps?.getPropsValues(),
     };
   }
 

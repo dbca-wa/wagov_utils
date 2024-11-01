@@ -37,7 +37,12 @@ export const CONTROL_DATA_PROPS_TYPES = {
   ITEM_TEMPLATE: 'itemTemplate',
 };
 
+export const CONTROL_API_PROPS_TYPES = {
+  FIELD_NAME: 'fieldName',
+};
+
 export const CONTROL_VALIDATION_PROPS_TYPES = {
+  VALIDATE_ON: 'validateOn',
   REQUIRED: 'required',
   UNIQUE: 'unique',
   VALIDATE_HIDDEN: 'validateHidden',
@@ -48,6 +53,12 @@ export const CONTROL_VALIDATION_PROPS_TYPES = {
   REGEX: 'regex',
   ERROR_LABEL: 'errorLabel',
   ERROR_MESSAGE: 'errorMessage',
+  MIN_DATE: 'minDate',
+  MAX_DATE: 'maxDate',
+  MIN_CHECKED: 'minChecked',
+  MAX_CHECKED: 'maxChecked',
+  MIN_CHECKED_ERROR_MESSAGE: 'minCheckedErrorMessage',
+  MAX_CHECKED_ERROR_MESSAGE: 'maxCheckedErrorMessage',
 };
 
 export const DATASOURCE_PROPS_TYPES = {

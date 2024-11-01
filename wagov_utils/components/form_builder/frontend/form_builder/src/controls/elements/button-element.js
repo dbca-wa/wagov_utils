@@ -25,7 +25,7 @@ export default class ButtonElement extends Control {
 
   setup() {
     this.displayControlProps = new ButtonDisplayProps(this.props);
-    this.dataControlProps = new BasicDataProperties({});
+    this.dataControlProps = undefined;
   }
 
   toDisplay(container) {

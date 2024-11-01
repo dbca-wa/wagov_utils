@@ -4,11 +4,15 @@ import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { dataPropertiesStore } from './stores/data-props-store';
 import { layoutPropertiesStore } from './stores/layout-props-store';
 import { propertiesStore } from './stores/props-store';
+import { validationPropertiesStore } from './stores/validations-props-store';
+import { apiPropertiesStore } from './stores/api-props-store';
 
 export const defaultAllProps = {
   ...propertiesStore,
   ...dataPropertiesStore,
   ...layoutPropertiesStore,
+  ...validationPropertiesStore,
+  ...apiPropertiesStore,
 };
 import brace from 'brace';
 import 'brace/mode/html';

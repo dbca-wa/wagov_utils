@@ -49,21 +49,40 @@ export default class ControlEdition extends Control {
 
     if (_this.control && _this.control.displayControlProps) {
       _this.control.dataControlProps?.setEditor($m.find('#data-tab-pane form'), _this);
+      _this.control.validationControlProps?.setEditor($m.find('#validation-tab-pane form'), _this);
+      _this.control.apiControlProps?.setEditor($m.find('#api-tab-pane form'), _this);
       $m.find('#display-tab-pane form').empty().append(_this.control.displayControlProps.render());
       _this.control.dataControlProps?.renderInParent();
+      _this.control.validationControlProps?.renderInParent();
+      _this.control.apiControlProps?.renderInParent();
       _this.control.displayControlProps.addChangeEvents(_this, _this._onPropsChange);
 
       _this.initialProps = {
         ..._this.control.displayControlProps.getPropsValues(),
         ..._this.control.dataControlProps?.getPropsValues(),
+        ..._this.control.validationControlProps?.getPropsValues(),
+        ..._this.control.apiControlProps?.getPropsValues(),
       };
       _this._renderPreviewControl();
 
       $('#display-tab').trigger('click');
       $('#data-tab').show();
+      $('#validation-tab').show();
+      $('#api-tab').show();
       if (!_this.control.dataControlProps || Object.keys(_this.control.dataControlProps.props).length === 0) {
         $m.find('#data-tab-pane form').empty();
         $('#data-tab').hide();
+      }
+      if (
+        !_this.control.validationControlProps ||
+        Object.keys(_this.control.validationControlProps.props).length === 0
+      ) {
+        $m.find('#validation-tab-pane form').empty();
+        $('#validation-tab').hide();
+      }
+      if (!_this.control.apiControlProps || Object.keys(_this.control.apiControlProps.props).length === 0) {
+        $m.find('#api-tab-pane form').empty();
+        $('#api-tab').hide();
       }
     }
 
@@ -95,6 +114,8 @@ export default class ControlEdition extends Control {
     const props = {
       ...this.control.displayControlProps.getPropsValues(),
       ...this.control.dataControlProps?.getPropsValues(),
+      ...this.control.validationControlProps?.getPropsValues(),
+      ...this.control.apiControlProps?.getPropsValues(),
     };
     $('#preview-edition').empty().append(this.control.render(props));
     activateTooltips(document, '#preview-edition [data-bs-toggle="tooltip"]');
