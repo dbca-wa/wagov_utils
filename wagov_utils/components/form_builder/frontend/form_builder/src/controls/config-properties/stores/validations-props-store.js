@@ -4,7 +4,7 @@ export const validationPropertiesStore = {
   [CONTROL_VALIDATION_PROPS_TYPES.VALIDATE_ON]: {
     name: 'validateOn',
     title: 'Validate On',
-    type: 'string',
+    type: 'select',
     required: false,
     options: [
       { value: 'blur', label: 'Blur' },
