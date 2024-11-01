@@ -130,7 +130,7 @@ export default class LayoutController {
         // ELEMENT_TYPES.RADIO,
         // ELEMENT_TYPES.BUTTON,
       ];
-      layout.renderFormBuilder(defaultElements.map((el) => ({ elementType: el, props: { tooltip: 'test' } })));
+      layout.renderFormBuilder(defaultElements.map((el) => ({ elementType: el })));
     });
   }
 

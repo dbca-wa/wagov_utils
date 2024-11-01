@@ -82,6 +82,8 @@ export class DropableControl extends LayoutControl {
         helper: 'clone',
         cursor: 'move',
         scroll: false,
+        handle: '.fb-wrapper-content',
+
         tolerance: 'pointer',
         placeholder: 'ui-state-highlight',
         cancel: `.${CLASS_EMPTY_DROPABLE}`,
