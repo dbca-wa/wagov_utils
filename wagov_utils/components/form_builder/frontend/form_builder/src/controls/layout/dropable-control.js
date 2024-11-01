@@ -60,6 +60,7 @@ export class DropableControl extends LayoutControl {
       const childPosition = $(`#${this.children[i].id}`)?.closest('.form-field').offset().top;
       if (childPosition && childPosition > nodePosition) break;
     }
+    control.parentAreaId = this.areaId;
     this.children.splice(i, 0, control);
     this.toggleEmptyDropableControl();
   }
@@ -68,8 +69,8 @@ export class DropableControl extends LayoutControl {
     const index = this.children.findIndex((c) => c.id === controlId);
     if (index > -1) {
       this.children.splice(index, 1);
-      this.toggleEmptyDropableControl();
     }
+    this.toggleEmptyDropableControl();
   }
 
   renderInContainer() {
@@ -128,8 +129,7 @@ export class DropableControl extends LayoutControl {
     if (this.children.length === 0) {
       this.$c.append(emptyDropableControl.cloneNode(true));
     } else {
-      const selector = `#${this.id}> .${CLASS_EMPTY_DROPABLE}`;
-      document.querySelector(selector)?.remove();
+      document.querySelector(`#${this.id}> .${CLASS_EMPTY_DROPABLE}`)?.remove();
     }
   }
 
