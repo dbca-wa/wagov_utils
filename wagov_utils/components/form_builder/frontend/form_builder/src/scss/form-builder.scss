@@ -117,7 +117,9 @@ $main-panel-padding: 20px;
   padding: 10px;
   justify-content: center;
   display: flex;
-  border: 1px dashed #ccc;
+  margin: 4px;
+  text-align: center;
+  color: #375131;
 }
 .form-field {
   width: 100%;

@@ -235,6 +235,7 @@ export const LAYOUT_STORE = {
     props: {
       label: 'HTML',
       tag: 'p',
+      htmlContent: 'Custom HTML',
     },
     name: 'HTML Component',
     attr: {},
