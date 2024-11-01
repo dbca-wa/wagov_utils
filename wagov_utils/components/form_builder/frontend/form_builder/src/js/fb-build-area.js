@@ -1,5 +1,5 @@
 import { DropableControl } from '../controls/layout/dropable-control';
-import { markup } from './utils';
+import { activateTooltips, markup } from './utils';
 
 export class BuildArea {
   static instance;
@@ -90,9 +90,10 @@ export class BuildArea {
     }
 
     if (!this.area.children.length) {
-      container.append(markup('h1', 'Nada por aquí'));
+      container.append(markup('h1', 'Empty form', { class: 'text-center' }));
       return;
     }
     this.area.toDisplay(container);
+    activateTooltips(container);
   }
 }

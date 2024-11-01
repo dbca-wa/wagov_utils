@@ -1,5 +1,4 @@
-import { Tooltip } from 'bootstrap';
-import { generateRandomId, markup } from './utils';
+import { activateTooltips, generateRandomId, markup } from './utils';
 
 export default class Control {
   id = '';
@@ -45,8 +44,7 @@ export default class Control {
     if (parent) this.setParent(parent);
     if (this.$p) this.$p.empty().append(this.renderControl());
     if (this.$p) {
-      const tooltipTriggerList = this.$p[0].querySelectorAll('[data-bs-toggle="tooltip"]');
-      [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
+      activateTooltips(this.$p);
     }
   }
 

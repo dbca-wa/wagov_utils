@@ -1,3 +1,5 @@
+import { Tooltip } from 'bootstrap';
+
 /**
  * Generate a random id of up to 10 characters
  * @return {string} random id
@@ -174,4 +176,12 @@ export const markup = function (tag, content = '', attributes = {}) {
 
 export const unique = (array) => {
   return array.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
+};
+
+export const activateTooltips = (parent, selector = '[data-bs-toggle="tooltip"]') => {
+  if (!parent) return;
+  if (parent instanceof $) parent = parent[0];
+
+  const tooltipTriggerList = parent.querySelectorAll(selector);
+  [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
 };

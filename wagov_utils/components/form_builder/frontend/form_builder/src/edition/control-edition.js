@@ -1,9 +1,8 @@
-import { Tooltip } from 'bootstrap';
 import { CONTROL_PROPS_TYPES } from '../controls/utils/control-props-types';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
 import Control from '../js/fb-control';
 import { appSelectors } from '../js/selectors';
-import { generateRandomId, markup } from '../js/utils';
+import { activateTooltips, generateRandomId, markup } from '../js/utils';
 import controlWrapperTemplate from '../views/control-edition/control-edition-wrapper.handlebars';
 import Modal from 'bootstrap/js/dist/modal.js';
 
@@ -98,9 +97,7 @@ export default class ControlEdition extends Control {
       ...this.control.dataControlProps?.getPropsValues(),
     };
     $('#preview-edition').empty().append(this.control.render(props));
-
-    const tooltipTriggerList = document.querySelectorAll('#preview-edition [data-bs-toggle="tooltip"]');
-    [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
+    activateTooltips(document, '#preview-edition [data-bs-toggle="tooltip"]');
   }
 
   _saveControl(event) {

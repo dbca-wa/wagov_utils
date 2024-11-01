@@ -70,6 +70,7 @@ export default class LayoutController {
 
   renderFormBuilder(initialJson = []) {
     this.initialBuilderLayout();
+    if (initialJson.length === 0) $('#btn-load-default').trigger('click');
 
     const instantiateControl = (control) => {
       const children = [];
@@ -124,12 +125,12 @@ export default class LayoutController {
         ELEMENT_TYPES.SELECT_BOXES,
         LAYOUT_TYPES.COLUMNS_ROW,
         ELEMENT_TYPES.INPUT_NUMBER,
-        ELEMENT_TYPES.SELECT,
-        ELEMENT_TYPES.CHECK_BOX,
-        ELEMENT_TYPES.RADIO,
-        ELEMENT_TYPES.BUTTON,
+        // ELEMENT_TYPES.SELECT,
+        // ELEMENT_TYPES.CHECK_BOX,
+        // ELEMENT_TYPES.RADIO,
+        // ELEMENT_TYPES.BUTTON,
       ];
-      layout.renderFormBuilder(defaultElements.map((el) => ({ elementType: el })));
+      layout.renderFormBuilder(defaultElements.map((el) => ({ elementType: el, props: { tooltip: 'test' } })));
     });
   }
 
