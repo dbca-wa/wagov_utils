@@ -1,26 +1,11 @@
 import Handlebars from 'handlebars';
 
-import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
-import { ELEMENT_TYPES } from '../utils/element-types';
-import { INPUT_TYPES } from '../utils/input-types';
-import { BaseControlProps } from './base-control-props';
-import { DATASOURCE_VALUES, datasourceDataPropertiesStore } from './predefined/data-props-store';
-
-const multiSelectProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE, CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
-
-const defProps = [CONTROL_DATA_PROPS_TYPES.MULTI, CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
-const defMultiChoiceProps = [
-  CONTROL_DATA_PROPS_TYPES.MULTI,
-  CONTROL_DATA_PROPS_TYPES.DATASOURCE,
-  CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE,
-];
-const selectelementProps = [
-  CONTROL_DATA_PROPS_TYPES.MULTI,
-  CONTROL_DATA_PROPS_TYPES.DATASOURCE,
-  CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE,
-];
-const radioButtonProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE, CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE];
-const selectBoxesProps = [CONTROL_DATA_PROPS_TYPES.DATASOURCE, CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE];
+import { CONTROL_DATA_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../../utils/control-props-types';
+import { ELEMENT_TYPES } from '../../utils/element-types';
+import { INPUT_TYPES } from '../../utils/input-types';
+import { BaseControlProps } from '../base-control-props';
+import { DATASOURCE_VALUES, datasourceDataPropertiesStore } from '../stores/data-props-store';
+import { BaseDataProps } from './base-data-props';
 
 const dsValues = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.VALUES];
 const dsURL = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.URL];
@@ -31,73 +16,13 @@ const dsJSON = [
   DATASOURCE_PROPS_TYPES.RAW_JSON,
   DATASOURCE_PROPS_TYPES.ID_PATH,
 ];
+const defMultiChoiceProps = [
+  CONTROL_DATA_PROPS_TYPES.MULTI,
+  CONTROL_DATA_PROPS_TYPES.DATASOURCE,
+  CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE,
+];
 
-class BaseDataProps extends BaseControlProps {
-  $p;
-  editor;
-
-  constructor(props) {
-    super(props);
-  }
-
-  renderInParent() {
-    if (this.$p) {
-      this.$p.empty().append(this.render());
-    }
-    super.addChangeEvents(this, this._onDataPropsChange);
-  }
-
-  setEditor(parentContainer, editor) {
-    this.$p = parentContainer;
-    this.editor = editor;
-  }
-
-  clearEditor() {
-    this.$p = null;
-  }
-
-  _onDataPropsChange(e) {
-    const { context: _this, prop } = e.data;
-    const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
-    _this.modifyPropValue(prop.name, value);
-  }
-}
-
-export class BasicDataProperties extends BaseDataProps {
-  datasourceProperties;
-
-  constructor(props) {
-    super(defProps);
-    this.fillInProps(props);
-  }
-}
-
-export class InputFieldDataProperties extends BaseDataProps {
-  datasourceProperties;
-
-  constructor(type = INPUT_TYPES.TEXT, props) {
-    const definition = [];
-    if (type !== INPUT_TYPES.PASSWORD) {
-      definition.push(...defProps);
-    }
-
-    super(definition);
-    this.fillInProps(props);
-
-    this.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {
-      type: type === INPUT_TYPES.CHECK_BOX ? 'boolean' : type === INPUT_TYPES.TEXT ? 'string' : type,
-    });
-  }
-
-  _onDataPropsChange(e) {
-    const { context: _this, prop } = e.data;
-    const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
-    _this.modifyPropValue(prop.name, value);
-    _this.editor._renderPreviewControl();
-  }
-}
-
-class MultipleChoiceDataProperties extends BaseDataProps {
+export class MultipleChoiceDataProperties extends BaseDataProps {
   datasource;
 
   constructor(props, dataProps = defMultiChoiceProps) {
@@ -283,29 +208,5 @@ class MultipleChoiceDataProperties extends BaseDataProps {
     }
 
     return container;
-  }
-}
-
-export class SelectDataProperties extends MultipleChoiceDataProperties {
-  constructor(props) {
-    super(props, selectelementProps);
-  }
-}
-
-export class RadioButtonsDataProperties extends MultipleChoiceDataProperties {
-  constructor(props) {
-    super(props, radioButtonProps);
-  }
-}
-
-export class SelectBoxesDataProperties extends MultipleChoiceDataProperties {
-  constructor(props) {
-    super(props, selectBoxesProps);
-    if ([DATASOURCE_PROPS_TYPES.VALUES, DATASOURCE_PROPS_TYPES.RAW_JSON].includes(this.datasource)) {
-      this.datasourceProperties.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {
-        type: 'select-boxes',
-        value: [],
-      });
-    }
   }
 }

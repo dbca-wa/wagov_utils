@@ -4,7 +4,6 @@ import Label from './elements/basics/label';
 import Control from '../js/fb-control';
 import { markup } from '../js/utils';
 import { CONTROL_PROPS_TYPES } from './utils/control-props-types';
-import { BasicDataProperties } from './config-properties/data-properties';
 
 function extractLabelProps(props = {}) {
   const labelProps = {};

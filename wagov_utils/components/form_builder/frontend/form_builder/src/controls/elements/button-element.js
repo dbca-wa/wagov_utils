@@ -1,9 +1,9 @@
 import { generateRandomId, markup } from '../../js/utils';
 import { ELEMENT_TYPES } from '../utils/element-types';
-import { ButtonDisplayProps } from '../config-properties/input-properties';
+import { ButtonDisplayProps } from '../config-properties/display-props/input-display-properties';
 import Control from '../../js/fb-control';
 import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
-import { BasicDataProperties } from '../config-properties/data-properties';
+import { BasicDataProperties } from '../config-properties/data-props/data-properties';
 
 const defaultSettings = {
   class: 'form-check-input',

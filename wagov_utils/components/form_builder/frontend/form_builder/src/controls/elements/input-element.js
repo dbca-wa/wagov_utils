@@ -1,9 +1,10 @@
 import InputControl from '../fb-input-control';
 import { markup } from '../../js/utils';
 import { INPUT_TYPES } from '../utils/input-types';
-import { InputFieldDisplayProps } from '../config-properties/input-properties';
+
+import { InputFieldDisplayProps } from '../config-properties/display-props/input-display-properties';
 import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/control-props-types';
-import { InputFieldDataProperties } from '../config-properties/data-properties';
+import { InputFieldDataProperties } from '../config-properties/data-props/data-properties';
 import { ELEMENT_TYPES } from '../utils/element-types';
 
 const defaultSettings = {

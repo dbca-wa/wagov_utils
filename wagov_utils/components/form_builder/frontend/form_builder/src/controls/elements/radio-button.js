@@ -4,8 +4,8 @@ import { generateRandomId, markup } from '../../js/utils';
 import { ELEMENT_TYPES } from '../utils/element-types';
 
 import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
-import { RadioDisplayProps } from '../config-properties/input-properties';
-import { RadioButtonsDataProperties } from '../config-properties/data-properties';
+import { RadioDisplayProps } from '../config-properties/display-props/input-display-properties';
+import { RadioButtonsDataProperties } from '../config-properties/data-props/data-properties';
 
 const defaultSettings = {
   class: 'form-check-input',

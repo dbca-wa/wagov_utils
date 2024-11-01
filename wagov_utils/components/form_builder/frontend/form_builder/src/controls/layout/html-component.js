@@ -1,10 +1,10 @@
 import Control from '../../js/fb-control';
 import { markup } from '../../js/utils';
 import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../utils/control-props-types';
-import { HTMLComponentDisplayProps } from '../config-properties/layout-properties';
+import { HTMLComponentDisplayProps } from '../config-properties/display-props/layout-display-properties';
 import { CONTROL_TYPES } from '../utils/control-types';
 import Label from '../elements/basics/label';
-import { BasicDataProperties } from '../config-properties/data-properties';
+import { BasicDataProperties } from '../config-properties/data-props/data-properties';
 import { LAYOUT_TYPES } from '../utils/layout-types';
 
 const defaultSettings = {

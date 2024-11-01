@@ -4,8 +4,8 @@ import { markup } from '../../js/utils';
 import { ELEMENT_TYPES } from '../utils/element-types';
 
 import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
-import { SelectDataProperties } from '../config-properties/data-properties';
-import { SelectDisplayProps } from '../config-properties/input-properties';
+import { SelectDataProperties } from '../config-properties/data-props/data-properties';
+import { SelectDisplayProps } from '../config-properties/display-props/input-display-properties';
 
 const defaultSettings = {
   value: '',

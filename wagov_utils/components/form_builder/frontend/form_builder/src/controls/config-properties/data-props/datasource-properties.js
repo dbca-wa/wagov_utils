@@ -1,6 +1,6 @@
-import { DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
-import { BaseControlProps } from './base-control-props';
-import { DATASOURCE_VALUES, datasourceDataPropertiesStore } from './predefined/data-props-store';
+import { DATASOURCE_PROPS_TYPES } from '../../utils/control-props-types';
+import { BaseControlProps } from '../base-control-props';
+import { DATASOURCE_VALUES, datasourceDataPropertiesStore } from '../stores/data-props-store';
 
 const dsValues = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.VALUES];
 const dsURL = [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE, DATASOURCE_PROPS_TYPES.URL];

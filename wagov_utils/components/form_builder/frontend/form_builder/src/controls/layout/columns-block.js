@@ -1,6 +1,6 @@
 import { BuildArea } from '../../js/fb-build-area';
 import { markup } from '../../js/utils';
-import { ColumnsDisplayProps } from '../config-properties/layout-properties';
+import { ColumnsDisplayProps } from '../config-properties/display-props/layout-display-properties';
 import LayoutControl from '../fb-layout-control';
 import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { CONTROL_TYPES } from '../utils/control-types';

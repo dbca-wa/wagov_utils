@@ -1,8 +1,8 @@
 import InputControl from '../fb-input-control';
 import { markup } from '../../js/utils';
-import { InputFieldDisplayProps } from '../config-properties/input-properties';
+import { InputFieldDisplayProps } from '../config-properties/display-props/input-display-properties';
 import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/control-props-types';
-import { InputFieldDataProperties } from '../config-properties/data-properties';
+import { InputFieldDataProperties } from '../config-properties/data-props/data-properties';
 
 const defaultSettings = {
   type: 'text',

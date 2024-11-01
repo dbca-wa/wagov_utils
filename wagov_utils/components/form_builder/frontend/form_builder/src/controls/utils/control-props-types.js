@@ -1,3 +1,9 @@
+/* 
+  These types refer to the properties of the form controls in the form builder.
+  Each type is a key in the object that represents the properties of a form control.
+  The definition and props are in the store files, such as, data-props-store.js, validation-props-store.js, etc.
+*/
+
 export const CONTROL_PROPS_TYPES = {
   LABEL: 'label',
   PLACEHOLDER: 'placeholder',
@@ -29,6 +35,19 @@ export const CONTROL_DATA_PROPS_TYPES = {
   MULTI: 'multi',
   DEFAULT_VALUE: 'defaultValue',
   ITEM_TEMPLATE: 'itemTemplate',
+};
+
+export const CONTROL_VALIDATION_PROPS_TYPES = {
+  REQUIRED: 'required',
+  UNIQUE: 'unique',
+  VALIDATE_HIDDEN: 'validateHidden',
+  MIN_LENGTH: 'minLength',
+  MAX_LENGTH: 'maxLength',
+  MIN_VALUE: 'minValue',
+  MAX_VALUE: 'maxValue',
+  REGEX: 'regex',
+  ERROR_LABEL: 'errorLabel',
+  ERROR_MESSAGE: 'errorMessage',
 };
 
 export const DATASOURCE_PROPS_TYPES = {

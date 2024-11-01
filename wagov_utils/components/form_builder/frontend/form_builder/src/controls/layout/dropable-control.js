@@ -1,7 +1,7 @@
 import ControlEdition from '../../edition/control-edition';
 import { BuildArea } from '../../js/fb-build-area';
 import { markup } from '../../js/utils';
-import { ColumnsDisplayProps } from '../config-properties/layout-properties';
+import { ColumnsDisplayProps } from '../config-properties/display-props/layout-display-properties';
 import LayoutControl from '../fb-layout-control';
 import { BUILDER_TOOLBOX } from '../toolbox-store';
 import { CLASS_DROPABLE_BLOCKS, CLASS_EMPTY_DROPABLE } from '../utils/constants';

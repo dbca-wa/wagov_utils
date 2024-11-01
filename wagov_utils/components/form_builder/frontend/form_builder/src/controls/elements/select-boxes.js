@@ -1,9 +1,9 @@
 import Handlebars from 'handlebars';
 import InputControl from '../fb-input-control';
 import { generateRandomId, markup } from '../../js/utils';
-import { InputFieldDisplayProps } from '../config-properties/input-properties';
+import { InputFieldDisplayProps } from '../config-properties/display-props/input-display-properties';
 import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
-import { SelectBoxesDataProperties } from '../config-properties/data-properties';
+import { SelectBoxesDataProperties } from '../config-properties/data-props/data-properties';
 import { ELEMENT_TYPES } from '../utils/element-types';
 
 const defaultSettings = {
