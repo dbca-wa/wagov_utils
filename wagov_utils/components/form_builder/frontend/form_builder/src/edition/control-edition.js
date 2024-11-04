@@ -119,6 +119,9 @@ export default class ControlEdition extends Control {
     };
     $('#preview-edition').empty().append(this.control.render(props));
     activateTooltips(document, '#preview-edition');
+    if (props[CONTROL_PROPS_TYPES.DISPLAY_MASK]) {
+      $('#preview-edition ' + this.control.getIdSelector()).mask(props[CONTROL_PROPS_TYPES.DISPLAY_MASK]);
+    }
   }
 
   _saveControl(event) {

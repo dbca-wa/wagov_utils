@@ -48,6 +48,7 @@ export default class Control {
     if (this.$p) this.$p.empty().append(this.renderControl());
     if (this.$p) {
       activateTooltips(this.$p);
+      this.afterRender();
     }
   }
 
@@ -75,6 +76,7 @@ export default class Control {
   toDisplay(container) {
     container.append(this.renderControl(true));
     this.addControlEvents();
+    this.afterRender();
   }
 
   addControlEvents() {
@@ -95,6 +97,8 @@ export default class Control {
   renderControl() {
     return this.render();
   }
+
+  afterRender() {}
 
   render(children = [], containerClass = '') {
     // Implement rendering logic here

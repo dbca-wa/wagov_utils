@@ -137,4 +137,11 @@ export default class InputControl extends Control {
 
     return markup('div', children, { class: this.container_class });
   }
+
+  afterRender() {
+    const props = this.displayControlProps?.getPropsValues();
+    if (props[CONTROL_PROPS_TYPES.DISPLAY_MASK]) {
+      $(this.getIdSelector()).mask(props[CONTROL_PROPS_TYPES.DISPLAY_MASK]);
+    }
+  }
 }

@@ -17,6 +17,7 @@ export const CONTROL_PROPS_TYPES = {
   DISABLED: 'disabled',
   CHECKED: 'checked',
   HIDE_LABEL: 'hideLabel',
+  DISPLAY_MASK: 'displayMask',
   MAX_DATE: 'max',
   MIN_DATE: 'min',
   TEXTAREA_ROWS: 'rows',

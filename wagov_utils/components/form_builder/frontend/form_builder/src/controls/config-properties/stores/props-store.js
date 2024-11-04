@@ -215,6 +215,14 @@ export const propertiesStore = {
     options: undefined,
     value: '',
   },
+  [CONTROL_PROPS_TYPES.DISPLAY_MASK]: {
+    name: 'displayMask',
+    title: 'Display Mask',
+    type: 'string',
+    placeholder: 'Enter a display mask',
+    required: false,
+    options: undefined,
+  },
 
   [LAYOUT_CONTROL_PROPS_TYPES.TAG]: {
     name: 'tag',
