@@ -1,3 +1,4 @@
+import { CONTROL_VALIDATION_PROPS_TYPES } from '../controls/utils/control-props-types';
 import { activateTooltips, generateRandomId, markup } from './utils';
 
 export default class Control {
@@ -73,7 +74,22 @@ export default class Control {
 
   toDisplay(container) {
     container.append(this.renderControl(true));
-    // TODO: Add Events
+    this.addControlEvents();
+  }
+
+  addControlEvents() {
+    const validationProps = this.validationControlProps?.getPropsValues();
+    if (!validationProps) return;
+    const eventType = validationProps[CONTROL_VALIDATION_PROPS_TYPES.VALIDATE_ON];
+    if (!eventType) return;
+    $(this.getIdSelector()).on(eventType, this, (e) => {
+      const _this = e.data;
+      _this.validateValue();
+    });
+  }
+
+  validateValue() {
+    return true;
   }
 
   renderControl() {

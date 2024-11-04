@@ -2,7 +2,12 @@ import Handlebars from 'handlebars';
 import InputControl from '../fb-input-control';
 import { generateRandomId, markup } from '../../js/utils';
 import { InputFieldDisplayProps } from '../config-properties/display-props/input-display-properties';
-import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
+import {
+  CONTROL_DATA_PROPS_TYPES,
+  CONTROL_PROPS_TYPES,
+  CONTROL_VALIDATION_PROPS_TYPES,
+  DATASOURCE_PROPS_TYPES,
+} from '../utils/control-props-types';
 import { SelectBoxesDataProperties } from '../config-properties/data-props/data-properties';
 import { ELEMENT_TYPES } from '../utils/element-types';
 
@@ -27,6 +32,16 @@ export default class SelectBoxes extends InputControl {
     this.name = 'sb-' + generateRandomId();
     this.container_class = 'form-group';
     this.options = this.props.values || this.options;
+  }
+
+  getElementValue() {
+    const values = [];
+    document.querySelectorAll(`${this.getIdSelector()} input[type="checkbox"][name="${this.name}"]`).forEach((el) => {
+      if (el.checked) {
+        values.push(el.value);
+      }
+    });
+    return values;
   }
 
   render(customProps, attr) {
@@ -55,9 +70,8 @@ export default class SelectBoxes extends InputControl {
         value: opt[valueProperty],
         class: 'form-check-input',
       };
-      if (props[CONTROL_PROPS_TYPES.DISABLED]) {
-        customProps.disabled = true;
-      }
+      if (props[CONTROL_PROPS_TYPES.DISABLED]) customProps.disabled = true;
+
       try {
         if (props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE].includes(opt[valueProperty])) {
           customProps.checked = true;
@@ -83,6 +97,7 @@ export default class SelectBoxes extends InputControl {
     }
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];
     this.label.display = !!!props[CONTROL_PROPS_TYPES.HIDE_LABEL];
+    this.label.required = props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED] === true;
     this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
     this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
 

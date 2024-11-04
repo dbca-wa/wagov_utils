@@ -178,10 +178,10 @@ export const unique = (array) => {
   return array.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 };
 
-export const activateTooltips = (parent, selector = '[data-bs-toggle="tooltip"]') => {
+export const activateTooltips = (parent, selector = '') => {
   if (!parent) return;
   if (parent instanceof $) parent = parent[0];
 
-  const tooltipTriggerList = parent.querySelectorAll(selector);
+  const tooltipTriggerList = parent.querySelectorAll((selector ?? '').concat(' [data-bs-toggle="tooltip"]'));
   [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
 };

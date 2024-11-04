@@ -3,7 +3,12 @@ import InputControl from '../fb-input-control';
 import { generateRandomId, markup } from '../../js/utils';
 import { ELEMENT_TYPES } from '../utils/element-types';
 
-import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../utils/control-props-types';
+import {
+  CONTROL_DATA_PROPS_TYPES,
+  CONTROL_PROPS_TYPES,
+  CONTROL_VALIDATION_PROPS_TYPES,
+  DATASOURCE_PROPS_TYPES,
+} from '../utils/control-props-types';
 import { RadioDisplayProps } from '../config-properties/display-props/input-display-properties';
 import { RadioButtonsDataProperties } from '../config-properties/data-props/data-properties';
 
@@ -64,6 +69,7 @@ export default class RadioButton extends InputControl {
       if (props[DATASOURCE_PROPS_TYPES.DEFAULT_VALUE] === opt[valueProperty]) {
         customProps.checked = true;
       }
+      if (props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]) customProps.required = true;
       let text = '';
       try {
         text = template({ item: opt });
@@ -78,16 +84,17 @@ export default class RadioButton extends InputControl {
             markup('input', '', customProps),
             markup('label', text, { for: `${this.name}-${i}`, class: 'form-check-label' }),
           ],
-          { class: 'form-check', id: props.id ?? this.id },
+          { class: 'form-check' },
         ),
       );
     }
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];
     this.label.display = !!!props[CONTROL_PROPS_TYPES.HIDE_LABEL];
+    this.label.required = props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED] === true;
     this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
     this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
 
     const elements = radioButtons;
-    return super.render(markup('div', elements, { class: this.container_class }));
+    return super.render(markup('div', elements, { class: this.container_class, id: props.id ?? this.id }));
   }
 }

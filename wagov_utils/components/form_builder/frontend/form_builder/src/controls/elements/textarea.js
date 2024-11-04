@@ -1,7 +1,11 @@
 import InputControl from '../fb-input-control';
 import { markup } from '../../js/utils';
 import { InputFieldDisplayProps } from '../config-properties/display-props/input-display-properties';
-import { CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/control-props-types';
+import {
+  CONTROL_DATA_PROPS_TYPES,
+  CONTROL_PROPS_TYPES,
+  CONTROL_VALIDATION_PROPS_TYPES,
+} from '../utils/control-props-types';
 import { InputFieldDataProperties } from '../config-properties/data-props/data-properties';
 
 const defaultSettings = {
@@ -41,8 +45,12 @@ export default class TextAreaElement extends InputControl {
     if (props[CONTROL_PROPS_TYPES.DISABLED]) {
       attributes.disabled = true;
     }
+    if (props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]) attributes.required = true;
+    if (props[CONTROL_VALIDATION_PROPS_TYPES.REGEX]) attributes.pattern = props[CONTROL_VALIDATION_PROPS_TYPES.REGEX];
+
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];
     this.label.display = !!!props[CONTROL_PROPS_TYPES.HIDE_LABEL];
+    this.label.required = props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED] === true;
     this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
     this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
 

@@ -9,7 +9,6 @@ export const validationPropertiesStore = {
     options: [
       { value: 'blur', label: 'Blur' },
       { value: 'change', label: 'Change' },
-      { value: 'submit', label: 'Submit' },
     ],
     value: 'blur',
     addEmptyOption: true,
@@ -46,6 +45,7 @@ export const validationPropertiesStore = {
     required: false,
     options: undefined,
     value: '',
+    min: 0,
   },
   [CONTROL_VALIDATION_PROPS_TYPES.MAX_LENGTH]: {
     name: 'maxLength',
@@ -55,6 +55,27 @@ export const validationPropertiesStore = {
     required: false,
     options: undefined,
     value: '',
+    min: 0,
+  },
+  [CONTROL_VALIDATION_PROPS_TYPES.MIN_WORD_LENGTH]: {
+    name: 'minWordLength',
+    title: 'Min Word Length',
+    type: 'number',
+    placeholder: 'Enter a min word length',
+    required: false,
+    options: undefined,
+    value: '',
+    min: 0,
+  },
+  [CONTROL_VALIDATION_PROPS_TYPES.MAX_WORD_LENGTH]: {
+    name: 'maxWordLength',
+    title: 'Max Word Length',
+    type: 'number',
+    placeholder: 'Enter a max word length',
+    required: false,
+    options: undefined,
+    value: '',
+    min: 0,
   },
   [CONTROL_VALIDATION_PROPS_TYPES.MIN_VALUE]: {
     name: 'minValue',
@@ -125,6 +146,7 @@ export const validationPropertiesStore = {
     required: false,
     options: undefined,
     value: '',
+    min: 0,
   },
   [CONTROL_VALIDATION_PROPS_TYPES.MAX_CHECKED]: {
     name: 'maxChecked',
@@ -134,6 +156,7 @@ export const validationPropertiesStore = {
     required: false,
     options: undefined,
     value: '',
+    min: 0,
   },
   [CONTROL_VALIDATION_PROPS_TYPES.MIN_CHECKED_ERROR_MESSAGE]: {
     name: 'minCheckedErrorMessage',

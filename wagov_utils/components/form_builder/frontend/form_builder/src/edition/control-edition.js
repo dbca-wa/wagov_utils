@@ -118,7 +118,7 @@ export default class ControlEdition extends Control {
       ...this.control.apiControlProps?.getPropsValues(),
     };
     $('#preview-edition').empty().append(this.control.render(props));
-    activateTooltips(document, '#preview-edition [data-bs-toggle="tooltip"]');
+    activateTooltips(document, '#preview-edition');
   }
 
   _saveControl(event) {
@@ -141,7 +141,15 @@ export default class ControlEdition extends Control {
   }
 
   _closeModal() {
+    const $m = $(`#${appSelectors.modalControlEdition}`);
+    $m.find('#display-tab-pane form').empty();
+    $m.find('#data-tab-pane form').empty();
+    $m.find('#validation-tab-pane form').empty();
+    $m.find('#api-tab-pane form').empty();
+    $m.find('#preview-edition').empty();
+
     if (this.hasSaved) return;
+
     this.control.displayControlProps.fillInProps(Object.assign({}, this.initialProps));
     this.control.dataControlProps?.fillInProps(Object.assign({}, this.initialProps));
   }

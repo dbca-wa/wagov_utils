@@ -94,6 +94,17 @@ export class BuildArea {
       return;
     }
     this.area.toDisplay(container);
+    container.on('submit', this, (e) => {
+      const _this = e.data;
+      e.preventDefault();
+      const isValid = _this.area.validateValue();
+      if (isValid) {
+        console.log('Form is valid');
+      } else {
+        console.log('Form is invalid');
+      }
+    });
+
     activateTooltips(container);
   }
 }

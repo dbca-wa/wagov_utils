@@ -122,13 +122,13 @@ export default class LayoutController {
       const layout = event.data;
       const defaultElements = [
         LAYOUT_TYPES.HTML_CONTENT,
-        ELEMENT_TYPES.SELECT_BOXES,
+        ELEMENT_TYPES.INPUT,
         LAYOUT_TYPES.COLUMNS_ROW,
         ELEMENT_TYPES.INPUT_NUMBER,
         // ELEMENT_TYPES.SELECT,
         // ELEMENT_TYPES.CHECK_BOX,
         // ELEMENT_TYPES.RADIO,
-        // ELEMENT_TYPES.BUTTON,
+        ELEMENT_TYPES.BUTTON,
       ];
       layout.renderFormBuilder(defaultElements.map((el) => ({ elementType: el })));
     });
@@ -150,7 +150,10 @@ export default class LayoutController {
   }
 
   enableEditMode() {
-    $(`#${formViewerSel}`).empty();
+    $(`#${formViewerSel}`)
+      .empty()
+      .append(markup('form', '', { class: 'needs-validation', novalidate: '' }));
+
     $(`#${formBuilderSel}`).addClass(formBuilderSel);
     $(`#${formBuilderSel}`).append(markup('div', '', { id: controlsSel, class: 'formcomponents' }));
     $(`#${formBuilderSel}`).append(
@@ -184,7 +187,7 @@ export default class LayoutController {
     $(`#${formBuilderSel}`).attr('class', '');
 
     $(`#${controlsSel}`).empty();
-    this.buildArea.viewForm($(`#${formViewerSel}`));
+    this.buildArea.viewForm($(`#${formViewerSel} form`));
   }
 
   insertModals() {

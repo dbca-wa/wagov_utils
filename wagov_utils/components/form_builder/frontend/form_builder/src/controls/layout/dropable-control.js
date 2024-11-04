@@ -161,6 +161,7 @@ export class DropableControl extends LayoutControl {
       },
       onDelete: function (controlEditor) {
         const { control } = controlEditor;
+        console.log('Control deleted', control.toJSON());
         BuildArea.getInstance().removeControl(control);
       },
     });
@@ -172,6 +173,16 @@ export class DropableControl extends LayoutControl {
     return position;
   }
 
+  validateValue() {
+    let isValid = true;
+
+    for (let i = 0; i < this.children.length; i++) {
+      const elmIsValid = this.children[i].validateValue();
+      isValid &= elmIsValid;
+    }
+    return isValid;
+  }
+
   toDisplay(parentContainer) {
     const container = markup('div', '', {
       class: 'col',
@@ -179,15 +190,14 @@ export class DropableControl extends LayoutControl {
       'data-parentAreaId': this.parentAreaId,
       'data-areaId': this.areaId,
     });
+    if (parentContainer) {
+      parentContainer.append(container);
+    }
     for (let i = 0; i < this.children.length; i++) {
       const elm = this.children[i];
       elm.toDisplay(container);
     }
-    if (parentContainer) {
-      parentContainer.append(container);
-    } else {
-      return container;
-    }
+    return container;
   }
 
   render(customProps, attr) {

@@ -60,7 +60,7 @@ export class ControlProp {
           className: this.prop.className,
         },
         this.prop.options,
-        this.prop.required,
+        { required: this.prop.required, min: this.prop.min, max: this.prop.max },
       ),
     ];
     if (this.prop.type === 'boolean') {
@@ -108,17 +108,21 @@ export class ControlProp {
   }
 }
 
-export function _renderProp(basicProps, options = [], required = false) {
+export function _renderProp(basicProps, options = [], validations = {}) {
   const { id, type, value, placeholder, className, dataKey, dataRowId } = basicProps;
   const inputType = type === 'boolean' ? 'checkbox' : type === 'string' ? 'text' : type;
+  const { required, min, max } = validations;
 
   const generalProps = {
     id,
-    required,
+
     'data-key': dataKey,
     'data-rowId': dataRowId,
     class: className,
   };
+  if (required) generalProps.required = true;
+  if (min) generalProps.min = min;
+  if (max) generalProps.max = max;
 
   if (inputType === 'select') {
     const selectEl = markup('select', '', {

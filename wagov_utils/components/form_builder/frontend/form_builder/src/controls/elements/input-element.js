@@ -56,9 +56,15 @@ export default class InputElement extends InputControl {
       value: value,
     };
 
-    if (props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]) {
-      attributes.required = true;
-    }
+    if (props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]) attributes.required = true;
+    if (props[CONTROL_VALIDATION_PROPS_TYPES.MIN_LENGTH])
+      attributes.minlength = props[CONTROL_VALIDATION_PROPS_TYPES.MIN_LENGTH];
+    if (props[CONTROL_VALIDATION_PROPS_TYPES.MAX_LENGTH])
+      attributes.maxlength = props[CONTROL_VALIDATION_PROPS_TYPES.MAX_LENGTH];
+    if (props[CONTROL_VALIDATION_PROPS_TYPES.MIN_VALUE])
+      attributes.min = props[CONTROL_VALIDATION_PROPS_TYPES.MIN_VALUE];
+    if (props[CONTROL_VALIDATION_PROPS_TYPES.MAX_VALUE])
+      attributes.max = props[CONTROL_VALIDATION_PROPS_TYPES.MAX_VALUE];
 
     if (this.type === 'radio') {
       attributes.name = this.props.name;
@@ -75,8 +81,11 @@ export default class InputElement extends InputControl {
     if (props[CONTROL_PROPS_TYPES.DISABLED]) {
       attributes.disabled = true;
     }
+    if (props[CONTROL_VALIDATION_PROPS_TYPES.REGEX]) attributes.pattern = props[CONTROL_VALIDATION_PROPS_TYPES.REGEX];
+
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];
     this.label.display = !!!props[CONTROL_PROPS_TYPES.HIDE_LABEL];
+    this.label.required = props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED] === true;
     this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
     this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
 

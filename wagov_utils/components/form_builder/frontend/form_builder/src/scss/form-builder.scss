@@ -150,6 +150,27 @@ $main-panel-padding: 20px;
   display: flex;
 }
 
+.field-required:after {
+  position: relative;
+  z-index: 10;
+}
+
+.field-required:after,
+.tab-error::after {
+  content: ' *';
+  color: #eb0000;
+}
+
+.invalid-form-field:empty {
+  display: none;
+}
+.invalid-form-field:not(:empty) {
+  display: block;
+  color: #c90000;
+  font-weight: 500;
+  font-size: 12px;
+}
+
 // MODAL
 #modal-control-edition {
   .nav-link {

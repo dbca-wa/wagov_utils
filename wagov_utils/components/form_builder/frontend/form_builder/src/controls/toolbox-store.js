@@ -19,6 +19,8 @@ export const CONTROLS_STORE = {
       placeholder: '',
       required: true,
       type: INPUT_TYPES.TEXT,
+      minWordLength: 1,
+      maxWordLength: 2,
     },
     attr: {
       type: INPUT_TYPES.TEXT,
@@ -49,7 +51,7 @@ export const CONTROLS_STORE = {
       type: INPUT_TYPES.NUMBER,
       placeholder: 'Enter a number',
       required: true,
-      defaultValue: 100,
+      minValue: 5,
     },
 
     attr: {
@@ -200,8 +202,9 @@ export const SPECIAL_INPUT_STORE = {
     props: {
       name: 'Button',
       label: 'Click me',
-
-      required: true,
+      size: 'btn-lg',
+      blockButton: true,
+      action: 'submit',
     },
     attr: {},
     icon: 'fa fa-font',

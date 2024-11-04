@@ -7,12 +7,17 @@ export default class Label extends Control {
     super(attr, {}, CONTROL_TYPES.BASIC);
     this.text = text;
     this.display = true;
+    this.required = false;
   }
 
   render() {
     if (!this.display) {
       return '';
     }
-    return markup('label', this.text, this.attr);
+
+    return markup('label', this.text, {
+      ...this.attr,
+      class: [this.attr.class ?? '', this.required ? 'field-required' : ''].join(' '),
+    });
   }
 }
