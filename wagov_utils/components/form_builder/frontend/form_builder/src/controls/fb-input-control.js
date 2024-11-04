@@ -74,7 +74,7 @@ export default class InputControl extends Control {
     if (this.type === INPUT_TYPES.CHECK_BOX) {
       return $(this.getIdSelector()).is(':checked');
     }
-    return $(this.getIdSelector()).val();
+    return $(this.getIdSelector()).val().trim();
   }
 
   validateValue() {
