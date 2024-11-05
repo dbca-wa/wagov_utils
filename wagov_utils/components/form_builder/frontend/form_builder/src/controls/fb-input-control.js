@@ -2,8 +2,12 @@ import { ELEMENT_TYPES } from './utils/element-types';
 import { CONTROL_TYPES } from './utils/control-types';
 import Label from './elements/basics/label';
 import Control from '../js/fb-control';
-import { markup } from '../js/utils';
-import { CONTROL_PROPS_TYPES, CONTROL_VALIDATION_PROPS_TYPES } from './utils/control-props-types';
+import { camelCase, markup } from '../js/utils';
+import {
+  CONTROL_API_PROPS_TYPES,
+  CONTROL_PROPS_TYPES,
+  CONTROL_VALIDATION_PROPS_TYPES,
+} from './utils/control-props-types';
 import { BasicAPIProps } from './config-properties/api-props/basic-api-properties';
 import { InputFieldValidationProps } from './config-properties/validation-props/input-validation-properties';
 import { CLASS_INVALID_FIELD_VALUE } from './utils/constants';
@@ -29,6 +33,9 @@ export default class InputControl extends Control {
   constructor(attr, props, elementType) {
     super(attr, props, CONTROL_TYPES.ELEMENT);
     this.elementType = elementType || ELEMENT_TYPES.INPUT;
+    this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] =
+      this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] ||
+      camelCase((this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT] ?? '').toString().trim().replace(' ', ''));
     this.label = new Label(props['label'] || '', extractLabelProps(props)); // Default label
     this._basicSetup();
   }
@@ -74,7 +81,18 @@ export default class InputControl extends Control {
     if (this.type === INPUT_TYPES.CHECK_BOX) {
       return $(this.getIdSelector()).is(':checked');
     }
+    if (this.type === INPUT_TYPES.NUMBER) {
+      return $(this.getIdSelector()).val() ? parseFloat($(this.getIdSelector()).val()) : null;
+    }
     return $(this.getIdSelector()).val().trim();
+  }
+
+  getFieldValue() {
+    if (!this.apiControlProps) return {};
+    const props = this.apiControlProps.getPropsValues();
+    return {
+      [props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]: this.getElementValue(),
+    };
   }
 
   validateValue() {

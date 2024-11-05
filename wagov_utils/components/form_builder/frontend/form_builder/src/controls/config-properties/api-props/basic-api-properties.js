@@ -1,4 +1,5 @@
-import { CONTROL_API_PROPS_TYPES, CONTROL_VALIDATION_PROPS_TYPES } from '../../utils/control-props-types';
+import { CONTROL_API_PROPS_TYPES } from '../../utils/control-props-types';
+import { INPUT_TYPES } from '../../utils/input-types';
 
 import { BaseAPIProps } from '../data-props/base-api-props';
 

@@ -10,7 +10,14 @@ export class InputFieldValidationProps extends BaseValidationProps {
 
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
-    const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
+    const value = e.target
+      ? e.target.type === INPUT_TYPES.CHECK_BOX
+        ? e.target.checked
+        : e.target.type === 'number'
+        ? Number.parseInt(e.target.value) || 0
+        : e.target.value
+      : e.value;
+
     _this.modifyPropValue(prop.name, value);
     _this.editor._renderPreviewControl();
   }

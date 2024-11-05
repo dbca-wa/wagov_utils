@@ -14,7 +14,7 @@ export const FORM_CONTROLS = [
   { label: 'Checkbox', type: ELEMENT_TYPES.CHECK_BOX, icon: 'bi bi-check-square' },
   { label: 'Select Boxes', type: ELEMENT_TYPES.SELECT_BOXES, icon: 'bi bi-ui-checks' },
   { label: 'Radio Button', type: ELEMENT_TYPES.RADIO, icon: 'bi bi-ui-radios' },
-  { label: 'Number', type: ELEMENT_TYPES.INPUT_NUMBER, icon: 'bi bi-one-square' },
+  { label: 'Number', type: ELEMENT_TYPES.INPUT_NUMBER, icon: 'bi bi-hash' },
   { label: 'Columns', type: LAYOUT_TYPES.COLUMNS_ROW, icon: 'bi bi-layout-three-columns' },
   { label: 'Button', type: ELEMENT_TYPES.BUTTON, icon: 'bi bi-cursor-fill' },
 ];

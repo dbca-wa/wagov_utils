@@ -53,6 +53,20 @@ export default class LayoutControl extends Control {
     return json;
   }
 
+  getFieldValues() {
+    const values = {};
+    for (let i = 0; i < this.children.length; i++) {
+      const elm = this.children[i];
+      if (elm.children?.length > 0) {
+        Object.assign(values, elm.getFieldValues());
+      }
+      if (typeof elm?.getFieldValue === 'function') {
+        Object.assign(values, elm.getFieldValue());
+      }
+    }
+    return values;
+  }
+
   toDisplay(container) {
     const parent = markup('div', '', { class: this.container_class, id: this.id });
     container.append(parent);

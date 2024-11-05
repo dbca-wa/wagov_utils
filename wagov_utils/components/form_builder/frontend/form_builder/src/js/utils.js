@@ -39,6 +39,18 @@ export const safeAttrName = (name) => {
   return safeAttr[name] || hyphenCase(name);
 };
 
+export const camelCase = (str) => {
+  return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+    if (+match === 0) return ''; // or if (/\s+/.test(match)) for white spaces
+    return index === 0 ? match.toLowerCase() : match.toUpperCase();
+  });
+};
+
+export const compareMinMaxIntegers = (min, max) => {
+  if (!Number.isInteger(min) || !Number.isInteger(max)) return false;
+  return min > max;
+};
+
 export const isPotentiallyDangerousAttribute = (attrName, attrValue) => {
   if (sanitizerConfig.backendOrder.length === 0) {
     //All backends disabled so no sanitization checks to be performed

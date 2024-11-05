@@ -40,6 +40,7 @@ export const CONTROL_DATA_PROPS_TYPES = {
 
 export const CONTROL_API_PROPS_TYPES = {
   FIELD_NAME: 'fieldName',
+  FIELD_NAME_DEFAULT: 'fieldNameDefault',
 };
 
 export const CONTROL_VALIDATION_PROPS_TYPES = {

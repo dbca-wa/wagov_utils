@@ -100,6 +100,7 @@ export class BuildArea {
       const isValid = _this.area.validateValue();
       if (isValid) {
         console.log('Form is valid');
+        console.log(_this.area.getFieldValues());
       } else {
         console.log('Form is invalid');
       }

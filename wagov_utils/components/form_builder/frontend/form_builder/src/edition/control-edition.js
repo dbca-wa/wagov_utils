@@ -1,8 +1,12 @@
-import { CONTROL_PROPS_TYPES } from '../controls/utils/control-props-types';
+import {
+  CONTROL_API_PROPS_TYPES,
+  CONTROL_PROPS_TYPES,
+  CONTROL_VALIDATION_PROPS_TYPES,
+} from '../controls/utils/control-props-types';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
 import Control from '../js/fb-control';
 import { appSelectors } from '../js/selectors';
-import { activateTooltips, generateRandomId, markup } from '../js/utils';
+import { activateTooltips, compareMinMaxIntegers, generateRandomId, markup } from '../js/utils';
 import controlWrapperTemplate from '../views/control-edition/control-edition-wrapper.handlebars';
 import Modal from 'bootstrap/js/dist/modal.js';
 
@@ -126,8 +130,47 @@ export default class ControlEdition extends Control {
 
   _saveControl(event) {
     const _this = event.data;
-    if (_this.initialProps[CONTROL_PROPS_TYPES.LABEL] === '') {
+    const props = _this.control.getPropsObject();
+    if (props[CONTROL_PROPS_TYPES.LABEL] === '') {
       alert('Label is required');
+      $('#display-tab').trigger('click');
+      return;
+    }
+    if (_this.control.validationControlProps) {
+      if (
+        compareMinMaxIntegers(
+          props[CONTROL_VALIDATION_PROPS_TYPES.MIN_VALUE],
+          props[CONTROL_VALIDATION_PROPS_TYPES.MAX_VALUE],
+        )
+      ) {
+        alert('Minimum value must be less than the Maximum value');
+        $('#validation-tab').trigger('click');
+        return;
+      }
+      if (
+        compareMinMaxIntegers(
+          props[CONTROL_VALIDATION_PROPS_TYPES.MIN_WORD_LENGTH],
+          props[CONTROL_VALIDATION_PROPS_TYPES.MAX_WORD_LENGTH],
+        )
+      ) {
+        alert('Minimum Word length must be less than the Maximum value');
+        $('#validation-tab').trigger('click');
+        return;
+      }
+      if (
+        compareMinMaxIntegers(
+          props[CONTROL_VALIDATION_PROPS_TYPES.MIN_LENGTH],
+          props[CONTROL_VALIDATION_PROPS_TYPES.MAX_LENGTH],
+        )
+      ) {
+        alert('Minimum length must be less than the Maximum value');
+        $('#validation-tab').trigger('click');
+        return;
+      }
+    }
+    if (!props[CONTROL_API_PROPS_TYPES.FIELD_NAME]) {
+      alert('Field name is required');
+      $('#api-tab').trigger('click');
       return;
     }
     _this.controller.onSave(_this);
@@ -155,6 +198,8 @@ export default class ControlEdition extends Control {
 
     this.control.displayControlProps.fillInProps(Object.assign({}, this.initialProps));
     this.control.dataControlProps?.fillInProps(Object.assign({}, this.initialProps));
+    this.control.validationControlProps?.fillInProps(Object.assign({}, this.initialProps));
+    this.control.apiControlProps?.fillInProps(Object.assign({}, this.initialProps));
   }
 
   _mouseAction(event) {

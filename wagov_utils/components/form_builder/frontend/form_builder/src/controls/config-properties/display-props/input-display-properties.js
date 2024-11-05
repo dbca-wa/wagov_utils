@@ -1,4 +1,6 @@
 import { CONTROL_PROPS_TYPES } from '../../utils/control-props-types';
+import { INPUT_TYPES } from '../../utils/input-types';
+import { ELEMENT_TYPES } from '../../utils/element-types';
 import { BaseControlProps } from '../base-control-props';
 
 const textProps = [
@@ -13,6 +15,23 @@ const textProps = [
   //   CONTROL_PROPS_TYPES.TAB_INDEX,
   CONTROL_PROPS_TYPES.HIDDEN,
   CONTROL_PROPS_TYPES.DISABLED,
+  CONTROL_PROPS_TYPES.HIDE_LABEL,
+];
+const passwordProps = [
+  CONTROL_PROPS_TYPES.LABEL,
+  CONTROL_PROPS_TYPES.PLACEHOLDER,
+  CONTROL_PROPS_TYPES.DESCRIPTION,
+  CONTROL_PROPS_TYPES.TOOLTIP,
+  CONTROL_PROPS_TYPES.CUSTOM_CLASS,
+  CONTROL_PROPS_TYPES.HIDE_LABEL,
+];
+
+const numberProps = [
+  CONTROL_PROPS_TYPES.LABEL,
+  CONTROL_PROPS_TYPES.PLACEHOLDER,
+  CONTROL_PROPS_TYPES.DESCRIPTION,
+  CONTROL_PROPS_TYPES.TOOLTIP,
+  CONTROL_PROPS_TYPES.CUSTOM_CLASS,
   CONTROL_PROPS_TYPES.HIDE_LABEL,
 ];
 
@@ -87,16 +106,20 @@ const dateProps = [
 
 function getProps(type) {
   switch (type) {
-    case 'radio':
+    case INPUT_TYPES.RADIO:
       return radioProps;
-    case 'checkbox':
+    case INPUT_TYPES.CHECK_BOX:
       return checkboxProps;
-    case 'select-boxes':
+    case ELEMENT_TYPES.SELECT_BOXES:
       return checkboxProps;
-    case 'date':
+    case INPUT_TYPES.DATE:
       return dateProps;
-    case 'textarea':
+    case INPUT_TYPES.TEXT_AREA:
       return textAreaProps;
+    case INPUT_TYPES.PASSWORD:
+      return passwordProps;
+    case INPUT_TYPES.NUMBER:
+      return numberProps;
     default:
       return textProps;
   }
