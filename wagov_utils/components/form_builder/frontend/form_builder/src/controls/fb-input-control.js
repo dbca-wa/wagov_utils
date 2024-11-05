@@ -84,6 +84,8 @@ export default class InputControl extends Control {
     if (this.type === INPUT_TYPES.NUMBER) {
       return $(this.getIdSelector()).val() ? parseFloat($(this.getIdSelector()).val()) : null;
     }
+    const props = this.getPropsObject();
+    if (props[CONTROL_PROPS_TYPES.DISPLAY_MASK]) return $(this.getIdSelector()).cleanVal();
     return $(this.getIdSelector()).val().trim();
   }
 
