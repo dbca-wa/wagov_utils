@@ -53,6 +53,16 @@ export default class LayoutControl extends Control {
     return json;
   }
 
+  validateValue() {
+    let isValid = true;
+
+    for (let i = 0; i < this.children.length; i++) {
+      const elmIsValid = this.children[i].validateValue();
+      isValid &= elmIsValid;
+    }
+    return isValid;
+  }
+
   getFieldValues() {
     const values = {};
     for (let i = 0; i < this.children.length; i++) {

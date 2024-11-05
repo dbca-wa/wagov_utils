@@ -109,6 +109,11 @@ export default class LayoutController {
       console.log('Saving form', formJson);
       window.localStorage.setItem('storedForm', JSON.stringify(formJson));
     });
+    $('#btn-print-form').on('click', this, function (event) {
+      const layout = event.data;
+      const formJson = layout.buildArea.toJSON();
+      console.log('The form', formJson);
+    });
     $('#btn-load-form').on('click', this, function (event) {
       const layout = event.data;
       const storedForm = window.localStorage.getItem('storedForm');

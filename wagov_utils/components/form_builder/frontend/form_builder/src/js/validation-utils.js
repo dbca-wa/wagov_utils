@@ -3,10 +3,11 @@ import { CONTROL_VALIDATION_PROPS_TYPES } from '../controls/utils/control-props-
 export const runInputFieldValidations = (value, control) => {
   const validationProps = control.validationControlProps?.getPropsValues();
   const errors = [];
-  const strValue = value.toString() ?? '';
+  const strValue = value?.toString() ?? '';
   if (validationProps[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]) {
-    if ((typeof value === 'boolean' && !value) || strValue.length === 0) {
+    if ((typeof value === 'boolean' && !value) || value === null || strValue.length === 0) {
       errors.push('This field is required');
+      return errors;
     }
   }
 

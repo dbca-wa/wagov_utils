@@ -173,16 +173,6 @@ export class DropableControl extends LayoutControl {
     return position;
   }
 
-  validateValue() {
-    let isValid = true;
-
-    for (let i = 0; i < this.children.length; i++) {
-      const elmIsValid = this.children[i].validateValue();
-      isValid &= elmIsValid;
-    }
-    return isValid;
-  }
-
   toDisplay(parentContainer) {
     const container = markup('div', '', {
       class: 'col',
