@@ -1,5 +1,6 @@
 import { DropableControl } from '../controls/layout/dropable-control';
-import { activateTooltips, markup } from './utils';
+import { CONTROL_API_PROPS_TYPES } from '../controls/utils/control-props-types';
+import { activateTooltips, camelCase, markup } from './utils';
 
 export class BuildArea {
   static instance;
@@ -82,6 +83,25 @@ export class BuildArea {
 
   setAreaContainer(area) {
     this.area.setContainer(area, true);
+  }
+
+  fieldNameExists(name) {
+    let count = 0;
+    for (const key in this.dropables) {
+      const dropable = this.dropables[key];
+      for (const control of dropable.children) {
+        if (control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] === name) {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+
+  generateAPIFieldName(defaultName = 'unnamedField') {
+    const name = camelCase(defaultName).toString().trim().replace(' ', '');
+    const count = this.fieldNameExists(name);
+    return count === 0 ? name : `${name}${count}`;
   }
 
   toJSON() {

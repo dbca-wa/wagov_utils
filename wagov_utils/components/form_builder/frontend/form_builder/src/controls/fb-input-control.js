@@ -13,6 +13,7 @@ import { InputFieldValidationProps } from './config-properties/validation-props/
 import { CLASS_INVALID_FIELD_VALUE } from './utils/constants';
 import { runInputFieldValidations } from '../js/validation-utils';
 import { INPUT_TYPES } from './utils/input-types';
+import { BuildArea } from '../js/fb-build-area';
 
 function extractLabelProps(props = {}) {
   const labelProps = {};
@@ -33,14 +34,16 @@ export default class InputControl extends Control {
   constructor(attr, props, elementType) {
     super(attr, props, CONTROL_TYPES.ELEMENT);
     this.elementType = elementType || ELEMENT_TYPES.INPUT;
-    this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] =
-      this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] ||
-      camelCase((this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT] ?? '').toString().trim().replace(' ', ''));
     this.label = new Label(props['label'] || '', extractLabelProps(props)); // Default label
+
     this._basicSetup();
   }
 
   _basicSetup() {
+    this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] =
+      this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] ||
+      BuildArea.getInstance().generateAPIFieldName(this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT] ?? this.type);
+
     this.container_class = this.props?.container_class || this.container_class;
     this.dataControlProps = {};
     this.validationControlProps = new InputFieldValidationProps(this.elementType, this.props);

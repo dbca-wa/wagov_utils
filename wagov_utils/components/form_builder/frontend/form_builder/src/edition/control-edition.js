@@ -4,6 +4,7 @@ import {
   CONTROL_VALIDATION_PROPS_TYPES,
 } from '../controls/utils/control-props-types';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
+import { BuildArea } from '../js/fb-build-area';
 import Control from '../js/fb-control';
 import { appSelectors } from '../js/selectors';
 import { activateTooltips, compareMinMaxIntegers, generateRandomId, markup } from '../js/utils';
@@ -168,10 +169,17 @@ export default class ControlEdition extends Control {
         return;
       }
     }
-    if (props[CONTROL_API_PROPS_TYPES.FIELD_NAME] === '') {
-      alert('Field name is required');
-      $('#api-tab').trigger('click');
-      return;
+    if (props[CONTROL_API_PROPS_TYPES.FIELD_NAME] != undefined) {
+      if (props[CONTROL_API_PROPS_TYPES.FIELD_NAME] === '') {
+        alert('Field name is required');
+        $('#api-tab').trigger('click');
+        return;
+      }
+      if (BuildArea.getInstance().fieldNameExists(props[CONTROL_API_PROPS_TYPES.FIELD_NAME]) != 0) {
+        alert('Field name already exists');
+        $('#api-tab').trigger('click');
+        return;
+      }
     }
     _this.controller.onSave(_this);
     _this.hasSaved = true;

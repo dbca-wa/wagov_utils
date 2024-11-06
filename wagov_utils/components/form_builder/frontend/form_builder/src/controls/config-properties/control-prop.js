@@ -16,11 +16,7 @@ export const defaultAllProps = {
 };
 import brace from 'brace';
 import 'brace/mode/html';
-import 'brace/theme/monokai';
-import 'brace/theme/github';
-
-import 'brace/mode/coffee';
-import 'brace/theme/vibrant_ink';
+import 'brace/theme/textmate';
 import 'brace/keybinding/vim';
 
 export class ControlProp {
@@ -87,8 +83,9 @@ export class ControlProp {
     }
     if (this.prop.type === 'html') {
       const hiddenElementId = `#${this.id}-hidden`;
-      this.editor = brace.edit(this.id, 'session JC');
-      this.editor.setTheme('ace/theme/github');
+      this.editor = brace.edit(this.id);
+      this.editor.setTheme('ace/theme/textmate');
+      this.editor.getSession().setMode('ace/mode/html');
       this.editor.setValue(this.prop.value);
 
       $(hiddenElementId).on('change', { context, prop: this.prop }, cb);
