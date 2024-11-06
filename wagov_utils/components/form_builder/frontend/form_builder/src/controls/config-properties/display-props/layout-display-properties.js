@@ -10,6 +10,22 @@ const HTMLComponentProps = [
   LAYOUT_CONTROL_PROPS_TYPES.HTML_CONTENT,
 ];
 
+export class DropableDisplayProps extends BaseControlProps {
+  constructor(props) {
+    super([CONTROL_PROPS_TYPES.CUSTOM_CLASS]);
+    this.fillInProps(props);
+    if (props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS]) {
+      this.modifyPropValue(
+        LAYOUT_CONTROL_PROPS_TYPES.COLUMNS,
+        props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS].map((col) => ({
+          ...col,
+          id: col.id ? col.id : ['row', generateRandomId()].join('-'),
+        })),
+      );
+    }
+  }
+}
+
 export class ColumnsDisplayProps extends BaseControlProps {
   constructor(props) {
     super(columnsProps);
@@ -17,7 +33,10 @@ export class ColumnsDisplayProps extends BaseControlProps {
     if (props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS]) {
       this.modifyPropValue(
         LAYOUT_CONTROL_PROPS_TYPES.COLUMNS,
-        props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS].map((col) => ({ ...col, id: ['row', generateRandomId()].join('-') })),
+        props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS].map((col) => ({
+          ...col,
+          id: col.id ? col.id : ['row', generateRandomId()].join('-'),
+        })),
       );
     }
   }

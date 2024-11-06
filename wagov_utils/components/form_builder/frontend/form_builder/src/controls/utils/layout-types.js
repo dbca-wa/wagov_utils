@@ -1,5 +1,5 @@
 export const LAYOUT_TYPES = {
-  COLUMNS_ROW: 'columns-row',
+  ROW_COLUMNS: 'row-columns',
   COLUMN: 'column',
   DROPABLE: 'dropable',
   CONTENT: 'content',

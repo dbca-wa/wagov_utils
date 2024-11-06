@@ -3,6 +3,7 @@ import { LAYOUT_TYPES } from './utils/layout-types';
 
 export const FORM_CONTROLS = [
   { label: 'Input Text', type: ELEMENT_TYPES.INPUT, icon: 'bi bi-type' },
+  { label: 'Columns v2', type: LAYOUT_TYPES.ROW_COLUMNS, icon: 'bi bi-layout-three-columns' },
   { label: 'Mobile Number', type: ELEMENT_TYPES.MOBILE_NUMBER, icon: 'bi bi-phone' },
   { label: 'HTML', type: LAYOUT_TYPES.HTML_CONTENT, icon: 'bi bi-code' },
   { label: 'Date Picker', type: ELEMENT_TYPES.DATE_PICKER, icon: 'bi bi-calendar-date' },
@@ -15,6 +16,5 @@ export const FORM_CONTROLS = [
   { label: 'Select Boxes', type: ELEMENT_TYPES.SELECT_BOXES, icon: 'bi bi-ui-checks' },
   { label: 'Radio Button', type: ELEMENT_TYPES.RADIO, icon: 'bi bi-ui-radios' },
   { label: 'Number', type: ELEMENT_TYPES.INPUT_NUMBER, icon: 'bi bi-hash' },
-  { label: 'Columns', type: LAYOUT_TYPES.COLUMNS_ROW, icon: 'bi bi-layout-three-columns' },
   { label: 'Button', type: ELEMENT_TYPES.BUTTON, icon: 'bi bi-cursor-fill' },
 ];

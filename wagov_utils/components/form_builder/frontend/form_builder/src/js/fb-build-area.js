@@ -53,13 +53,13 @@ export class BuildArea {
     }
   }
 
-  getDropableControl(parentId) {
-    const dropable = new DropableControl();
-    dropable.areaId = parentId;
-
+  getDropableControl(areaId, props = {}, attr = {}) {
+    const _areaId = props.areaId || areaId;
+    Object.assign(props, { areaId: _areaId });
+    const dropable = new DropableControl(attr, props);
     dropable.parentAreaId = this.areaId;
 
-    this.dropables[parentId] = dropable;
+    this.dropables[_areaId] = dropable;
     return dropable;
   }
 

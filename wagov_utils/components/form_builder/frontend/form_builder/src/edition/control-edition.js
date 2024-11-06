@@ -168,7 +168,7 @@ export default class ControlEdition extends Control {
         return;
       }
     }
-    if (!props[CONTROL_API_PROPS_TYPES.FIELD_NAME]) {
+    if (props[CONTROL_API_PROPS_TYPES.FIELD_NAME] === '') {
       alert('Field name is required');
       $('#api-tab').trigger('click');
       return;

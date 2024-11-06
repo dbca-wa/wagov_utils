@@ -14,7 +14,7 @@ export default class LayoutControl extends Control {
   constructor(attr, props, elementType) {
     super(attr, props, CONTROL_TYPES.LAYOUT);
     this.label = new Label(props['label'] || ''); // Default label
-    this.areaId = ['area-', generateRandomId()].join('');
+    this.areaId = props.areaId ?? ['area-', generateRandomId()].join('');
     if (elementType) this.elementType = elementType;
 
     this._basicSetup();
@@ -87,7 +87,7 @@ export default class LayoutControl extends Control {
   }
 
   renderControl(displayMode) {
-    return this.render(children);
+    return this.render(this.children.map((c) => c.renderControl(displayMode)));
   }
 
   render(children = []) {

@@ -46,7 +46,7 @@ export default class ButtonElement extends Control {
   render(customProps, attr) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
     const label = props[CONTROL_PROPS_TYPES.LABEL];
-    const containerClass = props[CONTROL_PROPS_TYPES.BLOCK_BUTTON] ? 'd-grid' : '';
+    const containerClass = [props[CONTROL_PROPS_TYPES.BLOCK_BUTTON] ? 'd-grid' : '', 'my-1'].join(' ');
     const tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
 
     const className = [

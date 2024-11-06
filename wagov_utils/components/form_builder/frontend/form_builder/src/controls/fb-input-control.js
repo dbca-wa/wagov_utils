@@ -26,7 +26,7 @@ function extractLabelProps(props = {}) {
 }
 
 export default class InputControl extends Control {
-  container_class = 'formarea-control';
+  container_class = '';
   elementType;
   description;
   tooltip;
@@ -140,8 +140,9 @@ export default class InputControl extends Control {
           'data-bs-title': this.tooltip,
         })
       : undefined;
+    const isCheckbox = this.type === ELEMENT_TYPES.CHECK_BOX;
     if (this.isShowLabel()) {
-      if (this.elementType === ELEMENT_TYPES.CHECK_BOX) {
+      if (isCheckbox) {
         children.push(this.label.render());
         if (tooltip) children.push(tooltip);
       } else {
@@ -149,7 +150,7 @@ export default class InputControl extends Control {
         children.unshift(this.label.render());
       }
     }
-
+    if (isCheckbox) children.push(markup('br'));
     if (this.description) {
       children.push(markup('small', this.description, { class: 'form-text' }));
     }

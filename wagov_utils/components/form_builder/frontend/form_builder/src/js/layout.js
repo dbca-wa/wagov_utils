@@ -128,7 +128,7 @@ export default class LayoutController {
       const defaultElements = [
         LAYOUT_TYPES.HTML_CONTENT,
         ELEMENT_TYPES.INPUT,
-        LAYOUT_TYPES.COLUMNS_ROW,
+        LAYOUT_TYPES.ROW_COLUMNS,
         ELEMENT_TYPES.INPUT_NUMBER,
         // ELEMENT_TYPES.SELECT,
         // ELEMENT_TYPES.CHECK_BOX,

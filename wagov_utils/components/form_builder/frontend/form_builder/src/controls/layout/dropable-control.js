@@ -1,10 +1,11 @@
 import ControlEdition from '../../edition/control-edition';
 import { BuildArea } from '../../js/fb-build-area';
 import { markup } from '../../js/utils';
-import { ColumnsDisplayProps } from '../config-properties/display-props/layout-display-properties';
+import { DropableDisplayProps } from '../config-properties/display-props/layout-display-properties';
 import LayoutControl from '../fb-layout-control';
 import { BUILDER_TOOLBOX } from '../toolbox-store';
 import { CLASS_DROPABLE_BLOCKS, CLASS_EMPTY_DROPABLE } from '../utils/constants';
+import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { LAYOUT_TYPES } from '../utils/layout-types';
 
 const defaultSettings = {};
@@ -22,19 +23,26 @@ export class DropableControl extends LayoutControl {
 
   setup() {
     this.container_class = CLASS_DROPABLE_BLOCKS;
-    this.displayControlProps = new ColumnsDisplayProps(this.props);
+    this.displayControlProps = new DropableDisplayProps(this.props);
   }
 
   setContainer(container, render = false) {
+    const props = this.displayControlProps.getPropsValues();
     container.append(
-      markup('div', '', {
-        class: this.container_class,
-        id: this.id,
-        'data-parentAreaId': this.parentAreaId,
-        'data-areaId': this.areaId,
-      }),
+      markup(
+        'div',
+        markup('div', '', {
+          id: this.id,
+          'data-parentAreaId': this.parentAreaId,
+          'data-areaId': this.areaId,
+          class: this.container_class,
+        }),
+        {
+          class: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'container',
+        },
+      ),
     );
-    this.$c = container.find(`.${this.container_class}`);
+    this.$c = container.find(this.getIdSelector());
     if (render) this.renderInContainer();
   }
 
@@ -77,54 +85,57 @@ export class DropableControl extends LayoutControl {
     if (this.$c) {
       this.$c.empty();
       this.render();
-
-      this.$c.sortable({
-        helper: 'clone',
-        cursor: 'move',
-        scroll: false,
-        handle: '.fb-wrapper-content',
-
-        tolerance: 'pointer',
-        placeholder: 'ui-state-highlight',
-        cancel: `.${CLASS_EMPTY_DROPABLE}`,
-        connectWith: `.${this.container_class}`,
-      });
-      this.$c.on('sortupdate', this, function (event, ui) {
-        const _this = event.data;
-        if (!ui.sender) {
-          const { areaId: sourceAreaId } = this.dataset;
-          const { controlId } = ui.item[0].dataset;
-          _this.reOrderChildControl(controlId);
-          return;
-        }
-        if (ui.sender.hasClass(CLASS_DROPABLE_BLOCKS) || this !== event.target) return;
-        const nodeOffset = ui.item.offset().top;
-        ui.sender.sortable('cancel');
-        try {
-          const data = ui.item[0].dataset;
-          const controlType = data.controlType;
-          const { attr, props, controlClass } = BUILDER_TOOLBOX[controlType];
-          const elm = new controlClass(attr, props);
-          if (_this.children.length === 0) {
-            _this.$c.empty();
-          }
-          _this.addControl(this, elm, nodeOffset);
-        } catch (error) {
-          console.log("Couldn't append element", error);
-        }
-      });
-
-      this.$c.on('sortreceive', this, function (event, ui) {
-        const _this = event.data;
-        if (!ui.sender || !ui.sender.hasClass(CLASS_DROPABLE_BLOCKS)) return;
-        if (_this.$c[0].id === ui.sender[0].id) return;
-
-        const { areaId: sourceAreaId } = ui.sender[0].dataset;
-        const { areaId: targetAreaId } = _this.$c[0].dataset;
-        const { controlId } = ui.item[0].dataset;
-        _this.area.transferControl(controlId, sourceAreaId, targetAreaId);
-      });
+      this.enableDropableBlock();
     }
+  }
+
+  enableDropableBlock() {
+    this.$c.sortable({
+      helper: 'clone',
+      cursor: 'move',
+      scroll: false,
+      handle: '.fb-wrapper-content',
+
+      tolerance: 'pointer',
+      placeholder: 'ui-state-highlight',
+      cancel: `.${CLASS_EMPTY_DROPABLE}`,
+      connectWith: `.${this.container_class}`,
+    });
+    this.$c.on('sortupdate', this, function (event, ui) {
+      const _this = event.data;
+      if (!ui.sender) {
+        const { areaId: sourceAreaId } = this.dataset;
+        const { controlId } = ui.item[0].dataset;
+        _this.reOrderChildControl(controlId);
+        return;
+      }
+      if (ui.sender.hasClass(CLASS_DROPABLE_BLOCKS) || this !== event.target) return;
+      const nodeOffset = ui.item.offset().top;
+      ui.sender.sortable('cancel');
+      try {
+        const data = ui.item[0].dataset;
+        const controlType = data.controlType;
+        const { attr, props, controlClass } = BUILDER_TOOLBOX[controlType];
+        const elm = new controlClass(attr, props);
+        if (_this.children.length === 0) {
+          _this.$c.empty();
+        }
+        _this.addControl(this, elm, nodeOffset);
+      } catch (error) {
+        console.log("Couldn't append element", error);
+      }
+    });
+
+    this.$c.on('sortreceive', this, function (event, ui) {
+      const _this = event.data;
+      if (!ui.sender || !ui.sender.hasClass(CLASS_DROPABLE_BLOCKS)) return;
+      if (_this.$c[0].id === ui.sender[0].id) return;
+
+      const { areaId: sourceAreaId } = ui.sender[0].dataset;
+      const { areaId: targetAreaId } = _this.$c[0].dataset;
+      const { controlId } = ui.item[0].dataset;
+      _this.area.transferControl(controlId, sourceAreaId, targetAreaId);
+    });
   }
 
   toggleEmptyDropableControl() {
@@ -168,14 +179,15 @@ export class DropableControl extends LayoutControl {
 
     const renderedControl = fbControlWrapper.render();
     const position = appendControlEdition(areaContainer, renderedControl, nodeOffset);
-    control.renderInParent($(renderedControl).find('.fb-wrapper-content'));
     fbControlWrapper.addButtonEvents();
+    control.renderInParent($(renderedControl).find('.fb-wrapper-content'));
     return position;
   }
 
   toDisplay(parentContainer) {
+    const props = this.displayControlProps.getPropsValues();
     const container = markup('div', '', {
-      class: 'col',
+      class: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'col',
       id: this.id,
       'data-parentAreaId': this.parentAreaId,
       'data-areaId': this.areaId,

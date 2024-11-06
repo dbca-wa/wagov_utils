@@ -4,7 +4,6 @@ import { ELEMENT_TYPES } from './utils/element-types';
 import RadioButton from './elements/radio-button';
 import { INPUT_TYPES } from './utils/input-types';
 import { LAYOUT_TYPES } from './utils/layout-types';
-import { ColumnsBlock } from './layout/columns-block';
 import TextAreaElement from './elements/textarea';
 import SelectBoxes from './elements/select-boxes';
 import { HTMLComponent } from './layout/html-component';
@@ -14,6 +13,7 @@ import {
   CONTROL_PROPS_TYPES,
   CONTROL_VALIDATION_PROPS_TYPES,
 } from './utils/control-props-types';
+import { RowBlock } from './layout/row-block';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -223,7 +223,7 @@ export const SPECIAL_INPUT_STORE = {
 };
 
 export const LAYOUT_STORE = {
-  [LAYOUT_TYPES.COLUMNS_ROW]: {
+  [LAYOUT_TYPES.ROW_COLUMNS]: {
     description: 'A row with columns',
     props: {
       [CONTROL_PROPS_TYPES.LABEL]: 'Columns displayed',
@@ -238,10 +238,9 @@ export const LAYOUT_STORE = {
         },
       ],
     },
-    [CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT]: 'Columns',
     attr: {},
     icon: 'fa fa-font',
-    controlClass: ColumnsBlock,
+    controlClass: RowBlock,
   },
   [LAYOUT_TYPES.HTML_CONTENT]: {
     description: 'A block of custom HTML code',
