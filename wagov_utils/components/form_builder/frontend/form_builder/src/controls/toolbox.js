@@ -3,7 +3,8 @@ import { LAYOUT_TYPES } from './utils/layout-types';
 
 export const FORM_CONTROLS = [
   { label: 'Input Text', type: ELEMENT_TYPES.INPUT, icon: 'bi bi-type' },
-  { label: 'Columns v2', type: LAYOUT_TYPES.ROW_COLUMNS, icon: 'bi bi-layout-three-columns' },
+  { label: 'Columns', type: LAYOUT_TYPES.ROW_COLUMNS, icon: 'bi bi-layout-three-columns' },
+  { label: 'Container', type: LAYOUT_TYPES.CONTAINER, icon: 'bi bi-layout-three-columns' },
   { label: 'Mobile Number', type: ELEMENT_TYPES.MOBILE_NUMBER, icon: 'bi bi-phone' },
   { label: 'HTML', type: LAYOUT_TYPES.HTML_CONTENT, icon: 'bi bi-code' },
   { label: 'Date Picker', type: ELEMENT_TYPES.DATE_PICKER, icon: 'bi bi-calendar-date' },

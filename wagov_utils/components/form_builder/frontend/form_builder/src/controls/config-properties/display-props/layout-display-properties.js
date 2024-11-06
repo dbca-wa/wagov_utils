@@ -25,6 +25,12 @@ export class DropableDisplayProps extends BaseControlProps {
     }
   }
 }
+export class ContainerDisplayBlock extends BaseControlProps {
+  constructor(props) {
+    super([LAYOUT_CONTROL_PROPS_TYPES.TITLE]);
+    this.fillInProps(props);
+  }
+}
 
 export class ColumnsDisplayProps extends BaseControlProps {
   constructor(props) {

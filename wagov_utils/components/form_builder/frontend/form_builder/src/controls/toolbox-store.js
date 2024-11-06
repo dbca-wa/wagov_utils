@@ -14,6 +14,8 @@ import {
   CONTROL_VALIDATION_PROPS_TYPES,
 } from './utils/control-props-types';
 import { RowBlock } from './layout/row-block';
+import { DropableControl } from './layout/dropable-control';
+import { ContainerBlock } from './layout/container-component';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -223,6 +225,11 @@ export const SPECIAL_INPUT_STORE = {
 };
 
 export const LAYOUT_STORE = {
+  [LAYOUT_TYPES.DROPABLE]: {
+    props: {},
+    attr: {},
+    controlClass: DropableControl,
+  },
   [LAYOUT_TYPES.ROW_COLUMNS]: {
     description: 'A row with columns',
     props: {
@@ -242,6 +249,15 @@ export const LAYOUT_STORE = {
     icon: 'fa fa-font',
     controlClass: RowBlock,
   },
+  [LAYOUT_TYPES.CONTAINER]: {
+    description: 'A container',
+    props: {
+      [CONTROL_PROPS_TYPES.LABEL]: 'Container',
+    },
+    attr: {},
+    icon: 'fa fa-font',
+    controlClass: ContainerBlock,
+  },
   [LAYOUT_TYPES.HTML_CONTENT]: {
     description: 'A block of custom HTML code',
     props: {
@@ -257,3 +273,11 @@ export const LAYOUT_STORE = {
 };
 
 export const BUILDER_TOOLBOX = Object.assign({}, CONTROLS_STORE, SPECIAL_INPUT_STORE, LAYOUT_STORE);
+
+export const getControlFromToolbox = (type) => {
+  try {
+    return BUILDER_TOOLBOX[type];
+  } catch (error) {
+    return {};
+  }
+};

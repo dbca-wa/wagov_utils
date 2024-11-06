@@ -13,8 +13,7 @@ export default class LayoutControl extends Control {
 
   constructor(attr, props, elementType) {
     super(attr, props, CONTROL_TYPES.LAYOUT);
-    this.label = new Label(props['label'] || ''); // Default label
-    this.areaId = props.areaId ?? ['area-', generateRandomId()].join('');
+
     if (elementType) this.elementType = elementType;
 
     this._basicSetup();
@@ -22,10 +21,25 @@ export default class LayoutControl extends Control {
 
   _basicSetup() {
     this.container_class = this.props?.container_class || this.container_class;
+    this.label = new Label(this.props['label'] || ''); // Default label
+    this.areaId = this.props.areaId ?? ['area-', generateRandomId()].join('');
+    this.parentAreaId = this.props.parentAreaId;
+    delete this.props.areaId;
+    delete this.props.parentAreaId;
   }
 
   setup() {
     console.log('Setup method called');
+  }
+
+  setChildrenFromProps() {
+    if (this.props.children) {
+      this.children = this.props.children;
+      this.children.forEach((c) => {
+        c.parentAreaId = this.areaId;
+      });
+      delete this.props.children;
+    }
   }
 
   getPropsObject() {
@@ -42,9 +56,11 @@ export default class LayoutControl extends Control {
       controlType: this.controlType,
       elementType: this.elementType,
       // attr: this.attr,
-      props: this.getPropsObject(),
-      areaId: this.areaId,
-      parentAreaId: this.parentAreaId,
+      props: {
+        ...this.getPropsObject(),
+        areaId: this.areaId,
+        parentAreaId: this.parentAreaId,
+      },
     };
     if (this.children.length) {
       json.children = this.children.map((c) => c.toJSON());

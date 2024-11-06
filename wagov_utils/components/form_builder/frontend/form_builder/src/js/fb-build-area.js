@@ -57,10 +57,14 @@ export class BuildArea {
     const _areaId = props.areaId || areaId;
     Object.assign(props, { areaId: _areaId });
     const dropable = new DropableControl(attr, props);
-    dropable.parentAreaId = this.areaId;
 
-    this.dropables[_areaId] = dropable;
+    this.registerDropable(_areaId, dropable);
     return dropable;
+  }
+
+  registerDropable(areaId, dropable) {
+    if (!dropable.parentAreaId) dropable.parentAreaId = this.areaId;
+    this.dropables[areaId] = dropable;
   }
 
   removeControl(control) {

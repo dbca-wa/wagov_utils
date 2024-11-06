@@ -5,28 +5,48 @@ import LayoutControl from '../fb-layout-control';
 import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { CONTROL_TYPES } from '../utils/control-types';
 import { LAYOUT_TYPES } from '../utils/layout-types';
-import { Column } from './column';
 
-const defaultSettings = {
-  values: [],
-};
+const defaultSettings = {};
 
 export class RowBlock extends LayoutControl {
   elementType = LAYOUT_TYPES.ROW_COLUMNS;
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
     super(attr, _props, CONTROL_TYPES.LAYOUT);
+
+    this.container_class = 'row';
+    this.dataControlProps = null;
     this.setup();
   }
-
   setup() {
     this.container_class = 'row';
-    let children = this.props?.children || [];
-
     this.displayControlProps = new ColumnsDisplayProps(this.props);
-    this.dataControlProps = null;
-    const props = this.displayControlProps.getPropsValues();
 
+    if (!this.initialSetupWithChildren()) {
+      this.initialColumnsSetup();
+    }
+  }
+
+  initialSetupWithChildren() {
+    if (this.props?.children) {
+      const props = this.displayControlProps.getPropsValues();
+      this.setChildrenFromProps();
+      const columnsData = props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS];
+      for (let i = 0; i < this.children.length; i++) {
+        const dropable = this.children[i];
+        BuildArea.getInstance().registerDropable(dropable.areaId, dropable);
+        dropable.id = dropable.areaId;
+        columnsData[i].id = dropable.id;
+      }
+      this.displayControlProps.modifyPropValue(LAYOUT_CONTROL_PROPS_TYPES.COLUMNS, columnsData);
+      return true;
+    }
+    return false;
+  }
+
+  initialColumnsSetup() {
+    const props = this.displayControlProps.getPropsValues();
+    const children = this.children || [];
     for (let i = 0; i < props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS].length; i++) {
       const { id, size, width } = props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS][i];
       if (children.length > i) {

@@ -1,4 +1,4 @@
-import { BUILDER_TOOLBOX } from '../controls/toolbox-store';
+import { getControlFromToolbox } from '../controls/toolbox-store';
 import baseModalTemplate from '../views/control-edition/base-modal.handlebars';
 import baseModalBodyEdition from '../views/control-edition/base-modal-edition.handlebars';
 
@@ -70,31 +70,36 @@ export default class LayoutController {
 
   renderFormBuilder(initialJson = []) {
     this.initialBuilderLayout();
-    if (initialJson.length === 0) $('#btn-load-default').trigger('click');
 
     const instantiateControl = (control) => {
       const children = [];
       if (control.hasOwnProperty('children') && control.children.length > 0) {
-        children.concat(control.children.map((child) => instantiateControl(child)));
+        for (let i = 0; i < control.children.length; i++) {
+          const child = control.children[i];
+          children.push(instantiateControl(child));
+        }
       }
-      const { attr, props, controlClass } = BUILDER_TOOLBOX[control?.elementType];
+      const { attr, props, controlClass } = getControlFromToolbox(control?.elementType);
 
-      if (!controlClass)
-        return `Could not find control class for ${control?.elementType} coming from ${JSON.stringify(control)}`;
+      if (!controlClass) throw new Error(`Control not found for type ${control?.elementType} in the toolbox`);
 
       const _attr = control?.attr ?? attr;
       const _props = control?.props ?? props;
+      if (children.length) _props.children = children;
 
       const element = new controlClass(_attr, _props);
-      if (children.length > 0) {
-        element.children = children;
-      }
       return element;
     };
 
     initialJson.forEach((control) => {
-      const element = instantiateControl(control);
-      this.buildArea.area.addControl(this.buildArea.area.$c, element);
+      try {
+        const element = instantiateControl(control);
+
+        this.buildArea.area.addControl(this.buildArea.area.$c, element);
+      } catch (error) {
+        debugger;
+        console.error(error);
+      }
     });
   }
 

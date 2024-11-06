@@ -24,6 +24,7 @@ export class DropableControl extends LayoutControl {
   setup() {
     this.container_class = CLASS_DROPABLE_BLOCKS;
     this.displayControlProps = new DropableDisplayProps(this.props);
+    this.setChildrenFromProps();
   }
 
   setContainer(container, render = false) {
@@ -110,7 +111,7 @@ export class DropableControl extends LayoutControl {
         return;
       }
       if (ui.sender.hasClass(CLASS_DROPABLE_BLOCKS) || this !== event.target) return;
-      const nodeOffset = ui.item.offset().top;
+      const nodeOffset = $(ui.item).position().top;
       ui.sender.sortable('cancel');
       try {
         const data = ui.item[0].dataset;
@@ -187,7 +188,7 @@ export class DropableControl extends LayoutControl {
   toDisplay(parentContainer) {
     const props = this.displayControlProps.getPropsValues();
     const container = markup('div', '', {
-      class: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'col',
+      class: [props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'col', 'my-3'].join(' '),
       id: this.id,
       'data-parentAreaId': this.parentAreaId,
       'data-areaId': this.areaId,
