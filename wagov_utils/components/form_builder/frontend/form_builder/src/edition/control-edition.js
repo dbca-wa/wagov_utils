@@ -44,6 +44,7 @@ export default class ControlEdition extends Control {
     $(this.getIdSelector()).on('mouseenter mouseleave', this, this._mouseAction);
     $(this.getIdSelector()).find('.act-edit').on('click', this, this._editControl);
     $(this.getIdSelector()).find('.act-remove').on('click', this, this._removeControl);
+    $(this.getIdSelector()).find('.act-duplicate').on('click', this, this._duplicateControl);
   }
 
   _editControl(event) {
@@ -192,6 +193,17 @@ export default class ControlEdition extends Control {
       $(_this.getIdSelector()).remove();
       _this.controller.onDelete(_this);
     });
+  }
+
+  _duplicateControl(event) {
+    const _this = event.data;
+    console.log(_this);
+    _this.controller.onDuplicate(_this);
+
+    // $(_this.getIdSelector()).fadeOut('fast', () => {
+    //   $(_this.getIdSelector()).remove();
+    //   _this.controller.onDelete(_this);
+    // });
   }
 
   _closeModal() {

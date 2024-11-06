@@ -9,7 +9,7 @@ import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
 import { LAYOUT_TYPES } from '../controls/utils/layout-types';
 import { CLASS_DROPABLE_BLOCKS } from '../controls/utils/constants';
-import { BuildArea } from './fb-build-area';
+import { BuildArea, instantiateJsonControl } from './fb-build-area';
 import { HTMLComponent } from '../controls/layout/html-component';
 
 import Tab from 'bootstrap/js/dist/tab.js';
@@ -71,33 +71,12 @@ export default class LayoutController {
   renderFormBuilder(initialJson = []) {
     this.initialBuilderLayout();
 
-    const instantiateControl = (control) => {
-      const children = [];
-      if (control.hasOwnProperty('children') && control.children.length > 0) {
-        for (let i = 0; i < control.children.length; i++) {
-          const child = control.children[i];
-          children.push(instantiateControl(child));
-        }
-      }
-      const { attr, props, controlClass } = getControlFromToolbox(control?.elementType);
-
-      if (!controlClass) throw new Error(`Control not found for type ${control?.elementType} in the toolbox`);
-
-      const _attr = control?.attr ?? attr;
-      const _props = control?.props ?? props;
-      if (children.length) _props.children = children;
-
-      const element = new controlClass(_attr, _props);
-      return element;
-    };
-
     initialJson.forEach((control) => {
       try {
-        const element = instantiateControl(control);
+        const element = instantiateJsonControl(control);
 
         this.buildArea.area.addControl(this.buildArea.area.$c, element);
       } catch (error) {
-        debugger;
         console.error(error);
       }
     });

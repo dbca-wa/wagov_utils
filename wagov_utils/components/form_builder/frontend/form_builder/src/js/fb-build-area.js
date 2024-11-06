@@ -1,4 +1,5 @@
 import { DropableControl } from '../controls/layout/dropable-control';
+import { getControlFromToolbox } from '../controls/toolbox-store';
 import { CONTROL_API_PROPS_TYPES } from '../controls/utils/control-props-types';
 import { activateTooltips, camelCase, markup } from './utils';
 
@@ -133,3 +134,24 @@ export class BuildArea {
     activateTooltips(container);
   }
 }
+
+export const instantiateJsonControl = (control, isCopy = false) => {
+  const children = [];
+  if (control.hasOwnProperty('children') && control.children.length > 0) {
+    for (let i = 0; i < control.children.length; i++) {
+      const child = control.children[i];
+      children.push(instantiateJsonControl(child));
+    }
+  }
+  const { attr, props, controlClass } = getControlFromToolbox(control?.elementType);
+
+  if (!controlClass) throw new Error(`Control not found for type ${control?.elementType} in the toolbox`);
+
+  const _attr = control?.attr ?? attr;
+  const _props = control?.props ?? props;
+
+  if (children.length) _props.children = children;
+
+  const element = new controlClass(_attr, _props);
+  return element;
+};

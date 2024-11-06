@@ -1,5 +1,5 @@
 import ControlEdition from '../../edition/control-edition';
-import { BuildArea } from '../../js/fb-build-area';
+import { BuildArea, instantiateJsonControl } from '../../js/fb-build-area';
 import { markup } from '../../js/utils';
 import { DropableDisplayProps } from '../config-properties/display-props/layout-display-properties';
 import LayoutControl from '../fb-layout-control';
@@ -175,6 +175,21 @@ export class DropableControl extends LayoutControl {
         const { control } = controlEditor;
         console.log('Control deleted', control.toJSON());
         BuildArea.getInstance().removeControl(control);
+      },
+      onDuplicate: function (controlEditor) {
+        const { control } = controlEditor;
+
+        try {
+          const element = instantiateJsonControl(control.toJSON());
+          console.log('Duplicating control');
+          console.log(element.toJSON());
+          console.log(control.toJSON());
+          const dropable = BuildArea.getInstance().dropables[control.parentAreaId];
+
+          dropable.addControl(dropable.$c[0], element, $(controlEditor.getIdSelector()).position().top + 1);
+        } catch (error) {
+          console.error(error);
+        }
       },
     });
 
