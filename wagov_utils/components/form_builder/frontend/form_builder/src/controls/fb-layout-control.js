@@ -6,7 +6,6 @@ import { generateRandomId, markup } from '../js/utils';
 export default class LayoutControl extends Control {
   container_class = 'formarea-control';
   children = [];
-  dropables = {};
   areaId;
   onDrop = () => {};
   onRemove = () => {};
@@ -40,6 +39,10 @@ export default class LayoutControl extends Control {
       });
       delete this.props.children;
     }
+  }
+
+  clearContainer() {
+    this.children = [];
   }
 
   getPropsObject() {

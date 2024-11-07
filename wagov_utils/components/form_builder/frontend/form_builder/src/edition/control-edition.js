@@ -4,10 +4,17 @@ import {
   CONTROL_VALIDATION_PROPS_TYPES,
 } from '../controls/utils/control-props-types';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
+import { ELEMENT_TYPES } from '../controls/utils/element-types';
 import { BuildArea } from '../js/fb-build-area';
 import Control from '../js/fb-control';
 import { appSelectors } from '../js/selectors';
-import { activateTooltips, compareMinMaxIntegers, generateRandomId, markup } from '../js/utils';
+import {
+  activateTooltips,
+  compareMinMaxIntegers,
+  generateRandomId,
+  getDatepickerOptionsFromProps,
+  markup,
+} from '../js/utils';
 import controlWrapperTemplate from '../views/control-edition/control-edition-wrapper.handlebars';
 import Modal from 'bootstrap/js/dist/modal.js';
 
@@ -16,6 +23,8 @@ export default class ControlEdition extends Control {
   modal = null;
   initialProps;
   hasSaved = false;
+  errors = {};
+
   constructor(control, controller) {
     super({}, {}, CONTROL_TYPES.BLOCK);
     this.control = control;
@@ -123,11 +132,32 @@ export default class ControlEdition extends Control {
       ...this.control.validationControlProps?.getPropsValues(),
       ...this.control.apiControlProps?.getPropsValues(),
     };
+    const errors = this.errors;
     $('#preview-edition').empty().append(this.control.render(props));
     activateTooltips(document, '#preview-edition');
     if (props[CONTROL_PROPS_TYPES.DISPLAY_MASK]) {
       $('#preview-edition ' + this.control.getIdSelector()).mask(props[CONTROL_PROPS_TYPES.DISPLAY_MASK]);
     }
+    if (this.control.elementType == ELEMENT_TYPES.DATE_PICKER_JQ) {
+      $('#preview-edition ' + this.control.getIdSelector()).datepicker(getDatepickerOptionsFromProps(props));
+    }
+    $('#preview-edition .alert.alert-danger')?.remove();
+    if (Object.keys(errors).length > 0) {
+      const alertElement = markup('div', '', { class: 'alert alert-danger', role: 'alert' });
+      for (let key in errors) {
+        alertElement.append(markup('p', `${key}: ${errors[key]}`));
+      }
+
+      $('#preview-edition').append(alertElement);
+    }
+  }
+
+  addError(field, message) {
+    this.errors[field] = message;
+  }
+
+  removeError(field) {
+    delete this.errors[field];
   }
 
   _saveControl(event) {
@@ -171,12 +201,14 @@ export default class ControlEdition extends Control {
       }
     }
     if (props[CONTROL_API_PROPS_TYPES.FIELD_NAME] != undefined) {
-      if (props[CONTROL_API_PROPS_TYPES.FIELD_NAME] === '') {
+      const fieldName = props[CONTROL_API_PROPS_TYPES.FIELD_NAME];
+      if (fieldName === '') {
         alert('Field name is required');
         $('#api-tab').trigger('click');
         return;
       }
-      if (BuildArea.getInstance().fieldNameExists(props[CONTROL_API_PROPS_TYPES.FIELD_NAME]) != 0) {
+
+      if (BuildArea.getInstance().fieldNameExists(fieldName) > 1) {
         alert('Field name already exists');
         $('#api-tab').trigger('click');
         return;
@@ -199,11 +231,6 @@ export default class ControlEdition extends Control {
     const _this = event.data;
     console.log(_this);
     _this.controller.onDuplicate(_this);
-
-    // $(_this.getIdSelector()).fadeOut('fast', () => {
-    //   $(_this.getIdSelector()).remove();
-    //   _this.controller.onDelete(_this);
-    // });
   }
 
   _closeModal() {

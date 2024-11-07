@@ -1,4 +1,5 @@
 import { Tooltip } from 'bootstrap';
+import { DATE_DATA_PROPS_TYPES } from '../controls/utils/control-props-types';
 
 /**
  * Generate a random id of up to 10 characters
@@ -196,4 +197,16 @@ export const activateTooltips = (parent, selector = '') => {
 
   const tooltipTriggerList = parent.querySelectorAll((selector ?? '').concat(' [data-bs-toggle="tooltip"]'));
   [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
+};
+
+export const getDatepickerOptionsFromProps = (props) => {
+  const options = {
+    changeMonth: true,
+    changeYear: true,
+  };
+  if (props[DATE_DATA_PROPS_TYPES.DISABLE_WEEKENDS] == true) {
+    options.beforeShowDay = $.datepicker.noWeekends;
+  }
+
+  return options;
 };

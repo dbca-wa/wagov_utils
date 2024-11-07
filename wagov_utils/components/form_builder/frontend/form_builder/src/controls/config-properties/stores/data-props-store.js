@@ -1,4 +1,8 @@
-import { CONTROL_DATA_PROPS_TYPES, DATASOURCE_PROPS_TYPES } from '../../utils/control-props-types';
+import {
+  CONTROL_DATA_PROPS_TYPES,
+  DATASOURCE_PROPS_TYPES,
+  DATE_DATA_PROPS_TYPES,
+} from '../../utils/control-props-types';
 
 const DEFAULT_DEFAULT_VALUE_PROPS = {
   name: 'defaultValue',
@@ -92,7 +96,7 @@ export const datasourceDataPropertiesStore = {
     [DATASOURCE_PROPS_TYPES.RAW_JSON]: {
       name: 'rawJson',
       title: 'Data Source Raw JSON',
-      type: 'html',
+      type: 'json',
       placeholder: 'Enter a JSON',
       required: false,
       options: undefined,
@@ -130,5 +134,44 @@ export const datasourceDataPropertiesStore = {
       value: 'email',
     },
     [DATASOURCE_PROPS_TYPES.DEFAULT_VALUE]: { ...DEFAULT_DEFAULT_VALUE_PROPS, type: 'select', options: [] },
+  },
+};
+
+export const dateDataPropertiesStore = {
+  [DATE_DATA_PROPS_TYPES.ENABLE_DATE_INPUT]: {
+    name: 'enableDateInput',
+    title: 'Enable Date Input',
+    type: 'boolean',
+    placeholder: 'Enable Date Input',
+    required: false,
+    options: undefined,
+    value: true,
+  },
+  [DATE_DATA_PROPS_TYPES.ENABLE_TIME_INPUT]: {
+    name: 'enableTimeInput',
+    title: 'Enable Time Input',
+    type: 'boolean',
+    placeholder: 'Enable Time Input',
+    required: false,
+    options: undefined,
+    value: true,
+  },
+  [DATE_DATA_PROPS_TYPES.DISABLE_WEEKENDS]: {
+    name: 'disableWeekends',
+    title: 'Disable Weekends',
+    type: 'boolean',
+    placeholder: 'Disable Weekends',
+    required: false,
+    options: undefined,
+    value: false,
+  },
+  [DATE_DATA_PROPS_TYPES.DISABLE_WEEKDAYS]: {
+    name: 'disableWeekdays',
+    title: 'Disable Weekdays',
+    type: 'boolean',
+    placeholder: 'Disable Weekdays',
+    required: false,
+    options: undefined,
+    value: false,
   },
 };

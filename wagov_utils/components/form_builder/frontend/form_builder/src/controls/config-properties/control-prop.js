@@ -1,7 +1,7 @@
 import { markup } from '../../js/utils';
 import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 
-import { dataPropertiesStore } from './stores/data-props-store';
+import { dataPropertiesStore, dateDataPropertiesStore } from './stores/data-props-store';
 import { layoutPropertiesStore } from './stores/layout-props-store';
 import { propertiesStore } from './stores/props-store';
 import { validationPropertiesStore } from './stores/validations-props-store';
@@ -13,9 +13,11 @@ export const defaultAllProps = {
   ...layoutPropertiesStore,
   ...validationPropertiesStore,
   ...apiPropertiesStore,
+  ...dateDataPropertiesStore,
 };
 import brace from 'brace';
 import 'brace/mode/html';
+import 'brace/mode/json';
 import 'brace/theme/textmate';
 import 'brace/keybinding/vim';
 
@@ -81,11 +83,12 @@ export class ControlProp {
     } else if (['string', 'number', 'email', 'date', 'textarea', 'tel'].includes(this.prop.type)) {
       $(`#${this.id}`).on('input', { context, prop: this.prop }, cb);
     }
-    if (this.prop.type === 'html') {
+    if (['html', 'json'].includes(this.prop.type)) {
       const hiddenElementId = `#${this.id}-hidden`;
+      const mode = this.prop.type === 'html' ? 'html' : 'json';
       this.editor = brace.edit(this.id);
       this.editor.setTheme('ace/theme/textmate');
-      this.editor.getSession().setMode('ace/mode/html');
+      this.editor.getSession().setMode(`ace/mode/${mode}`);
       this.editor.setValue(this.prop.value);
 
       $(hiddenElementId).on('change', { context, prop: this.prop }, cb);
@@ -200,7 +203,7 @@ export function _renderProp(basicProps, options = [], validations = {}) {
     return markup('div', selectBoxes, { id });
   }
 
-  if (inputType === 'html') {
+  if (['html', 'json'].includes(inputType)) {
     const element = markup('div', value, {
       ...generalProps,
     });

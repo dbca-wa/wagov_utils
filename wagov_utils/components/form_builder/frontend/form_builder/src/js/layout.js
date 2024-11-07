@@ -110,15 +110,17 @@ export default class LayoutController {
     $('#btn-load-default').on('click', this, function (event) {
       const layout = event.data;
       const defaultElements = [
-        LAYOUT_TYPES.HTML_CONTENT,
-        ELEMENT_TYPES.INPUT,
-        LAYOUT_TYPES.ROW_COLUMNS,
-        ELEMENT_TYPES.INPUT_NUMBER,
+        // LAYOUT_TYPES.HTML_CONTENT,
+        ELEMENT_TYPES.DATE_PICKER_JQ,
+        // LAYOUT_TYPES.ROW_COLUMNS,
+        // ELEMENT_TYPES.INPUT_NUMBER,
         // ELEMENT_TYPES.SELECT,
         // ELEMENT_TYPES.CHECK_BOX,
         // ELEMENT_TYPES.RADIO,
-        ELEMENT_TYPES.BUTTON,
+        // ELEMENT_TYPES.BUTTON,
       ];
+
+      layout.buildArea.clearAreaContainer();
       layout.renderFormBuilder(defaultElements.map((el) => ({ elementType: el })));
     });
   }

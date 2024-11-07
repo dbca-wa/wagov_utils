@@ -8,5 +8,6 @@ export const apiPropertiesStore = {
     required: true,
     options: undefined,
     value: '',
+    pattern: /^[a-zA-Z]+[a-zA-Z0-9\_\-]*$/,
   },
 };

@@ -16,6 +16,7 @@ import {
 import { RowBlock } from './layout/row-block';
 import { DropableControl } from './layout/dropable-control';
 import { ContainerBlock } from './layout/container-component';
+import DatePicker from './elements/jquery/date-picker';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -148,6 +149,19 @@ export const SPECIAL_INPUT_STORE = {
     },
     icon: 'fa fa-font',
     controlClass: InputElement,
+  },
+  [ELEMENT_TYPES.DATE_PICKER_JQ]: {
+    description: 'A simple date control',
+    props: {
+      [CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT]: 'Date Picker',
+      [CONTROL_PROPS_TYPES.LABEL]: 'Select a date',
+      type: INPUT_TYPES.TEXT,
+      [CONTROL_PROPS_TYPES.PLACEHOLDER]: 'Select a date',
+      [CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]: true,
+    },
+    attr: {},
+    icon: 'fa fa-font',
+    controlClass: DatePicker,
   },
   [ELEMENT_TYPES.TIME_PICKER]: {
     description: 'A simple time control',

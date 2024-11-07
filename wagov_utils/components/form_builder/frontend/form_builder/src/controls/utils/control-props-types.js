@@ -31,6 +31,20 @@ export const CONTROL_PROPS_TYPES = {
   RIGHT_ICON: 'rightIcon',
 };
 
+export const DATE_PROPS_TYPES = {
+  FORMAT: 'format',
+  SHOW_SECONDS: 'showSeconds',
+  SHOW_MILLISECONDS: 'showMilliseconds',
+  DISPLAY_IN_TIMEZONE: 'displayInTimezone',
+};
+export const DATE_DATA_PROPS_TYPES = {
+  DISABLE_WEEKENDS: 'disableWeekends',
+  DISABLE_WEEKDAYS: 'disableWeekdays',
+  HOUR_FORMAT: 'hourFormat',
+  ENABLE_DATE_INPUT: 'enableDateInput',
+  ENABLE_TIME_INPUT: 'enableTimeInput',
+};
+
 export const CONTROL_DATA_PROPS_TYPES = {
   DATASOURCE: 'datasource',
   MULTI: 'multi',

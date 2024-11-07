@@ -159,8 +159,9 @@ $main-panel-padding: 20px;
 .tab-error::after {
   content: ' *';
   color: #eb0000;
+  z-index: auto;
 }
-
+// On Display Mode
 .invalid-form-field:empty {
   display: none;
 }
@@ -169,6 +170,16 @@ $main-panel-padding: 20px;
   color: #c90000;
   font-weight: 500;
   font-size: 12px;
+}
+
+// Control Edition Panel
+#preview-edition {
+  .alert.alert-danger {
+    margin-top: 1rem;
+    p {
+      margin-bottom: 1px;
+    }
+  }
 }
 
 // MODAL

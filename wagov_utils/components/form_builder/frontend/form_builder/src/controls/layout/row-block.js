@@ -77,11 +77,7 @@ export class RowBlock extends LayoutControl {
       this.$p.empty().append(this.renderControl());
       for (let i = 0; i < this.children.length; i++) {
         const colData = this.children[i];
-        // const node = colData.renderControl();
-        // nodes.push(node);
         colData.setContainer(this.$p.find(this.getIdSelector()), true);
-        // if (includeDropables && colData.children.length > 0) {
-        // }
       }
     }
   }

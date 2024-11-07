@@ -46,6 +46,18 @@ export class DropableControl extends LayoutControl {
     this.$c = container.find(this.getIdSelector());
     if (render) this.renderInContainer();
   }
+  clearContainer() {
+    if (this.$c) {
+      this.$c.empty();
+    }
+    for (let i = 0; i < this.children.length; i++) {
+      const elm = this.children[i];
+      if (typeof elm.clearContainer === 'function') {
+        elm.clearContainer();
+      }
+    }
+    this.children = [];
+  }
 
   getChildControl(controlId) {
     return this.children.find((c) => c.id === controlId);

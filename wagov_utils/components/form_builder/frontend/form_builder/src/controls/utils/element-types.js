@@ -9,6 +9,7 @@ export const ELEMENT_TYPES = {
   MOBILE_NUMBER: 'mobile-number',
 
   DATE_PICKER: 'date-picker',
+  DATE_PICKER_JQ: 'date-picker-jq',
   TIME_PICKER: 'time-picker',
   PASSWORD: 'password',
   EMAIL: 'email',

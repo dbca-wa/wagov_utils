@@ -82,15 +82,25 @@ export class BuildArea {
     }
   }
 
+  clearAreaContainer() {
+    this.area.clearContainer();
+  }
+
   setAreaContainer(area) {
     this.area.setContainer(area, true);
   }
 
   fieldNameExists(name) {
     let count = 0;
+    const names = {};
     for (const key in this.dropables) {
       const dropable = this.dropables[key];
       for (const control of dropable.children) {
+        names[control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME]] = names[
+          control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME]
+        ]
+          ? names[control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME]] + 1
+          : 0;
         if (control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] === name) {
           count++;
         }
@@ -102,7 +112,7 @@ export class BuildArea {
   generateAPIFieldName(defaultName = 'unnamedField') {
     const name = camelCase(defaultName).toString().trim().replace(' ', '');
     const count = this.fieldNameExists(name);
-    return count === 0 ? name : `${name}${count}`;
+    return count === 0 ? name : `${name}${count + 1}`;
   }
 
   toJSON() {
