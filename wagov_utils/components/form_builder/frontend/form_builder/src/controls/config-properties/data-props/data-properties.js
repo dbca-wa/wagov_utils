@@ -4,6 +4,7 @@ import {
   DATE_DATA_PROPS_TYPES,
 } from '../../utils/control-props-types';
 import { INPUT_TYPES } from '../../utils/input-types';
+import { dateDataPropertiesStore } from '../stores/data-props-store';
 import { BaseDataProps } from './base-data-props';
 import { MultipleChoiceDataProperties } from './multiple-choice-data-props';
 
@@ -87,13 +88,14 @@ export class DatePickerDataProperties extends BaseDataProps {
       // DATE_DATA_PROPS_TYPES.HOUR_FORMAT,
     ];
 
-    super(definition);
+    super(definition, dateDataPropertiesStore);
     this.fillInProps(props);
   }
 
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
     const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
+    console.log('value', value);
     _this.modifyPropValue(prop.name, value);
     _this.editor._renderPreviewControl();
   }

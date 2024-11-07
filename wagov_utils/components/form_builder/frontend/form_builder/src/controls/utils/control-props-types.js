@@ -38,6 +38,7 @@ export const DATE_PROPS_TYPES = {
   DISPLAY_IN_TIMEZONE: 'displayInTimezone',
 };
 export const DATE_DATA_PROPS_TYPES = {
+  DEFAULT_VALUE: 'defaultValue',
   DISABLE_WEEKENDS: 'disableWeekends',
   DISABLE_WEEKDAYS: 'disableWeekdays',
   HOUR_FORMAT: 'hourFormat',

@@ -13,7 +13,6 @@ export const defaultAllProps = {
   ...layoutPropertiesStore,
   ...validationPropertiesStore,
   ...apiPropertiesStore,
-  ...dateDataPropertiesStore,
 };
 import brace from 'brace';
 import 'brace/mode/html';

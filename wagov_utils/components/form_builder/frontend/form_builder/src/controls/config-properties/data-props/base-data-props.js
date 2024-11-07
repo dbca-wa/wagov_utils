@@ -5,8 +5,8 @@ export class BaseDataProps extends BaseControlProps {
   $p;
   editor;
 
-  constructor(props) {
-    super(props);
+  constructor(props, customPropsStore) {
+    super(props, customPropsStore);
   }
 
   renderInParent() {

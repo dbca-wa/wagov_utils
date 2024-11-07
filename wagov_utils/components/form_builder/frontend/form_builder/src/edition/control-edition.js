@@ -29,9 +29,9 @@ export default class ControlEdition extends Control {
     super({}, {}, CONTROL_TYPES.BLOCK);
     this.control = control;
     this.controller = controller;
-    /* this._editControl({
+    this._editControl({
       data: this,
-    }); */
+    });
   }
   render() {
     return markup(
@@ -80,7 +80,7 @@ export default class ControlEdition extends Control {
       };
       _this._renderPreviewControl();
 
-      $('#display-tab').trigger('click');
+      $('#data-tab').trigger('click');
       $('#data-tab').show();
       $('#validation-tab').show();
       $('#api-tab').show();

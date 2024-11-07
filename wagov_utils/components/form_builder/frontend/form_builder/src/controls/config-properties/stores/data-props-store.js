@@ -138,6 +138,15 @@ export const datasourceDataPropertiesStore = {
 };
 
 export const dateDataPropertiesStore = {
+  [DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]: {
+    name: 'defaultValue',
+    title: 'Default Value',
+    type: 'relative-date',
+    placeholder: 'Select a default value',
+    required: false,
+    options: undefined,
+    value: '',
+  },
   [DATE_DATA_PROPS_TYPES.ENABLE_DATE_INPUT]: {
     name: 'enableDateInput',
     title: 'Enable Date Input',
