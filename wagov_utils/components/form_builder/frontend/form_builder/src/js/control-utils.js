@@ -1,0 +1,141 @@
+import { add, endOfMonth, endOfWeek, endOfYear, format, startOfMonth, startOfWeek, startOfYear, sub } from 'date-fns';
+
+import {
+  DATE_CONTROL_PROP_TYPES,
+  RELATIVE_DATE_TYPES,
+  DATE_PERIOD_CONDITIONS,
+  DATE_PERIOD_RANGE_TYPES,
+  DATE_PERIOD_TYPES,
+} from '../controls/utils/constants';
+import { Tooltip } from 'bootstrap';
+import { DATE_DATA_PROPS_TYPES } from '../controls/utils/control-props-types';
+
+export const activateTooltips = (parent, selector = '') => {
+  if (!parent) return;
+  if (parent instanceof $) parent = parent[0];
+
+  const tooltipTriggerList = parent.querySelectorAll((selector ?? '').concat(' [data-bs-toggle="tooltip"]'));
+  [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
+};
+
+export const getDatepickerOptionsFromProps = (props) => {
+  const options = {
+    changeMonth: true,
+    changeYear: true,
+  };
+  if (props[DATE_DATA_PROPS_TYPES.DISABLE_WEEKENDS] == true) {
+    options.beforeShowDay = $.datepicker.noWeekends;
+  }
+
+  return options;
+};
+
+export const getRelativeDateValue = (config, dateFormat = 'dd-MMM-yyyy') => {
+  if (!config) return '';
+  try {
+    const { type, relative, condition } = config;
+
+    if (type === DATE_CONTROL_PROP_TYPES.FIXED.value) {
+      const { date } = config;
+      if (!date) return '';
+      return format(new Date(date), dateFormat);
+    } else {
+      const today = new Date();
+      let date = today;
+
+      switch (relative) {
+        case RELATIVE_DATE_TYPES.TODAY.value:
+          date = today;
+          break;
+        case RELATIVE_DATE_TYPES.TOMORROW.value:
+          date = add(today, { days: 1 });
+          break;
+        case RELATIVE_DATE_TYPES.YESTERDAY.value:
+          date = sub(today, { days: 1 });
+          break;
+
+        case RELATIVE_DATE_TYPES.CONDITION.value:
+          const { condition: cond, range, number, period } = condition;
+          let n = getDifferenceValue(range, number ?? 0);
+
+          const periodDiff = getPeriodDifference(period, n);
+          if (
+            [
+              DATE_PERIOD_RANGE_TYPES.THIS.value,
+              DATE_PERIOD_RANGE_TYPES.NEXT.value,
+              DATE_PERIOD_RANGE_TYPES.NEXT_N.value,
+            ].includes(range)
+          ) {
+            date = add(today, periodDiff);
+          } else {
+            date = sub(today, periodDiff);
+          }
+          date = getFilteredDate(date, cond, period);
+
+        default:
+          break;
+      }
+      return format(date, dateFormat);
+    }
+  } catch (error) {
+    console.error('Error in getRelativeDateValue', error);
+    return '';
+  }
+};
+
+const getDifferenceValue = (range, number) => {
+  if (range === DATE_PERIOD_RANGE_TYPES.THIS.value) {
+    return 0;
+  } else if (range === DATE_PERIOD_RANGE_TYPES.NEXT.value || range === DATE_PERIOD_RANGE_TYPES.PREVIOUS.value) {
+    return 1;
+  }
+  return number;
+};
+
+const getPeriodDifference = (period, number) => {
+  switch (period) {
+    case DATE_PERIOD_TYPES.DAY.value:
+      return { days: number };
+    case DATE_PERIOD_TYPES.WEEK.value:
+      return { weeks: number };
+    case DATE_PERIOD_TYPES.MONTH.value:
+      return { months: number };
+    case DATE_PERIOD_TYPES.YEAR.value:
+      return { years: number };
+    default:
+      return { days: 0 };
+  }
+};
+
+const getFilteredDate = (date, condition, period) => {
+  switch (condition) {
+    case DATE_PERIOD_CONDITIONS.START_OF.value:
+      switch (period) {
+        case DATE_PERIOD_TYPES.DAY.value:
+          return date;
+        case DATE_PERIOD_TYPES.WEEK.value:
+          return startOfWeek(date);
+        case DATE_PERIOD_TYPES.MONTH.value:
+          return startOfMonth(date);
+        case DATE_PERIOD_TYPES.YEAR.value:
+          return startOfYear(date);
+        default:
+          return date;
+      }
+    case DATE_PERIOD_CONDITIONS.END_OF.value:
+      switch (period) {
+        case DATE_PERIOD_TYPES.DAY.value:
+          return date;
+        case DATE_PERIOD_TYPES.WEEK.value:
+          return endOfWeek(date);
+        case DATE_PERIOD_TYPES.MONTH.value:
+          return endOfMonth(date);
+        case DATE_PERIOD_TYPES.YEAR.value:
+          return endOfYear(date);
+        default:
+          return date;
+      }
+    default:
+      return date;
+  }
+};

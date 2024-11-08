@@ -30,6 +30,7 @@ export class MultipleChoiceDataProperties extends BaseDataProps {
           this.datasourceProperties.modifyPropValue(DATASOURCE_PROPS_TYPES.JSON_VALUE, parsed);
           this.datasourceProperties.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {
             options: parsed ?? [],
+            value: props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE] ?? [],
           });
         }
       } catch (error) {}

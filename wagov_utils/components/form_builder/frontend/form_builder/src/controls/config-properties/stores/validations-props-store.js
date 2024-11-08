@@ -125,7 +125,7 @@ export const validationPropertiesStore = {
   [CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]: {
     name: 'minDate',
     title: 'Min Date',
-    type: 'date',
+    type: 'relative-date',
     required: false,
     options: undefined,
     value: '',
@@ -133,7 +133,7 @@ export const validationPropertiesStore = {
   [CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]: {
     name: 'maxDate',
     title: 'Max Date',
-    type: 'date',
+    type: 'relative-date',
     required: false,
     options: undefined,
     value: '',

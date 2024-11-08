@@ -1,7 +1,7 @@
 import { CONTROL_PROPS_TYPES } from '../../utils/control-props-types';
 import { INPUT_TYPES } from '../../utils/input-types';
 import { ELEMENT_TYPES } from '../../utils/element-types';
-import { BaseControlProps } from '../base-control-props';
+import { BaseDisplayProps } from '../data-props/base-display-props';
 
 const textProps = [
   CONTROL_PROPS_TYPES.LABEL,
@@ -125,7 +125,7 @@ function getProps(type) {
   }
 }
 
-export class TextFieldDisplayProps extends BaseControlProps {
+export class TextFieldDisplayProps extends BaseDisplayProps {
   constructor(props) {
     super(textProps);
     this.fillInProps(props);
@@ -136,35 +136,35 @@ export class TextFieldDisplayProps extends BaseControlProps {
   }
 }
 
-export class InputFieldDisplayProps extends BaseControlProps {
+export class InputFieldDisplayProps extends BaseDisplayProps {
   constructor(type = 'text', props) {
     super(getProps(type));
     this.fillInProps(props);
   }
 }
 
-export class RadioDisplayProps extends BaseControlProps {
+export class RadioDisplayProps extends BaseDisplayProps {
   constructor(props) {
     super(radioProps);
     this.fillInProps(props);
   }
 }
 
-export class CheckboxDisplayProps extends BaseControlProps {
+export class CheckboxDisplayProps extends BaseDisplayProps {
   constructor(props) {
     super(checkboxProps);
     this.fillInProps(props);
   }
 }
 
-export class SelectDisplayProps extends BaseControlProps {
+export class SelectDisplayProps extends BaseDisplayProps {
   constructor(props) {
     super(selectProps);
     this.fillInProps(props);
   }
 }
 
-export class ButtonDisplayProps extends BaseControlProps {
+export class ButtonDisplayProps extends BaseDisplayProps {
   constructor(props) {
     super(buttonProps);
     this.fillInProps(props);

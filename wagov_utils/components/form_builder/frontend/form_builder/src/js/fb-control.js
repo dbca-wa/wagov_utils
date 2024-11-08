@@ -1,5 +1,6 @@
 import { CONTROL_VALIDATION_PROPS_TYPES } from '../controls/utils/control-props-types';
-import { activateTooltips, generateRandomId, markup } from './utils';
+import { activateTooltips } from './control-utils';
+import { generateRandomId, markup } from './utils';
 
 export default class Control {
   id = '';

@@ -2,7 +2,7 @@ import { ELEMENT_TYPES } from './utils/element-types';
 import { CONTROL_TYPES } from './utils/control-types';
 import Label from './elements/basics/label';
 import Control from '../js/fb-control';
-import { camelCase, markup } from '../js/utils';
+import { markup } from '../js/utils';
 import {
   CONTROL_API_PROPS_TYPES,
   CONTROL_PROPS_TYPES,
@@ -98,6 +98,11 @@ export default class InputControl extends Control {
     return {
       [props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]: this.getElementValue(),
     };
+  }
+
+  modifyProps(props) {
+    // This method should be overridden by the child class
+    // It's meant to modify some props before rendering the control
   }
 
   validateValue() {

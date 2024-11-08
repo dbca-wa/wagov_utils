@@ -1,6 +1,3 @@
-import { Tooltip } from 'bootstrap';
-import { DATE_DATA_PROPS_TYPES } from '../controls/utils/control-props-types';
-
 /**
  * Generate a random id of up to 10 characters
  * @return {string} random id
@@ -45,6 +42,11 @@ export const camelCase = (str) => {
     if (+match === 0) return ''; // or if (/\s+/.test(match)) for white spaces
     return index === 0 ? match.toLowerCase() : match.toUpperCase();
   });
+};
+
+export const capitalize = (str) => {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
 export const compareMinMaxIntegers = (min, max) => {
@@ -157,9 +159,6 @@ export const markup = function (tag, content = '', attributes = {}) {
   for (const attr in attrs) {
     if (attrs.hasOwnProperty(attr)) {
       const name = safeAttrName(attr);
-      if (Array.isArray(attrs[attr])) {
-        debugger;
-      }
       let attrVal = Array.isArray(attrs[attr]) ? unique(attrs[attr].join(' ').split(' ')).join(' ') : attrs[attr];
 
       if (typeof attrVal === 'boolean') {
@@ -189,24 +188,4 @@ export const markup = function (tag, content = '', attributes = {}) {
 
 export const unique = (array) => {
   return array.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
-};
-
-export const activateTooltips = (parent, selector = '') => {
-  if (!parent) return;
-  if (parent instanceof $) parent = parent[0];
-
-  const tooltipTriggerList = parent.querySelectorAll((selector ?? '').concat(' [data-bs-toggle="tooltip"]'));
-  [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
-};
-
-export const getDatepickerOptionsFromProps = (props) => {
-  const options = {
-    changeMonth: true,
-    changeYear: true,
-  };
-  if (props[DATE_DATA_PROPS_TYPES.DISABLE_WEEKENDS] == true) {
-    options.beforeShowDay = $.datepicker.noWeekends;
-  }
-
-  return options;
 };

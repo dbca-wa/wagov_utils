@@ -1,7 +1,8 @@
 import { DropableControl } from '../controls/layout/dropable-control';
 import { getControlFromToolbox } from '../controls/toolbox-store';
 import { CONTROL_API_PROPS_TYPES } from '../controls/utils/control-props-types';
-import { activateTooltips, camelCase, markup } from './utils';
+import { activateTooltips } from './control-utils';
+import { camelCase, markup } from './utils';
 
 export class BuildArea {
   static instance;

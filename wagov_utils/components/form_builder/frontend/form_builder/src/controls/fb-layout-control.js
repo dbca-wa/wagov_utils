@@ -47,9 +47,9 @@ export default class LayoutControl extends Control {
 
   getPropsObject() {
     return {
+      ...this.props,
       ...this.displayControlProps?.getPropsValues(),
       ...this.dataControlProps?.getPropsValues(),
-      ...this.props,
     };
   }
 

@@ -41,6 +41,7 @@ export class ControlProp {
       markup('label', this.prop.title, {
         for: this.id,
         class: [
+          'fw-medium',
           this.prop.type === 'boolean' ? 'form-check-label' : 'form-label',
           this.prop.type === 'hidden' ? 'd-none' : '',
         ].join(' '),

@@ -70,6 +70,7 @@ export default class LayoutController {
 
   renderFormBuilder(initialJson = []) {
     this.initialBuilderLayout();
+    this.buildArea.clearAreaContainer();
 
     initialJson.forEach((control) => {
       try {
@@ -111,8 +112,8 @@ export default class LayoutController {
       const layout = event.data;
       const defaultElements = [
         // LAYOUT_TYPES.HTML_CONTENT,
-        ELEMENT_TYPES.DATE_PICKER_JQ,
-        // LAYOUT_TYPES.ROW_COLUMNS,
+        // ELEMENT_TYPES.DATE_PICKER_JQ,
+        LAYOUT_TYPES.ROW_COLUMNS,
         // ELEMENT_TYPES.INPUT_NUMBER,
         // ELEMENT_TYPES.SELECT,
         // ELEMENT_TYPES.CHECK_BOX,

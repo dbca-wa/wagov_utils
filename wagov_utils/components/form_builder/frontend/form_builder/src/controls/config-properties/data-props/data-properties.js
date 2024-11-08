@@ -70,7 +70,6 @@ export class SelectBoxesDataProperties extends MultipleChoiceDataProperties {
     if ([DATASOURCE_PROPS_TYPES.VALUES, DATASOURCE_PROPS_TYPES.RAW_JSON].includes(this.datasource)) {
       this.datasourceProperties.modifyProp(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, {
         type: 'select-boxes',
-        value: [],
       });
     }
   }
@@ -95,7 +94,6 @@ export class DatePickerDataProperties extends BaseDataProps {
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
     const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
-    console.log('value', value);
     _this.modifyPropValue(prop.name, value);
     _this.editor._renderPreviewControl();
   }

@@ -47,6 +47,7 @@ export default class InputElement extends InputControl {
 
   render(customProps, attr) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
+    this.modifyProps(props);
     const value = props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
     const attributes = {
       id: props.id ?? this.id,

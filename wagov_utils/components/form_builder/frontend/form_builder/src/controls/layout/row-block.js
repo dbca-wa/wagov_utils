@@ -74,10 +74,15 @@ export class RowBlock extends LayoutControl {
   renderInParent(parent = null) {
     if (parent) this.setParent(parent);
     if (this.$p) {
+      const props = this.displayControlProps.getPropsValues();
       this.$p.empty().append(this.renderControl());
+
       for (let i = 0; i < this.children.length; i++) {
-        const colData = this.children[i];
-        colData.setContainer(this.$p.find(this.getIdSelector()), true);
+        const dropable = this.children[i];
+        const { id, size, width } = props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS][i];
+
+        dropable.props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] = `col-${size}-${width}`;
+        dropable.setContainer(this.$p.find(this.getIdSelector()), true);
       }
     }
   }
@@ -106,10 +111,10 @@ export class RowBlock extends LayoutControl {
         existingDropableIds.splice(existingDropableIds.indexOf(id), 1);
       } else {
         const dropable = BuildArea.getInstance().getDropableControl(_this.areaId, {
-          props: {
-            id: id,
-            [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col-${size}-${width}`,
-          },
+          id: id,
+
+          areaId: id,
+          [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col-${size}-${width}`,
         });
         tmpchildren.push(dropable);
       }

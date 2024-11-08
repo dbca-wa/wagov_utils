@@ -117,14 +117,16 @@ export class DynamicTableControl {
     const rowId = val.id ?? 'row-' + generateRandomId();
     return {
       ...val,
-      id: rowId,
+      id: rowId + '-row',
       actions: markup(
         'button',
         markup('i', '', {
           class: 'bi bi-x',
+          'data-rowId': rowId,
         }),
         {
           class: 'btn btn-danger btn-sm ',
+          type: 'button',
           'data-rowId': rowId,
           events: {
             click: {
@@ -134,9 +136,9 @@ export class DynamicTableControl {
                 e.preventDefault();
                 const { rowId } = e.target.dataset;
                 if (rowId) {
-                  document.getElementById(rowId).remove();
+                  document.getElementById(rowId + '-row').remove();
                 }
-                // _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
+                _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
               },
             },
           },

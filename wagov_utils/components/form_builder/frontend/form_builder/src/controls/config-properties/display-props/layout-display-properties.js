@@ -1,6 +1,7 @@
 import { generateRandomId } from '../../../js/utils';
 import { LAYOUT_CONTROL_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../../utils/control-props-types';
 import { BaseControlProps } from '../base-control-props';
+import { BaseDisplayProps } from '../data-props/base-display-props';
 
 const columnsProps = [CONTROL_PROPS_TYPES.LABEL, LAYOUT_CONTROL_PROPS_TYPES.COLUMNS];
 const HTMLComponentProps = [
@@ -10,7 +11,7 @@ const HTMLComponentProps = [
   LAYOUT_CONTROL_PROPS_TYPES.HTML_CONTENT,
 ];
 
-export class DropableDisplayProps extends BaseControlProps {
+export class DropableDisplayProps extends BaseDisplayProps {
   constructor(props) {
     super([CONTROL_PROPS_TYPES.CUSTOM_CLASS]);
     this.fillInProps(props);
@@ -25,14 +26,14 @@ export class DropableDisplayProps extends BaseControlProps {
     }
   }
 }
-export class ContainerDisplayBlock extends BaseControlProps {
+export class ContainerDisplayBlock extends BaseDisplayProps {
   constructor(props) {
     super([LAYOUT_CONTROL_PROPS_TYPES.TITLE]);
     this.fillInProps(props);
   }
 }
 
-export class ColumnsDisplayProps extends BaseControlProps {
+export class ColumnsDisplayProps extends BaseDisplayProps {
   constructor(props) {
     super(columnsProps);
     this.fillInProps(props);
@@ -48,7 +49,7 @@ export class ColumnsDisplayProps extends BaseControlProps {
   }
 }
 
-export class HTMLComponentDisplayProps extends BaseControlProps {
+export class HTMLComponentDisplayProps extends BaseDisplayProps {
   constructor(props) {
     super(HTMLComponentProps);
     this.fillInProps(props);

@@ -22,7 +22,7 @@ export class CustomControlProp extends ControlProp {
 
     const children = [
       markup('label', this.prop.title, {
-        class: 'form-label',
+        class: 'form-label fw-medium',
       }),
       this.control.render(),
     ];

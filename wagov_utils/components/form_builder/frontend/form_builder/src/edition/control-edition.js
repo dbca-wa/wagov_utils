@@ -5,16 +5,11 @@ import {
 } from '../controls/utils/control-props-types';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
+import { activateTooltips, getDatepickerOptionsFromProps } from '../js/control-utils';
 import { BuildArea } from '../js/fb-build-area';
 import Control from '../js/fb-control';
 import { appSelectors } from '../js/selectors';
-import {
-  activateTooltips,
-  compareMinMaxIntegers,
-  generateRandomId,
-  getDatepickerOptionsFromProps,
-  markup,
-} from '../js/utils';
+import { compareMinMaxIntegers, generateRandomId, markup } from '../js/utils';
 import controlWrapperTemplate from '../views/control-edition/control-edition-wrapper.handlebars';
 import Modal from 'bootstrap/js/dist/modal.js';
 
@@ -29,9 +24,9 @@ export default class ControlEdition extends Control {
     super({}, {}, CONTROL_TYPES.BLOCK);
     this.control = control;
     this.controller = controller;
-    this._editControl({
+    /* this._editControl({
       data: this,
-    });
+    }); */
   }
   render() {
     return markup(
@@ -63,14 +58,15 @@ export default class ControlEdition extends Control {
     const $m = $(modalIdSelector);
 
     if (_this.control && _this.control.displayControlProps) {
+      _this.control.displayControlProps?.setEditor($m.find('#display-tab-pane form'), _this);
       _this.control.dataControlProps?.setEditor($m.find('#data-tab-pane form'), _this);
       _this.control.validationControlProps?.setEditor($m.find('#validation-tab-pane form'), _this);
       _this.control.apiControlProps?.setEditor($m.find('#api-tab-pane form'), _this);
-      $m.find('#display-tab-pane form').empty().append(_this.control.displayControlProps.render());
+
+      _this.control.displayControlProps?.renderInParent();
       _this.control.dataControlProps?.renderInParent();
       _this.control.validationControlProps?.renderInParent();
       _this.control.apiControlProps?.renderInParent();
-      _this.control.displayControlProps.addChangeEvents(_this, _this._onPropsChange);
 
       _this.initialProps = {
         ..._this.control.displayControlProps.getPropsValues(),
@@ -80,7 +76,7 @@ export default class ControlEdition extends Control {
       };
       _this._renderPreviewControl();
 
-      $('#data-tab').trigger('click');
+      $('#display-tab').trigger('click');
       $('#data-tab').show();
       $('#validation-tab').show();
       $('#api-tab').show();
@@ -116,13 +112,6 @@ export default class ControlEdition extends Control {
       { once: true },
     );
     $m.find('.modal-footer .btn-primary').off('click').on('click', _this, _this._saveControl);
-  }
-
-  _onPropsChange(e) {
-    const { context: _this, prop } = e.data;
-    const value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e.value;
-    _this.control.displayControlProps.modifyPropValue(prop.name, value);
-    _this._renderPreviewControl();
   }
 
   _renderPreviewControl() {
