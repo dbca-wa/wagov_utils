@@ -8,7 +8,7 @@ import {
   DATE_PERIOD_TYPES,
 } from '../controls/utils/constants';
 import { Tooltip } from 'bootstrap';
-import { DATE_DATA_PROPS_TYPES } from '../controls/utils/control-props-types';
+import { CONTROL_VALIDATION_PROPS_TYPES, DATE_DATA_PROPS_TYPES } from '../controls/utils/control-props-types';
 
 export const activateTooltips = (parent, selector = '') => {
   if (!parent) return;
@@ -22,15 +22,25 @@ export const getDatepickerOptionsFromProps = (props) => {
   const options = {
     changeMonth: true,
     changeYear: true,
+    dateFormat: 'dd-mm-yy',
   };
   if (props[DATE_DATA_PROPS_TYPES.DISABLE_WEEKENDS] == true) {
     options.beforeShowDay = $.datepicker.noWeekends;
+  }
+  if (props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]) {
+    options.defaultDate = getRelativeDateFromValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]);
+  }
+  if (props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]) {
+    options.minDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]);
+  }
+  if (props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]) {
+    options.maxDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]);
   }
 
   return options;
 };
 
-export const getRelativeDateValue = (config, dateFormat = 'dd-MMM-yyyy') => {
+export const getRelativeDateFromValue = (config) => {
   if (!config) return '';
   try {
     const { type, relative, condition } = config;
@@ -38,7 +48,7 @@ export const getRelativeDateValue = (config, dateFormat = 'dd-MMM-yyyy') => {
     if (type === DATE_CONTROL_PROP_TYPES.FIXED.value) {
       const { date } = config;
       if (!date) return '';
-      return format(new Date(date), dateFormat);
+      return new Date(date);
     } else {
       const today = new Date();
       let date = today;
@@ -75,12 +85,17 @@ export const getRelativeDateValue = (config, dateFormat = 'dd-MMM-yyyy') => {
         default:
           break;
       }
-      return format(date, dateFormat);
+      return date;
     }
   } catch (error) {
     console.error('Error in getRelativeDateValue', error);
     return '';
   }
+};
+export const getRelativeDateValue = (config, dateFormat = 'dd-MMM-yyyy') => {
+  const date = getRelativeDateFromValue(config);
+  if (date) return format(date, dateFormat);
+  return '';
 };
 
 const getDifferenceValue = (range, number) => {

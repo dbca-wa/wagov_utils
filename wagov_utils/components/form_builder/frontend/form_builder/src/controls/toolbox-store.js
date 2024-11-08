@@ -135,21 +135,6 @@ export const CONTROLS_STORE = {
 };
 
 export const SPECIAL_INPUT_STORE = {
-  [ELEMENT_TYPES.DATE_PICKER]: {
-    description: 'A simple date control',
-    props: {
-      [CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT]: 'Date Picker',
-      [CONTROL_PROPS_TYPES.LABEL]: 'Select a date',
-      type: INPUT_TYPES.DATE,
-      [CONTROL_PROPS_TYPES.PLACEHOLDER]: 'Select a date',
-      [CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]: true,
-    },
-    attr: {
-      type: INPUT_TYPES.DATE,
-    },
-    icon: 'fa fa-font',
-    controlClass: InputElement,
-  },
   [ELEMENT_TYPES.DATE_PICKER_JQ]: {
     description: 'A simple date control',
     props: {

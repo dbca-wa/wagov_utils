@@ -9,6 +9,7 @@ import { ELEMENT_TYPES } from '../../utils/element-types';
 import InputElement from '../input-element';
 import { DatePickerValidationProps } from '../../config-properties/validation-props/date-picker-validation-properties';
 import { getDatepickerOptionsFromProps, getRelativeDateValue } from '../../../js/control-utils';
+import { INPUT_TYPES } from '../../utils/input-types';
 
 const defaultSettings = {
   type: 'text',
@@ -36,9 +37,9 @@ export default class DatePicker extends InputElement {
     this.elementType = ELEMENT_TYPES.DATE_PICKER_JQ;
     this.type = ELEMENT_TYPES.INPUT;
 
-    this.displayControlProps = new InputFieldDisplayProps(ELEMENT_TYPES.DATE_PICKER, this.props);
+    this.displayControlProps = new InputFieldDisplayProps(INPUT_TYPES.DATE, this.props);
     this.dataControlProps = new DatePickerDataProperties(this.props);
-    this.validationControlProps = new DatePickerValidationProps(ELEMENT_TYPES.DATE_PICKER, this.props);
+    this.validationControlProps = new DatePickerValidationProps(ELEMENT_TYPES.DATE_PICKER_JQ, this.props);
     this.attr['class'] = 'form-control';
   }
 

@@ -67,7 +67,7 @@ export default class ButtonElement extends Control {
     if (props[CONTROL_PROPS_TYPES.LEFT_ICON]) {
       children.push(markup('i', '', { class: props[CONTROL_PROPS_TYPES.LEFT_ICON] }));
     }
-    children.push(label);
+    children.push(`&nbsp;${label}&nbsp;`);
     if (props[CONTROL_PROPS_TYPES.RIGHT_ICON]) {
       children.push(markup('i', '', { class: props[CONTROL_PROPS_TYPES.RIGHT_ICON] }));
     }

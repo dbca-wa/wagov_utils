@@ -8,7 +8,6 @@ export const FORM_CONTROLS = [
   { label: 'Container', type: LAYOUT_TYPES.CONTAINER, icon: 'bi bi-layout-three-columns' },
   { label: 'Mobile Number', type: ELEMENT_TYPES.MOBILE_NUMBER, icon: 'bi bi-phone' },
   { label: 'HTML', type: LAYOUT_TYPES.HTML_CONTENT, icon: 'bi bi-code' },
-  { label: 'Date Picker', type: ELEMENT_TYPES.DATE_PICKER, icon: 'bi bi-calendar-date' },
   { label: 'Text Area', type: ELEMENT_TYPES.TEXT_AREA, icon: 'bi bi-alphabet' },
   // { label: 'Time Picker', type: ELEMENT_TYPES.TIME_PICKER , icon: 'bi bi-'},
   { label: 'Password', type: ELEMENT_TYPES.PASSWORD, icon: 'bi bi-key-fill' },
