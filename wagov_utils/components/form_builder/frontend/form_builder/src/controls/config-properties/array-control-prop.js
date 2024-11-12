@@ -11,10 +11,8 @@ export class ArrayControlProp extends ControlProp {
 
   renderProp() {
     try {
-      this.table = new DynamicTableControl(
-        { id: this.id },
-        { structure: this.prop.structure, values: this.prop.value },
-      );
+      const { structure, sortable } = this.prop.props;
+      this.table = new DynamicTableControl({ id: this.id }, { structure, values: this.prop.value, sortable });
     } catch (error) {
       console.error(error);
       return markup('h3', 'Invalid table data.');
@@ -22,12 +20,12 @@ export class ArrayControlProp extends ControlProp {
 
     const children = [
       markup('label', this.prop.title, {
-        class: 'form-label',
+        class: 'form-label fw-medium',
       }),
       this.table.render(),
     ];
 
-    return markup('div', children, { class: 'form-check mb-3' });
+    return markup('div', children, { class: ' mb-3' });
   }
 
   addChangeEvent(context, cb) {

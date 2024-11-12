@@ -6,13 +6,16 @@ export class DynamicTableControl {
   sortable = false;
   changeHandler;
 
-  constructor(props, tableData = { structure: {}, values: [] }) {
-    const { structure, values } = tableData;
+  constructor(props, tableData = { structure: {}, values: [], sortable: true }) {
+    const { structure, values, sortable } = tableData;
     this.id = props.id;
     this.sortable = props.sortable || false;
     this.structure = structure;
+    this.sortable = sortable;
     this.values = values === '' ? [] : values;
-    this.columns = ['id'].concat(Object.keys(structure).map((key) => structure[key].name)).concat('actions');
+    this.columns = (sortable ? ['id'] : [])
+      .concat(Object.keys(structure).map((key) => structure[key].name))
+      .concat('actions');
   }
 
   addChangeEventHandler({ fn, context }) {
@@ -23,17 +26,19 @@ export class DynamicTableControl {
 
     this.addInputElementChange($(`#${this.id} .data-row td input[data-key]`), 'input');
     this.addInputElementChange($(`#${this.id} .data-row td select[data-key]`), 'change');
-    $(`#${this.id} tbody`).sortable({
-      handle: '.sort-handle',
+    if (this.sortable) {
+      $(`#${this.id} tbody`).sortable({
+        handle: '.sort-handle',
 
-      items: '.data-row',
-      placeholder: 'portlet-placeholder ',
-    });
+        items: '.data-row',
+        placeholder: 'portlet-placeholder ',
+      });
 
-    $(`#${this.id} tbody`).on('sortupdate', this, function (e, ui) {
-      const _this = e.data;
-      _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
-    });
+      $(`#${this.id} tbody`).on('sortupdate', this, function (e, ui) {
+        const _this = e.data;
+        _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
+      });
+    }
   }
 
   addInputElementChange(selector, eventType) {
@@ -88,7 +93,9 @@ export class DynamicTableControl {
   _createDataRow(row) {
     if (!row) return;
     const rowId = row.id;
-    const rowEl = markup('tr', [{ tag: 'td', content: markup('i', '', { class: 'bi bi-arrows-move sort-handle ' }) }], {
+    const idCell = this.sortable ? markup('td', markup('i', '', { class: 'bi bi-grip-vertical sort-handle' })) : '';
+
+    const rowEl = markup('tr', idCell, {
       id: rowId,
       class: 'data-row',
     });
@@ -117,7 +124,7 @@ export class DynamicTableControl {
     const rowId = val.id ?? 'row-' + generateRandomId();
     return {
       ...val,
-      id: rowId + '-row',
+      id: rowId,
       actions: markup(
         'button',
         markup('i', '', {
@@ -136,7 +143,8 @@ export class DynamicTableControl {
                 e.preventDefault();
                 const { rowId } = e.target.dataset;
                 if (rowId) {
-                  document.getElementById(rowId + '-row').remove();
+                  debugger;
+                  document.querySelector(`#${this.id} ${rowId}`).remove();
                 }
                 _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
               },

@@ -45,6 +45,8 @@ function getProps(type) {
       return emailProps;
     case INPUT_TYPES.SELECT_BOXES:
       return selectBoxes;
+    case INPUT_TYPES.FILE_UPLOAD:
+      return FileUploadProps;
     default:
       return textProps;
   }
@@ -118,3 +120,5 @@ const selectBoxes = [
   CONTROL_VALIDATION_PROPS_TYPES.MIN_CHECKED_ERROR_MESSAGE,
   CONTROL_VALIDATION_PROPS_TYPES.MAX_CHECKED_ERROR_MESSAGE,
 ];
+
+const FileUploadProps = [CONTROL_VALIDATION_PROPS_TYPES.REQUIRED, CONTROL_VALIDATION_PROPS_TYPES.ERROR_MESSAGE];

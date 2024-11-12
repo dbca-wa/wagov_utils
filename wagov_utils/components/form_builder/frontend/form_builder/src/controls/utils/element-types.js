@@ -8,6 +8,7 @@ export const ELEMENT_TYPES = {
   BUTTON: 'button',
   MOBILE_NUMBER: 'mobile-number',
 
+  FILE_UPLOAD: 'file-upload',
   DATE_PICKER: 'date-picker',
   DATE_PICKER_JQ: 'date-picker-jq',
   TIME_PICKER: 'time-picker',

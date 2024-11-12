@@ -251,3 +251,18 @@ $main-panel-padding: 20px;
 .code-editor-medium {
   min-height: 200px;
 }
+
+// Form Editor
+.file-selector {
+  position: relative;
+  padding: 15px;
+  border: 2px dashed #ddd;
+  text-align: center;
+  &.dragover {
+    border-color: #007bff;
+  }
+}
+
+.files-list .img-preview {
+  max-width: 100px;
+}

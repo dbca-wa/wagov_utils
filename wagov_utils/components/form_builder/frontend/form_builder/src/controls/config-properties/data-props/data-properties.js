@@ -2,6 +2,7 @@ import {
   CONTROL_DATA_PROPS_TYPES,
   DATASOURCE_PROPS_TYPES,
   DATE_DATA_PROPS_TYPES,
+  FILE_DATA_PROPS_TYPES,
 } from '../../utils/control-props-types';
 import { INPUT_TYPES } from '../../utils/input-types';
 import { dateDataPropertiesStore } from '../stores/data-props-store';
@@ -32,9 +33,8 @@ export class InputFieldDataProperties extends BaseDataProps {
 
   constructor(type = INPUT_TYPES.TEXT, props) {
     const definition = [];
-    if (type !== INPUT_TYPES.PASSWORD) {
-      definition.push(...defProps);
-    }
+
+    definition.push(...getInputDataProps(type));
 
     super(definition);
     this.fillInProps(props);
@@ -46,8 +46,14 @@ export class InputFieldDataProperties extends BaseDataProps {
 
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
-    const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
+    let value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
+
+    // Remove whitespaces
+    if ([FILE_DATA_PROPS_TYPES.FILE_MAX_SIZE, FILE_DATA_PROPS_TYPES.FILE_MIN_SIZE].includes(prop.name)) {
+      value = value.replace(' ', '');
+    }
     _this.modifyPropValue(prop.name, value);
+
     _this.editor._renderPreviewControl();
   }
 }
@@ -96,5 +102,24 @@ export class DatePickerDataProperties extends BaseDataProps {
     const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
     _this.modifyPropValue(prop.name, value);
     _this.editor._renderPreviewControl();
+  }
+}
+
+const fileProps = [
+  FILE_DATA_PROPS_TYPES.MULTIPLE_FILES,
+  FILE_DATA_PROPS_TYPES.DISPLAY_AS_IMAGES,
+  FILE_DATA_PROPS_TYPES.FILE_MIN_SIZE,
+  FILE_DATA_PROPS_TYPES.FILE_MAX_SIZE,
+  FILE_DATA_PROPS_TYPES.FILE_TYPES,
+];
+
+function getInputDataProps(type) {
+  switch (type) {
+    case INPUT_TYPES.PASSWORD:
+      return [];
+    case INPUT_TYPES.FILE_UPLOAD:
+      return fileProps;
+    default:
+      return defProps;
   }
 }

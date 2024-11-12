@@ -45,7 +45,7 @@ export default class InputElement extends InputControl {
     }
   }
 
-  render(customProps, attr) {
+  render(customProps, attr = {}) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
     this.modifyProps(props);
     const value = props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
@@ -90,6 +90,6 @@ export default class InputElement extends InputControl {
     this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
     this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
 
-    return super.render(markup('input', '', attributes));
+    return super.render(markup('input', '', { ...attributes, ...attr }));
   }
 }

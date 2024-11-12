@@ -3,6 +3,7 @@ import { LAYOUT_TYPES } from './utils/layout-types';
 
 export const FORM_CONTROLS = [
   { label: 'Input Text', type: ELEMENT_TYPES.INPUT, icon: 'bi bi-type' },
+  { label: 'File Upload', type: ELEMENT_TYPES.FILE_UPLOAD, icon: 'bi bi-file-earmark-arrow-up' },
   { label: 'Date Picker V2', type: ELEMENT_TYPES.DATE_PICKER_JQ, icon: 'bi bi-calendar-date' },
   { label: 'Columns', type: LAYOUT_TYPES.ROW_COLUMNS, icon: 'bi bi-layout-three-columns' },
   { label: 'Container', type: LAYOUT_TYPES.CONTAINER, icon: 'bi bi-layout-three-columns' },

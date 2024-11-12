@@ -46,6 +46,15 @@ export const DATE_DATA_PROPS_TYPES = {
   ENABLE_TIME_INPUT: 'enableTimeInput',
 };
 
+export const FILE_DATA_PROPS_TYPES = {
+  MULTIPLE_FILES: 'multipleFiles',
+  FILE_FORMATS: 'fileFormats',
+  FILE_TYPES: 'fileTypes',
+  FILE_MIN_SIZE: 'fileMinSize',
+  FILE_MAX_SIZE: 'fileMaxSize',
+  DISPLAY_AS_IMAGES: 'displayAsImages',
+};
+
 export const CONTROL_DATA_PROPS_TYPES = {
   DATASOURCE: 'datasource',
   MULTI: 'multi',

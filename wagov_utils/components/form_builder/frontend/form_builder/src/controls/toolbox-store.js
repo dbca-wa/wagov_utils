@@ -17,6 +17,7 @@ import { RowBlock } from './layout/row-block';
 import { DropableControl } from './layout/dropable-control';
 import { ContainerBlock } from './layout/container-component';
 import DatePicker from './elements/jquery/date-picker';
+import FileUploadElement from './elements/file-upload';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -35,6 +36,17 @@ export const CONTROLS_STORE = {
     },
     icon: 'fa fa-font',
     controlClass: InputElement,
+  },
+  [ELEMENT_TYPES.FILE_UPLOAD]: {
+    description: 'A simple file upload control',
+    props: {
+      [CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT]: 'File Upload',
+      [CONTROL_PROPS_TYPES.LABEL]: 'Upload a file',
+      type: INPUT_TYPES.FILE_UPLOAD,
+    },
+    attr: {},
+    icon: 'fa fa-font',
+    controlClass: FileUploadElement,
   },
   [ELEMENT_TYPES.MOBILE_NUMBER]: {
     description: 'A simple mobile number control',

@@ -189,3 +189,36 @@ export const markup = function (tag, content = '', attributes = {}) {
 export const unique = (array) => {
   return array.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 };
+
+/**
+ * Convert a number of bytes into a human-readable file size string
+ * @param {number} bytes - The number of bytes
+ * @return {string} - The human-readable file size
+ */
+export const formatFileSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes';
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
+/**
+ * Convert a human-readable file size string into bytes
+ * @param {string} sizeStr - The file size string (e.g., '1GB', '1gb')
+ * @return {number} - The number of bytes
+ */
+export const parseFileSize = (sizeStr) => {
+  const units = ['bytes', 'kb', 'mb', 'gb', 'tb'];
+  const regex = /^(\d+(?:\.\d+)?)\s*(bytes|kb|mb|gb|tb)$/i;
+  const match = sizeStr.match(regex);
+
+  if (!match) {
+    return undefined;
+  }
+
+  const value = parseFloat(match[1]);
+  const unit = match[2].toLowerCase();
+  const exponent = units.indexOf(unit);
+
+  return value * Math.pow(1024, exponent);
+};

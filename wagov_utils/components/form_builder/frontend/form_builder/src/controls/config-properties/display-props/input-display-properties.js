@@ -104,6 +104,15 @@ const dateProps = [
   CONTROL_PROPS_TYPES.HIDE_LABEL,
 ];
 
+const fileProps = [
+  CONTROL_PROPS_TYPES.LABEL,
+  CONTROL_PROPS_TYPES.DESCRIPTION,
+  CONTROL_PROPS_TYPES.TOOLTIP,
+  CONTROL_PROPS_TYPES.CUSTOM_CLASS,
+  CONTROL_PROPS_TYPES.HIDE_LABEL,
+  CONTROL_PROPS_TYPES.DISABLED,
+];
+
 function getProps(type) {
   switch (type) {
     case INPUT_TYPES.RADIO:
@@ -120,6 +129,8 @@ function getProps(type) {
       return passwordProps;
     case INPUT_TYPES.NUMBER:
       return numberProps;
+    case INPUT_TYPES.FILE_UPLOAD:
+      return fileProps;
     default:
       return textProps;
   }

@@ -1,6 +1,7 @@
 import {
   CONTROL_DATA_PROPS_TYPES,
   CONTROL_PROPS_TYPES,
+  FILE_DATA_PROPS_TYPES,
   LAYOUT_CONTROL_PROPS_TYPES,
 } from '../../utils/control-props-types';
 
@@ -252,5 +253,74 @@ export const propertiesStore = {
     options: undefined,
     value: '<span>{{ item.name }}</span>',
     className: 'code-editor-xsmall',
+  },
+  [FILE_DATA_PROPS_TYPES.MULTIPLE_FILES]: {
+    name: 'multipleFiles',
+    title: 'Allow multiple files',
+    type: 'boolean',
+    required: false,
+    value: false,
+  },
+  [FILE_DATA_PROPS_TYPES.DISPLAY_AS_IMAGES]: {
+    name: 'displayAsImages',
+    title: 'Display as image(s)',
+    type: 'boolean',
+    required: false,
+    options: undefined,
+    value: false,
+  },
+  [FILE_DATA_PROPS_TYPES.FILE_MAX_SIZE]: {
+    name: 'fileMaxSize',
+    title: 'File maximum size',
+    type: 'text',
+    required: false,
+    options: undefined,
+    value: '10MB',
+  },
+  [FILE_DATA_PROPS_TYPES.FILE_MIN_SIZE]: {
+    name: 'fileMinSize',
+    title: 'File minimum size',
+    type: 'text',
+    required: false,
+    options: undefined,
+    value: '0KB',
+  },
+  [FILE_DATA_PROPS_TYPES.FILE_FORMATS]: {
+    name: 'fileFormats',
+    title: 'Formats accepted',
+    type: 'string',
+    placeholder: 'e.g. .pdf, .docx, .xlsx',
+    required: false,
+    options: undefined,
+    value: '',
+  },
+  [FILE_DATA_PROPS_TYPES.FILE_TYPES]: {
+    name: 'fileTypes',
+    title: 'File types',
+    type: 'array',
+    required: false,
+    options: undefined,
+    value: '',
+    props: {
+      sortable: false,
+      structure: {
+        label: {
+          name: 'label',
+          title: 'Label',
+          type: 'string',
+          placeholder: '',
+          required: true,
+          value: '',
+        },
+        value: {
+          name: 'value',
+          title: 'Value',
+          type: 'string',
+          placeholder: '.pdf, .docx, .xlsx',
+          required: true,
+          value: '',
+        },
+      },
+    },
   },
 };
