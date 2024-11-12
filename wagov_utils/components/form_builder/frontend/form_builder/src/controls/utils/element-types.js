@@ -15,8 +15,4 @@ export const ELEMENT_TYPES = {
   PASSWORD: 'password',
   EMAIL: 'email',
   TEXT_AREA: 'textarea',
-
-  DIVIDER: 'divider',
-  ROW: 'row',
-  CONTAINER: 'container',
 };

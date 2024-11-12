@@ -1,19 +1,16 @@
-import { getControlFromToolbox } from '../controls/toolbox-store';
 import baseModalTemplate from '../views/control-edition/base-modal.handlebars';
 import baseModalBodyEdition from '../views/control-edition/base-modal-edition.handlebars';
 
 import { markup } from './utils';
 import { appSelectors } from './selectors';
 
-import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
-import { LAYOUT_TYPES } from '../controls/utils/layout-types';
 import { CLASS_DROPABLE_BLOCKS } from '../controls/utils/constants';
 import { BuildArea, instantiateJsonControl } from './fb-build-area';
-import { HTMLComponent } from '../controls/layout/html-component';
 
 import Tab from 'bootstrap/js/dist/tab.js';
 import builderTemplate from '../views/builder/container.handlebars';
+import { ELEMENT_CATEGORIES } from '../controls/utils/element-categories';
 
 const formAreaSel = 'formarea';
 
@@ -48,23 +45,39 @@ export default class LayoutController {
   }
 
   loadFormControls(parent) {
-    this.formControls.forEach((control) => {
-      if (!control.label) return;
-      const controlElement = markup(
-        'div',
-        [
-          markup('i', '', { class: control.icon }),
-          markup('span', control.label, {
-            class: 'ml-2',
-          }),
-        ],
-        {
-          class: 'control draggable-control ',
-          'data-controlType': control.type,
-        },
-      );
+    Object.keys(this.formControls).forEach((category) => {
+      const { name, label, icon } = ELEMENT_CATEGORIES[category];
+      const collapseId = `category-${name}-collapse`;
+      const categoryElement = markup('a', label, {
+        class: 'category-group ',
+        'data-bs-toggle': 'collapse',
+        href: `#${collapseId}`,
+        role: 'button',
+        'aria-expanded': 'false',
+        'aria-controls': `${collapseId}`,
+      });
 
-      parent.append(controlElement);
+      parent.append(categoryElement);
+      const catContainer = markup('div', '', {
+        class: ['category-container collapse', 'show'].join(' '),
+        id: collapseId,
+      });
+      parent.append(catContainer);
+      this.formControls[name].forEach((control) => {
+        if (!control.label) return;
+        const controlElement = markup(
+          'div',
+          [markup('i', '', { class: control.icon }), markup('span', control.label)],
+          {
+            class: 'control draggable-control ',
+            'data-controlType': control.type,
+            'data-label': control.label,
+            'data-icon': control.icon,
+          },
+        );
+
+        catContainer.append(controlElement);
+      });
     });
   }
 
@@ -147,11 +160,11 @@ export default class LayoutController {
       .append(markup('form', '', { class: 'needs-validation', novalidate: '' }));
 
     $(`#${formBuilderSel}`).addClass(formBuilderSel);
-    $(`#${formBuilderSel}`).append(markup('div', '', { id: controlsSel, class: 'formcomponents' }));
+    $(`#${formBuilderSel}`).append(markup('div', '', { id: controlsSel, class: 'formcomponents col-sm-2' }));
     $(`#${formBuilderSel}`).append(
       markup('div', '', {
         id: formAreaSel,
-        class: 'formarea fb-dropable-blocks',
+        class: 'col-sm-8 formarea fb-dropable-blocks',
         'data-content': 'Drag a field from the right to this area',
       }),
     );
@@ -161,16 +174,25 @@ export default class LayoutController {
 
     // $(`.${formAreaSel}`).disableSelection();
 
-    $(`.${controlsSel}`).sortable({
-      helper: 'clone',
+    this.loadFormControls(this.controlsPanel);
+    $(`.${controlsSel} .category-container`).sortable({
+      helper: (e, sender) => {
+        const { label, icon } = sender[0].dataset;
+        return markup('div', [markup('i', '', { class: icon }), markup('span', `&nbsp;${label}`)], {
+          class: 'btn btn-primary',
+        });
+      },
       cursor: 'move',
       scroll: false,
+      revert: true,
+      revertDuration: 3000,
       tolerance: 'pointer',
       placeholder: 'ui-state-highlight',
       connectWith: `.${CLASS_DROPABLE_BLOCKS}`,
     });
-
-    this.loadFormControls(this.controlsPanel);
+    $(`.${controlsSel} .category-container`).on('sortupdate', (sender, ui) => {
+      return;
+    });
     $(`.${controlsSel}`).disableSelection();
   }
 

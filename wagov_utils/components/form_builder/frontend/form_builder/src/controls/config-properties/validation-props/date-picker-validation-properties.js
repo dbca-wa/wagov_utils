@@ -6,6 +6,7 @@ export class DatePickerValidationProps extends BaseValidationProps {
   constructor(type = INPUT_TYPES.TEXT, props) {
     super(validationProps);
     this.fillInProps(props);
+    this.modifyPropValue(CONTROL_VALIDATION_PROPS_TYPES.VALIDATE_ON, 'change');
   }
 
   _onDataPropsChange(e) {

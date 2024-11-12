@@ -10,19 +10,7 @@ import {
 import { ELEMENT_TYPES } from '../utils/element-types';
 import InputElement from './input-element';
 
-const defaultSettings = {
-  type: 'text',
-  value: '',
-  [CONTROL_PROPS_TYPES.PLACEHOLDER]: 'Enter a value here',
-  [CONTROL_PROPS_TYPES.LABEL]: 'Text field',
-  [FILE_DATA_PROPS_TYPES.FILE_TYPES]: [
-    { label: 'Tipo 1', value: 'asdasd' },
-    { label: 'Tipo 2 ', value: 'asdac' },
-    { label: 'Tipo 3', value: 'asdasxxxd' },
-  ],
-  [CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]: true,
-  [FILE_DATA_PROPS_TYPES.DISPLAY_AS_IMAGES]: true,
-};
+const defaultSettings = {};
 
 export default class FileUploadElement extends InputElement {
   files = [];
@@ -137,13 +125,11 @@ export default class FileUploadElement extends InputElement {
       console.error('Element not rendered');
       return;
     }
-    this.renderTest();
+    // this.renderTest();
     const container = `#${this.id}-container`;
-    $(`${container} a`).on('click', this, (e) => e.data.$p.find(`#${this.id}`).trigger('click'));
-    // $(`${container} input[type="file"]`).on('change', this, this.handleFileInputChange.bind(this));
-    $(`${container} input[type="file"]`).on('change', (e) => {
-      console.log('change', e.target.files);
-    });
+    $(`${container} a`).on('click', this, (e) => document.getElementById(this.id).click());
+    $(`${container} input[type="file"]`).on('change', this, this.handleFileInputChange.bind(this));
+
     const fileSelector = $(`${container} .file-selector`);
 
     fileSelector.on('dragover', function (e) {

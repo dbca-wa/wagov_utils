@@ -275,7 +275,7 @@ export const propertiesStore = {
     type: 'text',
     required: false,
     options: undefined,
-    value: '10MB',
+    value: '5MB',
   },
   [FILE_DATA_PROPS_TYPES.FILE_MIN_SIZE]: {
     name: 'fileMinSize',

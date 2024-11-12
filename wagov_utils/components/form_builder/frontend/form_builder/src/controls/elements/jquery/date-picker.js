@@ -44,7 +44,6 @@ export default class DatePicker extends InputElement {
   }
 
   modifyProps(props) {
-    console.log(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]);
     const values = {
       [DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]: getRelativeDateValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]),
       [CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]: getRelativeDateValue(props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]),

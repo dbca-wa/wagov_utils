@@ -44,9 +44,26 @@ $main-panel-padding: 20px;
   background-color: #fff;
 }
 
-.control.draggable-control {
-  padding: 6px;
+.category-group {
+  padding: 8px;
   padding-left: 10px;
+  color: #004269;
+  border: 2px solid #e3e3e3;
+  background-color: #e9f1fa;
+  border-radius: 4px;
+  width: 100%;
+  max-width: $side-panel-width;
+  margin-bottom: -5px;
+  cursor: pointer;
+  text-decoration: none;
+
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 12px;
+}
+.control.draggable-control {
+  padding: 3px;
+  padding-left: 20px;
   color: black;
   border: 2px solid #e3e3e3;
   background-color: #fff;
@@ -54,10 +71,11 @@ $main-panel-padding: 20px;
   width: 100%;
   max-width: $side-panel-width;
   cursor: move;
-  margin-bottom: 5px;
+  margin-bottom: 1px;
+  font-size: 17px;
 }
 .control.draggable-control span {
-  margin-left: 5px;
+  margin-left: 13px;
 }
 .control.draggable-control {
   span {
@@ -98,7 +116,6 @@ $main-panel-padding: 20px;
 }
 
 .fb-dropable-blocks {
-  width: 100%;
   min-height: 50px;
   border: 1px dashed #dbdbdb;
 }
@@ -110,6 +127,11 @@ $main-panel-padding: 20px;
     font-size: medium;
     line-height: 1.4;
   }
+}
+
+.category-container {
+  width: 100%;
+  padding: 6px 4px;
 }
 
 .btn-toolbar {
