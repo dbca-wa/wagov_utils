@@ -6,6 +6,7 @@
 
 export const CONTROL_PROPS_TYPES = {
   LABEL: 'label',
+  LABEL_POSITION: 'labelPosition',
   PLACEHOLDER: 'placeholder',
   CUSTOM_CLASS: 'customClass',
   DESCRIPTION: 'description',

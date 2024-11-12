@@ -85,6 +85,12 @@ $main-panel-padding: 20px;
     color: #8d8d8d;
   }
 }
+.form-flex-checkbox-left input[type='checkbox'] {
+  margin-left: 5px;
+}
+.form-flex-checkbox-right input[type='checkbox'] {
+  margin-right: 5px;
+}
 
 .control.draggable-control:hover {
   border: 1px solid #707070;

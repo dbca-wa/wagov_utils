@@ -125,11 +125,12 @@ export default class LayoutController {
       const layout = event.data;
       const defaultElements = [
         // LAYOUT_TYPES.HTML_CONTENT,
-        ELEMENT_TYPES.FILE_UPLOAD,
+        // ELEMENT_TYPES.FILE_UPLOAD,
         // LAYOUT_TYPES.ROW_COLUMNS,
         // ELEMENT_TYPES.INPUT_NUMBER,
-        // ELEMENT_TYPES.SELECT,
-        // ELEMENT_TYPES.CHECK_BOX,
+        ELEMENT_TYPES.INPUT,
+        ELEMENT_TYPES.SELECT,
+        ELEMENT_TYPES.CHECK_BOX,
         // ELEMENT_TYPES.RADIO,
         ELEMENT_TYPES.BUTTON,
       ];

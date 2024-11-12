@@ -15,6 +15,20 @@ export const propertiesStore = {
     options: undefined,
     value: '',
   },
+  [CONTROL_PROPS_TYPES.LABEL_POSITION]: {
+    name: 'labelPosition',
+    title: 'Label Position',
+    type: 'select',
+    placeholder: 'Select a position',
+    required: false,
+    options: [
+      { value: 'top', text: 'Top' },
+      { value: 'left', text: 'Left' },
+      { value: 'right', text: 'Right' },
+      { value: 'bottom', text: 'Bottom' },
+    ],
+    value: 'top',
+  },
   [CONTROL_PROPS_TYPES.PLACEHOLDER]: {
     name: 'placeholder',
     title: 'Placeholder',

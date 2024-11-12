@@ -137,10 +137,13 @@ export default class InputControl extends Control {
     });
   }
 
-  render(children = []) {
-    if (!Array.isArray(children)) {
-      children = [children];
+  render(inputGroup = []) {
+    const props = this.displayControlProps.getPropsValues();
+    const labelPosition = props[CONTROL_PROPS_TYPES.LABEL_POSITION] ?? 'top';
+    if (!Array.isArray(inputGroup)) {
+      inputGroup = [inputGroup];
     }
+
     const tooltip = this.tooltip
       ? markup('i', '', {
           class: 'bi bi-question-circle-fill label-tooltip',
@@ -148,23 +151,61 @@ export default class InputControl extends Control {
           'data-bs-title': this.tooltip,
         })
       : undefined;
-    const isCheckbox = this.type === ELEMENT_TYPES.CHECK_BOX;
+    const labelElement = this.label.render();
+    const description = this.description ? markup('small', this.description, { class: 'form-text' }) : undefined;
+    const invalidField = markup('div', '', { class: CLASS_INVALID_FIELD_VALUE });
+    const labelGroup = [];
+
     if (this.isShowLabel()) {
-      if (isCheckbox) {
-        children.push(this.label.render());
-        if (tooltip) children.push(tooltip);
-      } else {
-        if (tooltip) children.unshift(tooltip);
-        children.unshift(this.label.render());
+      labelGroup.push(labelElement);
+    }
+    if (tooltip) labelGroup.push(tooltip);
+
+    const isCheckbox = this.type === ELEMENT_TYPES.CHECK_BOX;
+    if (description) {
+      if (!isCheckbox) {
+        inputGroup.push(description);
+        inputGroup.push(markup('br'));
       }
     }
-    if (isCheckbox) children.push(markup('br'));
-    if (this.description) {
-      children.push(markup('small', this.description, { class: 'form-text' }));
-    }
-    children.push(markup('div', '', { class: CLASS_INVALID_FIELD_VALUE }));
+    if (isCheckbox) {
+      const isLeftAlign = labelPosition === 'left';
 
-    return markup('div', children, { class: this.container_class });
+      if (isLeftAlign) {
+        inputGroup.push(invalidField);
+        const checkBoxDiv = labelGroup.concat(inputGroup);
+        return markup(
+          'div',
+          [markup('div', checkBoxDiv, { class: 'd-flex form-flex-checkbox-left' }), description],
+          {},
+        );
+      } else {
+        labelGroup.push(invalidField);
+        const checkBoxDiv = inputGroup.concat(labelGroup);
+        return markup(
+          'div',
+          [markup('div', checkBoxDiv, { class: 'd-flex form-flex-checkbox-right' }), description],
+          {},
+        );
+      }
+    }
+
+    inputGroup.push(invalidField);
+    if (['left', 'right'].includes(labelPosition)) {
+      const divLabel = markup('div', labelGroup, { class: 'col-sm-2 pt-1' });
+      const divInput = markup('div', inputGroup, {
+        class: ['col-sm-10', isCheckbox ? 'align-items-center' : ''].join(' '),
+      });
+      const mainDiv = [divLabel, divInput];
+
+      return markup('div', labelPosition === 'left' ? mainDiv : mainDiv.reverse(), {
+        class: [this.container_class ?? '', 'row', 'align-items-start'].join(' '),
+      });
+    }
+
+    return markup('div', labelPosition === 'top' ? labelGroup.concat(inputGroup) : inputGroup.concat(labelGroup), {
+      class: this.container_class,
+    });
   }
 
   afterRender() {
