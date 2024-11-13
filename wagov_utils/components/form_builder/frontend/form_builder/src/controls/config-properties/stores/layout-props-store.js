@@ -48,13 +48,12 @@ export const layoutPropertiesStore = {
     options: undefined,
     value: '',
   },
-  [LAYOUT_CONTROL_PROPS_TYPES.CONTENT]: {
-    name: 'content',
-    title: 'Content',
-    type: 'string',
-    placeholder: 'Enter a content',
+  [LAYOUT_CONTROL_PROPS_TYPES.DISPLAY_DIRECTION]: {
+    name: 'displayDirection',
+    title: 'Display Direction',
+    type: 'hidden',
+    placeholder: 'Enter a display direction',
     required: true,
-    options: undefined,
-    value: '',
+    value: 'column',
   },
 };

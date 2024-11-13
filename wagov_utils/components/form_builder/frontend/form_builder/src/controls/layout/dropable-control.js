@@ -5,7 +5,7 @@ import { DropableDisplayProps } from '../config-properties/display-props/layout-
 import LayoutControl from '../fb-layout-control';
 import { BUILDER_TOOLBOX } from '../toolbox-store';
 import { CLASS_DROPABLE_BLOCKS, CLASS_EMPTY_DROPABLE } from '../utils/constants';
-import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
+import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { LAYOUT_TYPES } from '../utils/layout-types';
 
 const defaultSettings = {};
@@ -166,7 +166,6 @@ export class DropableControl extends LayoutControl {
   }
 
   onDrop(control) {
-    console.log('Control dropped on ' + this.areaId, control.controlType);
     control.parentAreaId = this.areaId;
   }
 
@@ -214,8 +213,9 @@ export class DropableControl extends LayoutControl {
 
   toDisplay(parentContainer) {
     const props = this.displayControlProps.getPropsValues();
+    const isRowDisplay = props[LAYOUT_CONTROL_PROPS_TYPES.DISPLAY_DIRECTION] === 'row';
     const container = markup('div', '', {
-      class: [props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'col', 'my-3'].join(' '),
+      class: [props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'col', isRowDisplay ? 'row' : '', 'my-3'].join(' '),
       id: this.id,
       'data-parentAreaId': this.parentAreaId,
       'data-areaId': this.areaId,
@@ -225,7 +225,13 @@ export class DropableControl extends LayoutControl {
     }
     for (let i = 0; i < this.children.length; i++) {
       const elm = this.children[i];
-      elm.toDisplay(container);
+      if (isRowDisplay) {
+        const col = markup('div', '', { class: 'col' });
+        container.append(col);
+        elm.toDisplay(col);
+      } else {
+        elm.toDisplay(container);
+      }
     }
     return container;
   }

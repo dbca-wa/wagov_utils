@@ -86,5 +86,10 @@ export const FORM_CONTROLS = {
       type: LAYOUT_TYPES.CONTAINER,
       icon: 'bi bi-layout-three-columns',
     },
+    {
+      label: 'Edit Grid',
+      type: LAYOUT_TYPES.EDIT_GRID,
+      icon: 'bi bi-layout-three-columns',
+    },
   ],
 };

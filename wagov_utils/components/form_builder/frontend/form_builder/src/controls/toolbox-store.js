@@ -18,6 +18,7 @@ import { DropableControl } from './layout/dropable-control';
 import { ContainerBlock } from './layout/container-component';
 import DatePicker from './elements/jquery/date-picker';
 import FileUploadElement from './elements/file-upload';
+import { EditableGrid } from './layout/editable-grid';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -268,6 +269,15 @@ export const LAYOUT_STORE = {
     attr: {},
     icon: 'fa fa-font',
     controlClass: ContainerBlock,
+  },
+  [LAYOUT_TYPES.EDIT_GRID]: {
+    description: 'A grid for editing',
+    props: {
+      [CONTROL_PROPS_TYPES.LABEL]: 'Edit Grid',
+    },
+    attr: {},
+    icon: 'fa fa-font',
+    controlClass: EditableGrid,
   },
   [LAYOUT_TYPES.HTML_CONTENT]: {
     description: 'A block of custom HTML code',

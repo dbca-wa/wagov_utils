@@ -11,6 +11,7 @@ import { BuildArea, instantiateJsonControl } from './fb-build-area';
 import Tab from 'bootstrap/js/dist/tab.js';
 import builderTemplate from '../views/builder/container.handlebars';
 import { ELEMENT_CATEGORIES } from '../controls/utils/element-categories';
+import { LAYOUT_TYPES } from '../controls/utils/layout-types';
 
 const formAreaSel = 'formarea';
 
@@ -127,12 +128,13 @@ export default class LayoutController {
         // LAYOUT_TYPES.HTML_CONTENT,
         // ELEMENT_TYPES.FILE_UPLOAD,
         // LAYOUT_TYPES.ROW_COLUMNS,
+        LAYOUT_TYPES.EDIT_GRID,
         // ELEMENT_TYPES.INPUT_NUMBER,
-        ELEMENT_TYPES.INPUT,
-        ELEMENT_TYPES.SELECT,
-        ELEMENT_TYPES.CHECK_BOX,
+        // ELEMENT_TYPES.INPUT,
+        // ELEMENT_TYPES.SELECT,
+        // ELEMENT_TYPES.CHECK_BOX,
         // ELEMENT_TYPES.RADIO,
-        ELEMENT_TYPES.BUTTON,
+        // ELEMENT_TYPES.BUTTON,
       ];
 
       layout.buildArea.clearAreaContainer();

@@ -3,7 +3,11 @@ import { LAYOUT_CONTROL_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../../utils/con
 import { BaseControlProps } from '../base-control-props';
 import { BaseDisplayProps } from '../data-props/base-display-props';
 
-const columnsProps = [CONTROL_PROPS_TYPES.LABEL, LAYOUT_CONTROL_PROPS_TYPES.COLUMNS];
+const columnsProps = [
+  CONTROL_PROPS_TYPES.LABEL,
+  LAYOUT_CONTROL_PROPS_TYPES.DISPLAY_DIRECTION,
+  LAYOUT_CONTROL_PROPS_TYPES.COLUMNS,
+];
 const HTMLComponentProps = [
   CONTROL_PROPS_TYPES.LABEL,
   CONTROL_PROPS_TYPES.CUSTOM_CLASS,
@@ -13,7 +17,7 @@ const HTMLComponentProps = [
 
 export class DropableDisplayProps extends BaseDisplayProps {
   constructor(props) {
-    super([CONTROL_PROPS_TYPES.CUSTOM_CLASS]);
+    super([CONTROL_PROPS_TYPES.CUSTOM_CLASS, LAYOUT_CONTROL_PROPS_TYPES.DISPLAY_DIRECTION]);
     this.fillInProps(props);
     if (props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS]) {
       this.modifyPropValue(

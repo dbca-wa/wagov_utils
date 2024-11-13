@@ -88,7 +88,7 @@ export class RowBlock extends LayoutControl {
   }
 
   toDisplay(container) {
-    const parent = markup('div', '', { class: this.container_class, id: this.id });
+    const parent = this.render();
     container.append(parent);
     for (let i = 0; i < this.children.length; i++) {
       const column = this.children[i];
