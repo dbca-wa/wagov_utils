@@ -30,7 +30,7 @@ export class EditableGrid extends RowBlock {
       BuildArea.getInstance().generateAPIFieldName(this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT] ?? this.type);
 
     this.displayControlProps = new ColumnsDisplayProps(this.props);
-    this.apiControlProps = new BasicAPIProps(this.props);
+    this.apiControlProps = new BasicAPIProps(LAYOUT_TYPES.EDIT_DROPABLE, this.props);
     this.dataControlProps = null;
 
     if (!this.initialSetupWithChildren()) {

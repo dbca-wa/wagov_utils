@@ -1,7 +1,7 @@
 import { activateTooltips } from '../../js/control-utils';
 import { instantiateJsonControl } from '../../js/fb-build-area';
 import { markup } from '../../js/utils';
-import { CONTROL_API_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/control-props-types';
+import { CONTROL_API_PROPS_TYPES, CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 
 class Renderer {
   constructor(control, props = {}) {
@@ -42,9 +42,7 @@ export class MultiControlRenderer extends Renderer {
     const rowData = {
       id: rowId,
       controls: [],
-      values: {
-        _id: index,
-      },
+      values: null,
     };
     $(`#${this.id} .rows`).append(rowEdition);
 
@@ -53,11 +51,11 @@ export class MultiControlRenderer extends Renderer {
 
       const col = markup('div', '', { class: 'col control' });
       rowEdition.append(col);
-      this.renderControl($(col), elm, 'edition');
+      this.renderControlEdition($(col), elm);
 
       rowData.controls.push(elm);
     }
-    const col = markup('div', this.getSaveButtons(rowId), { class: 'col-sm-1 actions' });
+    const col = markup('div', this.getButtons(rowId), { class: 'col-sm-1 actions' });
     this.rowsData.push(rowData);
     rowEdition.append(col);
     this.enableActionButtons();
@@ -72,7 +70,7 @@ export class MultiControlRenderer extends Renderer {
     $(`#${this.id} button.remove-row`)?.on('click', this, this.removeRow);
   }
 
-  getSaveButtons(rowId) {
+  getButtons(rowId) {
     const buttonSave = markup(
       'button',
       { tag: 'i', class: 'bi bi-save ' },
@@ -83,21 +81,17 @@ export class MultiControlRenderer extends Renderer {
       { tag: 'i', class: 'bi bi-x ' },
       { class: 'btn btn-secondary cancel-row', 'data-rowId': rowId, type: 'button' },
     );
-    return [buttonSave, buttonCancel];
-  }
-
-  getEditButtons(rowId) {
     const buttonEdit = markup(
       'button',
-      { tag: 'i', class: 'bi bi-save ' },
-      { class: 'btn btn-dark edit-row', 'data-rowId': rowId, type: 'button' },
+      { tag: 'i', class: 'bi bi-pencil ' },
+      { class: 'btn btn-dark edit-row', 'data-rowId': rowId, type: 'button', style: 'display: none' },
     );
     const buttonRemove = markup(
       'button',
       { tag: 'i', class: 'bi bi-x ' },
-      { class: 'btn btn-danger remove-row', 'data-rowId': rowId, type: 'button' },
+      { class: 'btn btn-danger remove-row', 'data-rowId': rowId, type: 'button', style: 'display: none' },
     );
-    return [buttonEdit, buttonRemove];
+    return [buttonSave, buttonCancel, buttonEdit, buttonRemove];
   }
 
   saveRow(e) {
@@ -116,8 +110,10 @@ export class MultiControlRenderer extends Renderer {
         const control = controls[i];
         row.values = { ...row.values, ...control.getFieldValue() };
         const container = $(`#${rowId} .control`)[i];
-        _this.renderControl($(container), control, 'display');
+        _this.renderControlDisplay($(container), control);
       }
+      $(`#${rowId} .actions .edit-row, #${rowId} .actions .remove-row`).show();
+      $(`#${rowId} .actions .save-row, #${rowId} .actions .cancel-row`).hide();
     }
   }
 
@@ -126,10 +122,23 @@ export class MultiControlRenderer extends Renderer {
     const _this = e.data;
     const { rowId } = e.currentTarget.dataset;
     const row = _this.rowsData.find((r) => r.id === rowId);
-    const index = _this.rowsData.indexOf(row);
-    _this.rowsData.splice(index, 1);
-    $(`#${rowId}`).remove();
+    if (row && row.values) {
+      const { controls } = row;
+      for (let i = 0; i < controls.length; i++) {
+        const control = controls[i];
+        const props = control.getPropsObject();
+        const container = $(`#${rowId} .control`)[i];
+        _this.renderControlDisplay($(container), control, row.values[props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]);
+      }
+      $(`#${rowId} .actions .edit-row, #${rowId} .actions .remove-row`).show();
+      $(`#${rowId} .actions .save-row, #${rowId} .actions .cancel-row`).hide();
+    } else {
+      const index = _this.rowsData.indexOf(row);
+      _this.rowsData.splice(index, 1);
+      $(`#${rowId}`).remove();
+    }
   }
+
   removeRow(e) {
     e.preventDefault();
     const _this = e.data;
@@ -145,33 +154,41 @@ export class MultiControlRenderer extends Renderer {
     const _this = e.data;
     const { rowId } = e.currentTarget.dataset;
     const row = _this.rowsData.find((r) => r.id === rowId);
-    const index = _this.rowsData.indexOf(row);
-    _this.rowsData.splice(index, 1);
-    $(`#${rowId}`).remove();
+    const { controls } = row;
+
+    for (let i = 0; i < controls.length; i++) {
+      const control = controls[i];
+      const props = control.getPropsObject();
+      const container = $(`#${rowId} .control`)[i];
+      _this.renderControlEdition($(container), control, row.values[props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]);
+    }
+    $(`#${rowId} .actions .save-row, #${rowId} .actions .cancel-row`).show();
+    $(`#${rowId} .actions .edit-row, #${rowId} .actions .remove-row`).hide();
   }
 
-  renderControl(container, control, mode) {
-    if (mode === 'edition') {
-      container.empty();
-      const elmProps = control.getPropsObject();
+  renderControlEdition(container, control, value) {
+    container.empty();
+    const elmProps = control.getPropsObject();
 
-      const renderedElm = control.render(
-        {
-          ...elmProps,
-          [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: [elmProps[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '', 'py-2'].join(' '),
-          [CONTROL_PROPS_TYPES.HIDE_LABEL]: true,
-          [CONTROL_PROPS_TYPES.HIDDEN]: false,
-        },
-        { 'data-control-id': control.id },
-      );
-      container.append(renderedElm);
-      control.afterRender();
-    } else {
-      const value = control.getElementValue();
-      const controlDisplay = markup('div', typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value);
-      container.empty();
-      container.append(controlDisplay);
-    }
+    const renderedElm = control.render(
+      {
+        ...elmProps,
+        [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: [elmProps[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '', 'py-2'].join(' '),
+        [CONTROL_PROPS_TYPES.HIDE_LABEL]: true,
+        [CONTROL_PROPS_TYPES.HIDDEN]: false,
+        [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: value,
+      },
+      { 'data-control-id': control.id },
+    );
+    container.append(renderedElm);
+    control.afterRender();
+  }
+
+  renderControlDisplay(container, control, val = undefined) {
+    const value = val != undefined ? val : control.getElementValue();
+    const controlDisplay = markup('div', typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value);
+    container.empty();
+    container.append(controlDisplay);
   }
 
   render() {
