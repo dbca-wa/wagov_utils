@@ -45,14 +45,6 @@ export default class LayoutControl extends Control {
     this.children = [];
   }
 
-  getPropsObject() {
-    return {
-      ...this.props,
-      ...this.displayControlProps?.getPropsValues(),
-      ...this.dataControlProps?.getPropsValues(),
-    };
-  }
-
   toJSON() {
     const json = {
       id: this.id,
@@ -113,6 +105,6 @@ export default class LayoutControl extends Control {
     if (!Array.isArray(children)) {
       children = [children];
     }
-    return markup('div', children, { class: this.container_class });
+    return markup('div', children, { class: this.container_class, id: `render-${this.id}` });
   }
 }

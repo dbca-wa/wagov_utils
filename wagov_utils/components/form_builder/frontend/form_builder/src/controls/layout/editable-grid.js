@@ -1,6 +1,8 @@
+import { BuildArea } from '../../js/fb-build-area';
 import { markup } from '../../js/utils';
+import { BasicAPIProps } from '../config-properties/api-props/basic-api-properties';
 import { ColumnsDisplayProps } from '../config-properties/display-props/layout-display-properties';
-import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../utils/control-props-types';
+import { CONTROL_API_PROPS_TYPES, CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { LAYOUT_TYPES } from '../utils/layout-types';
 import { RowBlock } from './row-block';
 
@@ -22,7 +24,13 @@ export class EditableGrid extends RowBlock {
   }
 
   setup() {
+    this.dropableType = LAYOUT_TYPES.EDIT_DROPABLE;
+    this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] =
+      this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] ||
+      BuildArea.getInstance().generateAPIFieldName(this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT] ?? this.type);
+
     this.displayControlProps = new ColumnsDisplayProps(this.props);
+    this.apiControlProps = new BasicAPIProps(this.props);
     this.dataControlProps = null;
 
     if (!this.initialSetupWithChildren()) {
@@ -42,5 +50,13 @@ export class EditableGrid extends RowBlock {
       nodes.push(markup('label', label, { for: this.id }));
     }
     return markup('div', [...nodes, super.render(customProps, includeDropables)], {});
+  }
+
+  getFieldValues() {
+    const props = this.getPropsObject();
+    if (!props[CONTROL_API_PROPS_TYPES.FIELD_NAME] || !this.children.length) return {};
+    return {
+      [props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]: this.children[0].getFieldValues(),
+    };
   }
 }

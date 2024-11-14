@@ -33,6 +33,6 @@ export class Column extends LayoutControl {
   render(customProps) {
     const props = customProps ?? this.props;
 
-    return markup('div', '', { id: props.id, class: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] });
+    return super.render(markup('div', '', { id: props.id, class: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] }));
   }
 }

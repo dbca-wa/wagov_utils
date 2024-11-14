@@ -6,6 +6,20 @@ export class InputFieldValidationProps extends BaseValidationProps {
   constructor(type = INPUT_TYPES.TEXT, props) {
     super(getProps(type));
     this.fillInProps(props);
+    if (
+      [
+        INPUT_TYPES.RADIO,
+        INPUT_TYPES.CHECK_BOX,
+        INPUT_TYPES.SELECT,
+        INPUT_TYPES.DATE,
+        INPUT_TYPES.SELECT_BOXES,
+        INPUT_TYPES.FILE_UPLOAD,
+      ].includes(type)
+    ) {
+      if (this.props.hasOwnProperty(CONTROL_VALIDATION_PROPS_TYPES.VALIDATE_ON)) {
+        this.modifyPropValue(CONTROL_VALIDATION_PROPS_TYPES.VALIDATE_ON, 'change');
+      }
+    }
   }
 
   _onDataPropsChange(e) {

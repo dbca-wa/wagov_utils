@@ -56,8 +56,14 @@ export default class SelectElement extends InputControl {
   render(customProps, attr) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
 
-    const options = props[DATASOURCE_PROPS_TYPES.VALUES] || props[DATASOURCE_PROPS_TYPES.JSON_VALUE] || this.options;
-    const valueProperty = props[DATASOURCE_PROPS_TYPES.VALUE_PROPERTY] || 'value';
+    const options =
+      props[CONTROL_DATA_PROPS_TYPES.DATASOURCE] === DATASOURCE_PROPS_TYPES.VALUES
+        ? props[DATASOURCE_PROPS_TYPES.VALUES]
+        : props[DATASOURCE_PROPS_TYPES.JSON_VALUE] || this.options;
+    const valueProperty =
+      props[CONTROL_DATA_PROPS_TYPES.DATASOURCE] === DATASOURCE_PROPS_TYPES.RAW_JSON
+        ? props[DATASOURCE_PROPS_TYPES.VALUE_PROPERTY]
+        : 'value';
     const itemTemplate = props[CONTROL_DATA_PROPS_TYPES.ITEM_TEMPLATE] ?? '';
 
     this.label.text = props[CONTROL_PROPS_TYPES.LABEL];

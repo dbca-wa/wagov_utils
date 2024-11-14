@@ -17,6 +17,7 @@ const defaultSettings = {
   value: '',
   [CONTROL_PROPS_TYPES.PLACEHOLDER]: 'Enter a value here',
   [CONTROL_PROPS_TYPES.LABEL]: 'Text field',
+  [CONTROL_DATA_PROPS_TYPES.MULTI]: false,
 };
 
 export default class InputElement extends InputControl {

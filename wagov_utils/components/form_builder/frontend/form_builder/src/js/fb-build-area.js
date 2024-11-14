@@ -1,4 +1,4 @@
-import { DropableControl } from '../controls/layout/dropable-control';
+import { DropablesFactory } from '../controls/layout/dropables-factory';
 import { getControlFromToolbox } from '../controls/toolbox-store';
 import { CONTROL_API_PROPS_TYPES } from '../controls/utils/control-props-types';
 import { activateTooltips } from './control-utils';
@@ -58,8 +58,9 @@ export class BuildArea {
 
   getDropableControl(areaId, props = {}, attr = {}) {
     const _areaId = props.areaId || areaId;
+    const dropableType = props.dropableType || 'dropable';
     Object.assign(props, { areaId: _areaId });
-    const dropable = new DropableControl(attr, props);
+    const dropable = DropablesFactory.getDropableControl(dropableType, props, attr);
 
     this.registerDropable(_areaId, dropable);
     return dropable;
@@ -162,7 +163,7 @@ export const instantiateJsonControl = (control, isCopy = false) => {
   const _props = control?.props ?? props;
 
   if (children.length) _props.children = children;
-
-  const element = new controlClass(_attr, _props);
+  const classDef = controlClass();
+  const element = new classDef(_attr, _props);
   return element;
 };

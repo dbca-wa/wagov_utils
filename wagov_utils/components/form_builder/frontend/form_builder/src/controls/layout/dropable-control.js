@@ -3,7 +3,8 @@ import { BuildArea, instantiateJsonControl } from '../../js/fb-build-area';
 import { markup } from '../../js/utils';
 import { DropableDisplayProps } from '../config-properties/display-props/layout-display-properties';
 import LayoutControl from '../fb-layout-control';
-import { BUILDER_TOOLBOX } from '../toolbox-store';
+import { getControlFromToolbox } from '../toolbox-store';
+
 import { CLASS_DROPABLE_BLOCKS, CLASS_EMPTY_DROPABLE } from '../utils/constants';
 import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { LAYOUT_TYPES } from '../utils/layout-types';
@@ -128,8 +129,9 @@ export class DropableControl extends LayoutControl {
       try {
         const data = ui.item[0].dataset;
         const controlType = data.controlType;
-        const { attr, props, controlClass } = BUILDER_TOOLBOX[controlType];
-        const elm = new controlClass(attr, props);
+        const { attr, props, controlClass } = getControlFromToolbox(controlType);
+        const classDef = controlClass();
+        const elm = new classDef(attr, props);
         if (_this.children.length === 0) {
           _this.$c.empty();
         }

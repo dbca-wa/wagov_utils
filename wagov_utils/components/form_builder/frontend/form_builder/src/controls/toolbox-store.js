@@ -19,6 +19,7 @@ import { ContainerBlock } from './layout/container-component';
 import DatePicker from './elements/jquery/date-picker';
 import FileUploadElement from './elements/file-upload';
 import { EditableGrid } from './layout/editable-grid';
+import { EditableDropableControl } from './layout/editable-dropable-control';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -36,7 +37,7 @@ export const CONTROLS_STORE = {
       type: INPUT_TYPES.TEXT,
     },
     icon: 'fa fa-font',
-    controlClass: InputElement,
+    controlClass: () => InputElement,
   },
   [ELEMENT_TYPES.FILE_UPLOAD]: {
     description: 'A simple file upload control',
@@ -47,7 +48,7 @@ export const CONTROLS_STORE = {
     },
     attr: {},
     icon: 'fa fa-font',
-    controlClass: FileUploadElement,
+    controlClass: () => FileUploadElement,
   },
   [ELEMENT_TYPES.MOBILE_NUMBER]: {
     description: 'A simple mobile number control',
@@ -63,7 +64,7 @@ export const CONTROLS_STORE = {
       type: INPUT_TYPES.MOBILE_NUMBER,
     },
     icon: 'fa fa-font',
-    controlClass: InputElement,
+    controlClass: () => InputElement,
   },
   [ELEMENT_TYPES.INPUT_NUMBER]: {
     description: 'A simple number control',
@@ -80,7 +81,7 @@ export const CONTROLS_STORE = {
       type: INPUT_TYPES.NUMBER,
     },
     icon: 'fa fa-font',
-    controlClass: InputElement,
+    controlClass: () => InputElement,
   },
   [ELEMENT_TYPES.SELECT]: {
     description: 'A simple select control',
@@ -97,7 +98,7 @@ export const CONTROLS_STORE = {
       type: INPUT_TYPES.SELECT,
     },
     icon: 'fa fa-font',
-    controlClass: SelectElement,
+    controlClass: () => SelectElement,
   },
   [ELEMENT_TYPES.CHECK_BOX]: {
     description: 'A simple checkbox control',
@@ -110,7 +111,7 @@ export const CONTROLS_STORE = {
       type: INPUT_TYPES.CHECK_BOX,
     },
     icon: 'fa fa-font',
-    controlClass: InputElement,
+    controlClass: () => InputElement,
   },
   [ELEMENT_TYPES.SELECT_BOXES]: {
     description: 'A simple select boxes control',
@@ -127,7 +128,7 @@ export const CONTROLS_STORE = {
       type: INPUT_TYPES.SELECT_BOXES,
     },
     icon: 'fa fa-font',
-    controlClass: SelectBoxes,
+    controlClass: () => SelectBoxes,
   },
   [ELEMENT_TYPES.RADIO]: {
     description: 'A simple radio control',
@@ -143,7 +144,7 @@ export const CONTROLS_STORE = {
     [CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT]: 'Radio Control',
     attr: {},
     icon: 'fa fa-font',
-    controlClass: RadioButton,
+    controlClass: () => RadioButton,
   },
 };
 
@@ -159,7 +160,7 @@ export const SPECIAL_INPUT_STORE = {
     },
     attr: {},
     icon: 'fa fa-font',
-    controlClass: DatePicker,
+    controlClass: () => DatePicker,
   },
   [ELEMENT_TYPES.TIME_PICKER]: {
     description: 'A simple time control',
@@ -174,7 +175,7 @@ export const SPECIAL_INPUT_STORE = {
       type: INPUT_TYPES.TEXT,
     },
     icon: 'fa fa-font',
-    controlClass: InputElement,
+    controlClass: () => InputElement,
   },
   [ELEMENT_TYPES.PASSWORD]: {
     description: 'A simple password control',
@@ -189,7 +190,7 @@ export const SPECIAL_INPUT_STORE = {
       type: INPUT_TYPES.PASSWORD,
     },
     icon: 'fa fa-font',
-    controlClass: InputElement,
+    controlClass: () => InputElement,
   },
   [ELEMENT_TYPES.EMAIL]: {
     description: 'A simple email control',
@@ -204,7 +205,7 @@ export const SPECIAL_INPUT_STORE = {
       // type: INPUT_TYPES.EMAIL,
     },
     icon: 'fa fa-font',
-    controlClass: InputElement,
+    controlClass: () => InputElement,
   },
   [ELEMENT_TYPES.TEXT_AREA]: {
     description: 'A simple text area control',
@@ -219,7 +220,7 @@ export const SPECIAL_INPUT_STORE = {
       type: INPUT_TYPES.TEXT_AREA,
     },
     icon: 'fa fa-font',
-    controlClass: TextAreaElement,
+    controlClass: () => TextAreaElement,
   },
   [ELEMENT_TYPES.BUTTON]: {
     description: 'A simple button control',
@@ -232,16 +233,27 @@ export const SPECIAL_INPUT_STORE = {
     },
     attr: {},
     icon: 'fa fa-font',
-    controlClass: ButtonElement,
+    controlClass: () => ButtonElement,
   },
 };
 
 export const LAYOUT_STORE = {
   [LAYOUT_TYPES.DROPABLE]: {
+    description: 'A dropable control',
     props: {},
     attr: {},
-    controlClass: DropableControl,
+    icon: 'fa fa-font',
+    controlClass: () => DropableControl,
   },
+  [LAYOUT_TYPES.EDIT_DROPABLE]: {
+    description: 'A dropable control for editing',
+
+    props: {},
+    attr: {},
+    icon: 'fa fa-font',
+    controlClass: () => EditableDropableControl,
+  },
+
   [LAYOUT_TYPES.ROW_COLUMNS]: {
     description: 'A row with columns',
     props: {
@@ -259,7 +271,7 @@ export const LAYOUT_STORE = {
     },
     attr: {},
     icon: 'fa fa-font',
-    controlClass: RowBlock,
+    controlClass: () => RowBlock,
   },
   [LAYOUT_TYPES.CONTAINER]: {
     description: 'A container',
@@ -268,16 +280,17 @@ export const LAYOUT_STORE = {
     },
     attr: {},
     icon: 'fa fa-font',
-    controlClass: ContainerBlock,
+    controlClass: () => ContainerBlock,
   },
   [LAYOUT_TYPES.EDIT_GRID]: {
     description: 'A grid for editing',
     props: {
-      [CONTROL_PROPS_TYPES.LABEL]: 'Edit Grid',
+      [CONTROL_PROPS_TYPES.LABEL]: 'Editable Grid',
+      [CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT]: 'Table',
     },
     attr: {},
     icon: 'fa fa-font',
-    controlClass: EditableGrid,
+    controlClass: () => EditableGrid,
   },
   [LAYOUT_TYPES.HTML_CONTENT]: {
     description: 'A block of custom HTML code',
@@ -289,7 +302,7 @@ export const LAYOUT_STORE = {
     [CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT]: 'HTML Component',
     attr: {},
     icon: 'fa fa-font',
-    controlClass: HTMLComponent,
+    controlClass: () => HTMLComponent,
   },
 };
 
@@ -299,6 +312,7 @@ export const getControlFromToolbox = (type) => {
   try {
     return BUILDER_TOOLBOX[type];
   } catch (error) {
+    console.error('Error in getControlFromToolbox', error);
     return {};
   }
 };

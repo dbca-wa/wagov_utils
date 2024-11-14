@@ -10,6 +10,8 @@ const defaultSettings = {};
 
 export class RowBlock extends LayoutControl {
   elementType = LAYOUT_TYPES.ROW_COLUMNS;
+  dropableType = 'dropable';
+
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
     super(attr, _props, CONTROL_TYPES.LAYOUT);
@@ -54,6 +56,7 @@ export class RowBlock extends LayoutControl {
         const dropable = BuildArea.getInstance().getDropableControl(this.areaId, {
           props: {
             id: id,
+            dropableType: this.dropableType,
             [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col-${size}-${width}`,
             ...colData.props,
           },
@@ -64,6 +67,7 @@ export class RowBlock extends LayoutControl {
         const dropable = BuildArea.getInstance().getDropableControl(this.areaId, {
           id,
           areaId: id,
+          dropableType: this.dropableType,
           [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col-${size}-${width}`,
         });
         this.children.push(dropable);
@@ -113,6 +117,7 @@ export class RowBlock extends LayoutControl {
         const dropable = BuildArea.getInstance().getDropableControl(_this.areaId, {
           id: id,
 
+          dropableType: this.dropableType,
           areaId: id,
           [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col-${size}-${width}`,
         });

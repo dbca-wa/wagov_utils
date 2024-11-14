@@ -19,6 +19,7 @@ export default class Control {
   apiControlProps;
 
   $p; // Parent element for rendering purposes
+  renderer;
 
   constructor(attr, props, controlType, id = null) {
     this.controlType = controlType;
@@ -99,9 +100,12 @@ export default class Control {
   afterRender() {}
 
   render(children = [], containerClass = '') {
+    if (!Array.isArray(children)) {
+      children = [children];
+    }
     // Implement rendering logic here
     const container = markup('div', children, {
-      id: this.id,
+      id: `render-${this.id}`,
       class: containerClass ?? this.props.containerClass,
     });
     return container;

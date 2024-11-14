@@ -39,7 +39,7 @@ function FormBuilder(element, settings, $) {
 FormBuilder.prototype.init = function () {
   const _ = this;
   _.layout.renderFormBuilder();
-  $('#btn-load-default').trigger('click');
+  $('#btn-load-form').trigger('click');
 };
 
 jQuery.fn.formBuilder = function (...args) {

@@ -5,6 +5,7 @@ import Control from '../js/fb-control';
 import { markup } from '../js/utils';
 import {
   CONTROL_API_PROPS_TYPES,
+  CONTROL_DATA_PROPS_TYPES,
   CONTROL_PROPS_TYPES,
   CONTROL_VALIDATION_PROPS_TYPES,
 } from './utils/control-props-types';
@@ -14,6 +15,7 @@ import { CLASS_INVALID_FIELD_VALUE } from './utils/constants';
 import { runInputFieldValidations } from '../js/validation-utils';
 import { INPUT_TYPES } from './utils/input-types';
 import { BuildArea } from '../js/fb-build-area';
+import { MultivalueRenderer } from './renderers/multivalue-renderer';
 
 function extractLabelProps(props = {}) {
   const labelProps = {};
@@ -137,13 +139,18 @@ export default class InputControl extends Control {
     });
   }
 
-  render(inputGroup = []) {
-    const props = this.displayControlProps.getPropsValues();
+  render(element = markup('span', 'no element to display')) {
+    const inputGroup = [];
+    const props = this.getPropsObject();
     const labelPosition = props[CONTROL_PROPS_TYPES.LABEL_POSITION] ?? 'top';
-    if (!Array.isArray(inputGroup)) {
-      inputGroup = [inputGroup];
-    }
 
+    if (props[CONTROL_DATA_PROPS_TYPES.MULTI]) {
+      this.renderer = new MultivalueRenderer(this, element, {});
+      inputGroup.push(this.renderer.render());
+    } else {
+      inputGroup.push(element);
+    }
+    const containerId = `render-${this.id}`;
     const tooltip = this.tooltip
       ? markup('i', '', {
           class: 'bi bi-question-circle-fill label-tooltip',
@@ -174,19 +181,15 @@ export default class InputControl extends Control {
       if (isLeftAlign) {
         inputGroup.push(invalidField);
         const checkBoxDiv = labelGroup.concat(inputGroup);
-        return markup(
-          'div',
-          [markup('div', checkBoxDiv, { class: 'd-flex form-flex-checkbox-left' }), description],
-          {},
-        );
+        return markup('div', [markup('div', checkBoxDiv, { class: 'd-flex form-flex-checkbox-left' }), description], {
+          id: containerId,
+        });
       } else {
         labelGroup.push(invalidField);
         const checkBoxDiv = inputGroup.concat(labelGroup);
-        return markup(
-          'div',
-          [markup('div', checkBoxDiv, { class: 'd-flex form-flex-checkbox-right' }), description],
-          {},
-        );
+        return markup('div', [markup('div', checkBoxDiv, { class: 'd-flex form-flex-checkbox-right' }), description], {
+          id: containerId,
+        });
       }
     }
 
@@ -200,18 +203,23 @@ export default class InputControl extends Control {
 
       return markup('div', labelPosition === 'left' ? mainDiv : mainDiv.reverse(), {
         class: [this.container_class ?? '', 'row', 'align-items-start'].join(' '),
+        id: containerId,
       });
     }
 
     return markup('div', labelPosition === 'top' ? labelGroup.concat(inputGroup) : inputGroup.concat(labelGroup), {
       class: this.container_class,
+      id: containerId,
     });
   }
 
   afterRender() {
-    const props = this.displayControlProps?.getPropsValues();
+    const props = this.getPropsObject();
     if (props[CONTROL_PROPS_TYPES.DISPLAY_MASK]) {
       $(this.getIdSelector()).mask(props[CONTROL_PROPS_TYPES.DISPLAY_MASK]);
+    }
+    if (props[CONTROL_DATA_PROPS_TYPES.MULTI] && this.renderer) {
+      this.renderer.afterRender();
     }
   }
 }
