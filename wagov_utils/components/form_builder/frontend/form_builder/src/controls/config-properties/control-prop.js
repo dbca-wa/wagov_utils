@@ -78,7 +78,7 @@ export class ControlProp {
       $(`#${this.id}`).on('change', { context, prop: this.prop }, cb);
     }
 
-    if (this.prop.name === CONTROL_PROPS_TYPES.CUSTOM_CLASS || this.prop.type === 'select') {
+    if (this.prop.name === CONTROL_PROPS_TYPES.CUSTOM_CLASS || ['select', 'multi-select'].includes(this.prop.type)) {
       $(`#${this.id}`).on('change', { context, prop: this.prop }, cb);
     } else if (['string', 'number', 'email', 'date', 'textarea', 'tel'].includes(this.prop.type)) {
       $(`#${this.id}`).on('input', { context, prop: this.prop }, cb);
@@ -124,7 +124,13 @@ export function _renderProp(basicProps, options = [], validations = {}) {
   if (min) generalProps.min = min;
   if (max) generalProps.max = max;
 
-  if (inputType === 'select') {
+  if (inputType === 'select' || inputType === 'multi-select') {
+    let values = [];
+    if (inputType === 'multi-select') {
+      generalProps.multiple = true;
+      values = !Array.isArray(value) ? value.split(',') : value;
+    }
+
     const selectEl = markup('select', '', {
       ...generalProps,
       class: [className ?? '', 'form-select'].join(' '),
@@ -138,9 +144,10 @@ export function _renderProp(basicProps, options = [], validations = {}) {
       for (const key in option) {
         optionEl[key] = option[key];
       }
-      if (option['value'] === value) {
+      if (option['value'] === value || (values.length > 0 && values.includes(option['value']))) {
         optionEl.selected = true;
       }
+
       selectEl.appendChild(optionEl);
     }
     return selectEl;

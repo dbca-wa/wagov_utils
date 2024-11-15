@@ -79,10 +79,18 @@ export default class FileUploadElement extends InputElement {
     this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
     this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
     const isMultipleFiles = props[FILE_DATA_PROPS_TYPES.MULTIPLE_FILES];
+    let accept = '';
+    if (props[FILE_DATA_PROPS_TYPES.FILE_FORMATS]) {
+      if (!Array.isArray(props[FILE_DATA_PROPS_TYPES.FILE_FORMATS])) {
+        accept = props[FILE_DATA_PROPS_TYPES.FILE_FORMATS];
+      } else {
+        accept = props[FILE_DATA_PROPS_TYPES.FILE_FORMATS].join(',');
+      }
+    }
     const isDisabled = props[CONTROL_PROPS_TYPES.DISABLED];
     const message = isMultipleFiles ? 'Drop files to attach or ' : 'Drop a file to attach or ';
     const content = [
-      super.render(props, { hidden: true, ...(isMultipleFiles ? { multiple: true } : {}) }),
+      super.render(props, { hidden: true, ...(isMultipleFiles ? { multiple: true } : {}), accept }),
       markup(
         'div',
         [

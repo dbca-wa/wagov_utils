@@ -47,7 +47,9 @@ export class InputFieldDataProperties extends BaseDataProps {
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
     let value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
-
+    if (prop.type === 'multi-select' && e.target) {
+      value = Array.from(e.target.selectedOptions).map((option) => option.value);
+    }
     // Remove whitespaces
     if ([FILE_DATA_PROPS_TYPES.FILE_MAX_SIZE, FILE_DATA_PROPS_TYPES.FILE_MIN_SIZE].includes(prop.name)) {
       value = value.replace(' ', '');
@@ -107,6 +109,7 @@ export class DatePickerDataProperties extends BaseDataProps {
 
 const fileProps = [
   FILE_DATA_PROPS_TYPES.MULTIPLE_FILES,
+  FILE_DATA_PROPS_TYPES.FILE_FORMATS,
   FILE_DATA_PROPS_TYPES.DISPLAY_AS_IMAGES,
   FILE_DATA_PROPS_TYPES.FILE_MIN_SIZE,
   FILE_DATA_PROPS_TYPES.FILE_MAX_SIZE,
