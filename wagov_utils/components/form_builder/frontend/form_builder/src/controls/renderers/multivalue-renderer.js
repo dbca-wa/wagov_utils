@@ -1,7 +1,13 @@
 import { activateTooltips } from '../../js/control-utils';
 import { instantiateJsonControl } from '../../js/fb-build-area';
 import { markup } from '../../js/utils';
-import { CONTROL_API_PROPS_TYPES, CONTROL_DATA_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../utils/control-props-types';
+import { MAX_NUM_ITEMS_EDITABLE_GRID } from '../utils/constants';
+import {
+  CONTROL_API_PROPS_TYPES,
+  CONTROL_DATA_PROPS_TYPES,
+  CONTROL_PROPS_TYPES,
+  CONTROL_VALIDATION_PROPS_TYPES,
+} from '../utils/control-props-types';
 
 class Renderer {
   constructor(control, props = {}) {
@@ -31,10 +37,14 @@ export class MultiControlRenderer extends Renderer {
   }
 
   getValues() {
-    return this.rowsData.map((r) => r.values);
+    return this.rowsData.map((r) => r.values).filter((r) => r);
   }
 
   addRow() {
+    const maxItems = this.props[CONTROL_VALIDATION_PROPS_TYPES.MAX_ITEMS] || MAX_NUM_ITEMS_EDITABLE_GRID;
+    if (this.rowsData.length >= maxItems) {
+      return;
+    }
     const index = $(`#${this.id} .rows .row`).length;
     const rowId = `row-${this.id}-${index}`;
     const rowEdition = markup('div', '', { class: 'row py-2 border-1 border-bottom ', id: rowId });
@@ -58,40 +68,52 @@ export class MultiControlRenderer extends Renderer {
     const col = markup('div', this.getButtons(rowId), { class: 'col-sm-1 actions' });
     this.rowsData.push(rowData);
     rowEdition.append(col);
-    this.enableActionButtons();
+    this.enableActionButtons(rowId);
 
     activateTooltips(rowEdition);
   }
 
-  enableActionButtons() {
-    $(`#${this.id} button.save-row`)?.on('click', this, this.saveRow);
-    $(`#${this.id} button.cancel-row`)?.on('click', this, this.cancelRow);
-    $(`#${this.id} button.edit-row`)?.on('click', this, this.editRow);
-    $(`#${this.id} button.remove-row`)?.on('click', this, this.removeRow);
+  enableActionButtons(rowId) {
+    $(`#${rowId} button.save-row`)?.on('click', this, this.saveRow);
+    $(`#${rowId} button.cancel-row`)?.on('click', this, this.cancelRow);
+    $(`#${rowId} button.edit-row`)?.on('click', this, this.editRow);
+    $(`#${rowId} button.remove-row`)?.on('click', this, this.removeRow);
   }
 
   getButtons(rowId) {
-    const buttonSave = markup(
-      'button',
-      { tag: 'i', class: 'bi bi-save ' },
-      { class: 'btn btn-primary save-row', 'data-rowId': rowId, type: 'button' },
-    );
-    const buttonCancel = markup(
-      'button',
-      { tag: 'i', class: 'bi bi-x ' },
-      { class: 'btn btn-secondary cancel-row', 'data-rowId': rowId, type: 'button' },
-    );
-    const buttonEdit = markup(
-      'button',
-      { tag: 'i', class: 'bi bi-pencil ' },
-      { class: 'btn btn-dark edit-row', 'data-rowId': rowId, type: 'button', style: 'display: none' },
-    );
-    const buttonRemove = markup(
-      'button',
-      { tag: 'i', class: 'bi bi-x ' },
-      { class: 'btn btn-danger remove-row', 'data-rowId': rowId, type: 'button', style: 'display: none' },
-    );
-    return [buttonSave, buttonCancel, buttonEdit, buttonRemove];
+    const buttonSave = markup('button', 'Save', {
+      class: 'btn btn-primary save-row',
+      'data-rowId': rowId,
+      type: 'button',
+    });
+    const buttonCancel = markup('button', [{ tag: 'i', class: 'bi bi-x' }, ''], {
+      class: 'btn btn-secondary cancel-row',
+      'data-rowId': rowId,
+      type: 'button',
+    });
+    const buttonEdit = markup('button', 'Edit', {
+      class: 'btn btn-dark edit-row',
+      'data-rowId': rowId,
+      type: 'button',
+      style: 'display: none',
+    });
+    const buttonRemove = markup('button', [{ tag: 'i', class: 'bi bi-trash' }, ''], {
+      class: 'btn btn-danger remove-row',
+      'data-rowId': rowId,
+      type: 'button',
+      style: 'display: none',
+    });
+    const btnGroup = markup('div', [buttonSave, buttonCancel], {
+      class: 'btn-group btn-group-sm',
+      role: 'group',
+      'aria-label': 'Actions',
+    });
+    const btnGroup2 = markup('div', [buttonEdit, buttonRemove], {
+      class: 'btn-group btn-group-sm',
+      role: 'group',
+      'aria-label': 'Actions',
+    });
+    return [btnGroup, btnGroup2];
   }
 
   saveRow(e) {
@@ -215,11 +237,17 @@ export class MultiControlRenderer extends Renderer {
     divContainer.append(header);
     divContainer.append(rows);
     divContainer.append(buttonAdd);
+
     return divContainer;
   }
 
   afterRender() {
     $(`#${this.id} button.add-row`).on('click', () => this.addRow());
+
+    const minItems = this.props[CONTROL_VALIDATION_PROPS_TYPES.MIN_ITEMS] || 0;
+    for (let i = 0; i < minItems; i++) {
+      this.addRow();
+    }
   }
 }
 

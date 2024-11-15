@@ -22,7 +22,7 @@ export class RowBlock extends LayoutControl {
   }
   setup() {
     this.container_class = 'row';
-    this.displayControlProps = new ColumnsDisplayProps(this.props);
+    this.displayControlProps = new ColumnsDisplayProps(this.elementType, this.props);
 
     if (!this.initialSetupWithChildren()) {
       this.initialColumnsSetup();
@@ -102,7 +102,7 @@ export class RowBlock extends LayoutControl {
 
   renderControl(isDisplayMode = false) {
     const _this = this;
-    const props = _this.displayControlProps.getPropsValues();
+    const props = _this.getPropsObject();
     const existingDropableIds = [..._this.children.map((child) => child.id)];
     const tmpchildren = [];
 

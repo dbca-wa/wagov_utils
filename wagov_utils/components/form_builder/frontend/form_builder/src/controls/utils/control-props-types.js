@@ -75,6 +75,8 @@ export const CONTROL_VALIDATION_PROPS_TYPES = {
   VALIDATE_HIDDEN: 'validateHidden',
   MIN_LENGTH: 'minLength',
   MAX_LENGTH: 'maxLength',
+  MIN_ITEMS: 'minItems',
+  MAX_ITEMS: 'maxItems',
   MIN_WORD_LENGTH: 'minWordLength',
   MAX_WORD_LENGTH: 'maxWordLength',
   MIN_VALUE: 'minValue',

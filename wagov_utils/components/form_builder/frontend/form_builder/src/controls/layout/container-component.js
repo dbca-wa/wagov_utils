@@ -12,15 +12,15 @@ const defaultSettings = {
 };
 
 export class ContainerBlock extends RowBlock {
-  elementType = LAYOUT_TYPES.CONTAINER;
-
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
     super(attr, _props);
   }
 
   setup() {
-    this.displayControlProps = new ColumnsDisplayProps(this.props);
+    this.elementType = LAYOUT_TYPES.CONTAINER;
+
+    this.displayControlProps = new ColumnsDisplayProps(this.elementType, this.props);
     this.dataControlProps = null;
 
     if (!this.initialSetupWithChildren()) {

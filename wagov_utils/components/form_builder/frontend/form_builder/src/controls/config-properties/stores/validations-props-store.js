@@ -1,3 +1,4 @@
+import { MAX_NUM_ITEMS_EDITABLE_GRID } from '../../utils/constants';
 import { CONTROL_VALIDATION_PROPS_TYPES } from '../../utils/control-props-types';
 
 export const validationPropertiesStore = {
@@ -56,6 +57,28 @@ export const validationPropertiesStore = {
     options: undefined,
     value: '',
     min: 0,
+  },
+  [CONTROL_VALIDATION_PROPS_TYPES.MIN_ITEMS]: {
+    name: 'minItems',
+    title: 'Min Items',
+    type: 'number',
+    placeholder: 'How many items are required',
+    required: false,
+    options: undefined,
+    value: '',
+    min: 0,
+    max: MAX_NUM_ITEMS_EDITABLE_GRID,
+  },
+  [CONTROL_VALIDATION_PROPS_TYPES.MAX_ITEMS]: {
+    name: 'maxItems',
+    title: 'Max Items',
+    type: 'number',
+    placeholder: 'How many items can be added',
+    required: false,
+    options: undefined,
+    value: '',
+    min: 0,
+    max: MAX_NUM_ITEMS_EDITABLE_GRID,
   },
   [CONTROL_VALIDATION_PROPS_TYPES.MIN_WORD_LENGTH]: {
     name: 'minWordLength',

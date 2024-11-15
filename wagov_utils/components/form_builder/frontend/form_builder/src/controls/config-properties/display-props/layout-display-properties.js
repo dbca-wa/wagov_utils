@@ -1,10 +1,12 @@
 import { generateRandomId } from '../../../js/utils';
 import { LAYOUT_CONTROL_PROPS_TYPES, CONTROL_PROPS_TYPES } from '../../utils/control-props-types';
+import { LAYOUT_TYPES } from '../../utils/layout-types';
 import { BaseControlProps } from '../base-control-props';
 import { BaseDisplayProps } from '../data-props/base-display-props';
 
 const columnsProps = [
   CONTROL_PROPS_TYPES.LABEL,
+  CONTROL_PROPS_TYPES.CUSTOM_CLASS,
   LAYOUT_CONTROL_PROPS_TYPES.DISPLAY_DIRECTION,
   LAYOUT_CONTROL_PROPS_TYPES.COLUMNS,
 ];
@@ -38,7 +40,7 @@ export class ContainerDisplayBlock extends BaseDisplayProps {
 }
 
 export class ColumnsDisplayProps extends BaseDisplayProps {
-  constructor(props) {
+  constructor(type, props) {
     super(columnsProps);
     this.fillInProps(props);
     if (props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS]) {
@@ -49,6 +51,12 @@ export class ColumnsDisplayProps extends BaseDisplayProps {
           id: col.id ? col.id : ['row', generateRandomId()].join('-'),
         })),
       );
+    }
+    if ([LAYOUT_TYPES.EDIT_GRID, LAYOUT_TYPES.CONTAINER].includes(type)) {
+      const _props = this.props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS].prop.props;
+      this.modifyProp(LAYOUT_CONTROL_PROPS_TYPES.COLUMNS, {
+        props: { ..._props, hidden: true },
+      });
     }
   }
 }

@@ -2,6 +2,8 @@ export const CLASS_DROPABLE_BLOCKS = 'fb-dropable-blocks';
 export const CLASS_EMPTY_DROPABLE = 'fb-dropable-empty-block';
 export const CLASS_INVALID_FIELD_VALUE = 'invalid-form-field';
 
+export const MAX_NUM_ITEMS_EDITABLE_GRID = 999;
+
 export const DATE_CONTROL_PROP_TYPES = {
   FIXED: { value: 'fixed', label: 'Fixed date' },
   RELATIVE: { value: 'relative', label: 'Relative date' },
