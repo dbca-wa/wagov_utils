@@ -211,6 +211,7 @@ export class MultiControlRenderer extends Renderer {
       { 'data-control-id': control.id },
     );
     container.append(renderedElm);
+    control.$p = container;
     control.afterRender();
   }
 
@@ -218,7 +219,9 @@ export class MultiControlRenderer extends Renderer {
     const value = val != undefined ? val : control.getElementValue();
     const controlDisplay = markup(
       'div',
-      typeof value === 'boolean' ? { tag: 'i', class: value ? 'bi bi-check fs-4 text-success' : '' } : value,
+      typeof value === 'boolean'
+        ? { tag: 'i', class: value ? 'bi bi-check fs-4 text-success' : 'text-muted', content: value ? '' : '-' }
+        : value,
     );
     container.empty();
     container.append(controlDisplay);

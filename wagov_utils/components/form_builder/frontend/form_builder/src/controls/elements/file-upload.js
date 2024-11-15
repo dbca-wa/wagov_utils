@@ -86,7 +86,7 @@ export default class FileUploadElement extends InputElement {
       markup(
         'div',
         [
-          { tag: 'i', class: 'bi bi-cloud-upload-fill' },
+          { tag: 'i', class: 'bi bi-cloud-arrow-up-fill' },
           { tag: 'span', content: `&nbsp;${message}&nbsp` },
           {
             tag: 'a',
@@ -103,7 +103,7 @@ export default class FileUploadElement extends InputElement {
 
     return markup('div', content, {
       id: this.id + '-container',
-      class: ['filecontainer', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? ''].join(' '),
+      class: ['filecontainer', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '', 'my-3'].join(' '),
     });
   }
 
@@ -200,6 +200,7 @@ export default class FileUploadElement extends InputElement {
       if (!props[FILE_DATA_PROPS_TYPES.MULTIPLE_FILES]) {
         _this.files = [];
         $(`#${this.id}-container .files-list`).empty();
+        $(`#${this.id}-container .file-selector`).hide();
       }
 
       const reader = new FileReader();
@@ -220,6 +221,7 @@ export default class FileUploadElement extends InputElement {
     const fileExt = fileData.name.split('.').pop().toLowerCase();
 
     const renderAsImage = props[FILE_DATA_PROPS_TYPES.DISPLAY_AS_IMAGES] && fileData.type.startsWith('image/');
+    const isMultipleFiles = props[FILE_DATA_PROPS_TYPES.MULTIPLE_FILES];
     const fileElement = markup(
       'row',
       [
@@ -228,16 +230,22 @@ export default class FileUploadElement extends InputElement {
           content: [
             renderAsImage
               ? { tag: 'img', src: fileData.base64, class: 'img-preview' }
-              : { tag: 'img', src: `../../images/file-extension-icons/48px/${fileExt}.png` },
+              : { tag: 'i', class: `bi bi-filetype-${fileExt}` },
+
+            // : { tag: 'img', src: `../../images/file-extension-icons/48px/${fileExt}.png` },
             { tag: 'span', content: fileData.name, class: 'ms-3' },
           ],
-          class: 'd-flex col-xs-12 col-md-8 align-self-start gx-2',
+          class: 'd-flex col-xs-12 col-md-8 align-self-center gx-2',
         },
         {
           tag: 'div',
           content: [
             this.renderFileTypeSelect(fileData.id),
-            { tag: 'span', content: `${formatFileSize(fileData.size)}`, class: 'col align-self-center text-center' },
+            {
+              tag: 'span',
+              content: `${formatFileSize(fileData.size)}`,
+              class: 'col align-self-center text-center form-text',
+            },
             {
               tag: 'button',
               content: { tag: 'i', class: 'bi bi-trash' },
@@ -248,7 +256,10 @@ export default class FileUploadElement extends InputElement {
           class: 'd-flex col-sm-xs col-md-4 align-self-center gx-2',
         },
       ],
-      { id: fileData.id, class: 'd-flex text-body-secondary py-2 border-bottom' },
+      {
+        id: fileData.id,
+        class: ['d-flex text-body-secondary py-2', isMultipleFiles ? ' border-bottom' : ''].join(' '),
+      },
     );
     $(`#${this.id}-container .files-list`).show().append(fileElement);
     $(`#${fileData.id} button`).on('click', this, function (e) {
@@ -256,6 +267,7 @@ export default class FileUploadElement extends InputElement {
       const fileId = $(this).data('file-id');
       _this.files = _this.files.filter((f) => f.id !== fileId);
       $(`#${fileData.id}`).remove();
+      $(`#${_this.id}-container .file-selector`).show();
     });
     $(`#${fileData.id} select`).on('change', this, function (e) {
       const _this = e.data;
@@ -270,7 +282,7 @@ export default class FileUploadElement extends InputElement {
     const types = props[FILE_DATA_PROPS_TYPES.FILE_TYPES] || [];
     const options = [{ tag: 'option', content: '', value: '' }];
     options.push(types.map((fileType) => markup('option', fileType.label, { value: fileType.value })));
-    if (options.length === 0) {
+    if (types.length === 0) {
       return '';
     }
     return markup('select', options, {

@@ -78,12 +78,12 @@ export const FORM_CONTROLS = {
     {
       label: 'Columns',
       type: LAYOUT_TYPES.ROW_COLUMNS,
-      icon: 'bi bi-layout-three-columns',
+      icon: 'bi bi-layout-split',
     },
     {
       label: 'Container',
       type: LAYOUT_TYPES.CONTAINER,
-      icon: 'bi bi-layout-three-columns',
+      icon: 'bi bi-columns',
     },
     {
       label: 'Edit Grid',

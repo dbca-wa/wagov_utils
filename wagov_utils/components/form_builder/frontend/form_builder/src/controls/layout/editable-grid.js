@@ -52,7 +52,8 @@ export class EditableGrid extends RowBlock {
     const props = customProps ?? this.getPropsObject();
     const nodes = [];
     const label = props[CONTROL_PROPS_TYPES.LABEL];
-    if (label) {
+    const hideLabel = props[CONTROL_PROPS_TYPES.HIDE_LABEL];
+    if (label && !hideLabel) {
       nodes.push(markup('label', label, { for: this.id, class: 'mt-2' }));
     }
     this.children.forEach((child) => {

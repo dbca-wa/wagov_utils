@@ -41,7 +41,8 @@ export class ContainerDisplayBlock extends BaseDisplayProps {
 
 export class ColumnsDisplayProps extends BaseDisplayProps {
   constructor(type, props) {
-    super(columnsProps);
+    const propsList = columnsProps.concat(type === LAYOUT_TYPES.EDIT_GRID ? [CONTROL_PROPS_TYPES.HIDE_LABEL] : []);
+    super(propsList);
     this.fillInProps(props);
     if (props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS]) {
       this.modifyPropValue(
