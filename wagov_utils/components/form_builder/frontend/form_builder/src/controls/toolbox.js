@@ -10,9 +10,9 @@ export const FORM_CONTROLS = {
       icon: 'bi bi-type',
     },
     {
-      label: 'File Upload',
-      type: ELEMENT_TYPES.FILE_UPLOAD,
-      icon: 'bi bi-file-earmark-arrow-up',
+      label: 'Number',
+      type: ELEMENT_TYPES.INPUT_NUMBER,
+      icon: 'bi bi-hash',
     },
     {
       label: 'Date Picker',
@@ -36,11 +36,10 @@ export const FORM_CONTROLS = {
       icon: 'bi bi-at',
     },
     { label: 'Password', type: ELEMENT_TYPES.PASSWORD, icon: 'bi bi-key-fill' },
-
     {
-      label: 'Number',
-      type: ELEMENT_TYPES.INPUT_NUMBER,
-      icon: 'bi bi-hash',
+      label: 'File Upload',
+      type: ELEMENT_TYPES.FILE_UPLOAD,
+      icon: 'bi bi-file-earmark-arrow-up',
     },
   ],
   [ELEMENT_CATEGORIES_TYPES.MULTIPLE_CHOICE]: [
