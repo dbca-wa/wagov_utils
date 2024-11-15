@@ -2,7 +2,7 @@ import { DropablesFactory } from '../controls/layout/dropables-factory';
 import { getControlFromToolbox } from '../controls/toolbox-store';
 import { CONTROL_API_PROPS_TYPES } from '../controls/utils/control-props-types';
 import { activateTooltips } from './control-utils';
-import { camelCase, markup } from './utils';
+import { camelCase, markup, splitAPIFieldName } from './utils';
 
 export class BuildArea {
   static instance;
@@ -93,28 +93,35 @@ export class BuildArea {
   }
 
   fieldNameExists(name) {
-    let count = 0;
-    const names = {};
+    const { seqNumber, values } = this.getFieldNamesFromName(name);
+    return values.indexOf(seqNumber) >= 0;
+  }
+
+  getFieldNamesFromName(name) {
+    const values = [];
+    const { field: fieldName, n: seqNumber } = splitAPIFieldName(name);
+
     for (const key in this.dropables) {
       const dropable = this.dropables[key];
       for (const control of dropable.children) {
-        names[control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME]] = names[
-          control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME]
-        ]
-          ? names[control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME]] + 1
-          : 0;
-        if (control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] === name) {
-          count++;
+        if (!control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME]) continue;
+        const { field, n } = splitAPIFieldName(control.props[CONTROL_API_PROPS_TYPES.FIELD_NAME]);
+        if (field === fieldName) {
+          values.push(n);
         }
       }
     }
-    return count;
+    return { fieldName, seqNumber, values };
   }
 
   generateAPIFieldName(defaultName = 'unnamedField') {
     const name = camelCase(defaultName).toString().trim().replace(' ', '');
-    const count = this.fieldNameExists(name);
-    return count === 0 ? name : `${name}${count + 1}`;
+
+    const { fieldName, seqNumber, values } = this.getFieldNamesFromName(name);
+    if (values.indexOf(seqNumber) >= 0) {
+      return this.generateAPIFieldName(`${fieldName}${seqNumber + 1}`);
+    }
+    return `${fieldName}${seqNumber || ''}`;
   }
 
   toJSON() {

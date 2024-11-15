@@ -40,6 +40,10 @@ export class MultiControlRenderer extends Renderer {
     return this.rowsData.map((r) => r.values).filter((r) => r);
   }
 
+  validateRows() {
+    return this.rowsData.every((row) => !row.isEditing);
+  }
+
   addRow() {
     const maxItems = this.props[CONTROL_VALIDATION_PROPS_TYPES.MAX_ITEMS] || MAX_NUM_ITEMS_EDITABLE_GRID;
     if (this.rowsData.length >= maxItems) {
@@ -53,6 +57,7 @@ export class MultiControlRenderer extends Renderer {
       id: rowId,
       controls: [],
       values: null,
+      isEditing: true,
     };
     $(`#${this.id} .rows`).append(rowEdition);
 
@@ -134,6 +139,7 @@ export class MultiControlRenderer extends Renderer {
         const container = $(`#${rowId} .control`)[i];
         _this.renderControlDisplay($(container), control);
       }
+      row.isEditing = false;
       $(`#${rowId} .actions .edit-row, #${rowId} .actions .remove-row`).show();
       $(`#${rowId} .actions .save-row, #${rowId} .actions .cancel-row`).hide();
     }
@@ -152,6 +158,7 @@ export class MultiControlRenderer extends Renderer {
         const container = $(`#${rowId} .control`)[i];
         _this.renderControlDisplay($(container), control, row.values[props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]);
       }
+      row.isEditing = false;
       $(`#${rowId} .actions .edit-row, #${rowId} .actions .remove-row`).show();
       $(`#${rowId} .actions .save-row, #${rowId} .actions .cancel-row`).hide();
     } else {
@@ -184,6 +191,7 @@ export class MultiControlRenderer extends Renderer {
       const container = $(`#${rowId} .control`)[i];
       _this.renderControlEdition($(container), control, row.values[props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]);
     }
+    row.isEditing = true;
     $(`#${rowId} .actions .save-row, #${rowId} .actions .cancel-row`).show();
     $(`#${rowId} .actions .edit-row, #${rowId} .actions .remove-row`).hide();
   }
@@ -208,7 +216,10 @@ export class MultiControlRenderer extends Renderer {
 
   renderControlDisplay(container, control, val = undefined) {
     const value = val != undefined ? val : control.getElementValue();
-    const controlDisplay = markup('div', typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value);
+    const controlDisplay = markup(
+      'div',
+      typeof value === 'boolean' ? { tag: 'i', class: value ? 'bi bi-check fs-4 text-success' : '' } : value,
+    );
     container.empty();
     container.append(controlDisplay);
   }

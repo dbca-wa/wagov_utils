@@ -3,6 +3,61 @@ import { INPUT_TYPES } from '../../utils/input-types';
 import { ELEMENT_TYPES } from '../../utils/element-types';
 import { BaseDisplayProps } from '../data-props/base-display-props';
 
+export class TextFieldDisplayProps extends BaseDisplayProps {
+  constructor(props) {
+    super(textProps);
+    this.fillInProps(props);
+  }
+
+  render() {
+    return super.render();
+  }
+}
+
+export class InputFieldDisplayProps extends BaseDisplayProps {
+  constructor(type = 'text', props) {
+    super(getProps(type));
+    this.fillInProps(props);
+    if (type === INPUT_TYPES.CHECK_BOX) {
+      this.modifyProp(CONTROL_PROPS_TYPES.LABEL_POSITION, {
+        value: 'right',
+        options: [
+          { value: 'left', text: 'Left' },
+          { value: 'right', text: 'Right' },
+        ],
+      });
+    }
+  }
+}
+
+export class RadioDisplayProps extends BaseDisplayProps {
+  constructor(props) {
+    super(radioProps);
+    this.fillInProps(props);
+  }
+}
+
+export class CheckboxDisplayProps extends BaseDisplayProps {
+  constructor(props) {
+    super(checkboxProps);
+    this.fillInProps(props);
+  }
+}
+
+export class SelectDisplayProps extends BaseDisplayProps {
+  constructor(props) {
+    super(selectProps);
+    this.fillInProps(props);
+  }
+}
+
+export class ButtonDisplayProps extends BaseDisplayProps {
+  constructor(props) {
+    super(buttonProps);
+    this.fillInProps(props);
+  }
+}
+
 const textProps = [
   CONTROL_PROPS_TYPES.LABEL,
   CONTROL_PROPS_TYPES.LABEL_POSITION,
@@ -142,60 +197,5 @@ function getProps(type) {
       return fileProps;
     default:
       return textProps;
-  }
-}
-
-export class TextFieldDisplayProps extends BaseDisplayProps {
-  constructor(props) {
-    super(textProps);
-    this.fillInProps(props);
-  }
-
-  render() {
-    return super.render();
-  }
-}
-
-export class InputFieldDisplayProps extends BaseDisplayProps {
-  constructor(type = 'text', props) {
-    super(getProps(type));
-    this.fillInProps(props);
-    if (type === INPUT_TYPES.CHECK_BOX) {
-      this.modifyProp(CONTROL_PROPS_TYPES.LABEL_POSITION, {
-        value: 'right',
-        options: [
-          { value: 'left', text: 'Left' },
-          { value: 'right', text: 'Right' },
-        ],
-      });
-    }
-  }
-}
-
-export class RadioDisplayProps extends BaseDisplayProps {
-  constructor(props) {
-    super(radioProps);
-    this.fillInProps(props);
-  }
-}
-
-export class CheckboxDisplayProps extends BaseDisplayProps {
-  constructor(props) {
-    super(checkboxProps);
-    this.fillInProps(props);
-  }
-}
-
-export class SelectDisplayProps extends BaseDisplayProps {
-  constructor(props) {
-    super(selectProps);
-    this.fillInProps(props);
-  }
-}
-
-export class ButtonDisplayProps extends BaseDisplayProps {
-  constructor(props) {
-    super(buttonProps);
-    this.fillInProps(props);
   }
 }

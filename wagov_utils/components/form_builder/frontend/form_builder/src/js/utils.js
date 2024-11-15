@@ -222,3 +222,15 @@ export const parseFileSize = (sizeStr) => {
 
   return value * Math.pow(1024, exponent);
 };
+
+export const splitAPIFieldName = (fieldName) => {
+  const regex = /(\D+)(\d*)$/;
+  const match = fieldName.match(regex);
+  if (!match) {
+    return { field: fieldName, n: 0 };
+  }
+  const n = match[2] ? parseInt(match[2]) : 0;
+  const index = fieldName.lastIndexOf(match[2]);
+
+  return { field: fieldName.substring(0, index), n };
+};

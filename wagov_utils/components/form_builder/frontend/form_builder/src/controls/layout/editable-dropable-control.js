@@ -44,6 +44,9 @@ export class EditableDropableControl extends DropableControl {
       const isOne = props[CONTROL_VALIDATION_PROPS_TYPES.MIN_ITEMS] === 1;
       errors.push(`You can only add up to ${props[CONTROL_VALIDATION_PROPS_TYPES.MAX_ITEMS]} item${isOne ? '' : 's'}`);
     }
+    if (errors.length === 0 && this.renderer && !this.renderer.validateRows()) {
+      errors.push('There are invalid values or unsaved changes in the rows');
+    }
 
     let errorMessage = '';
     if (errors.length > 0) {
