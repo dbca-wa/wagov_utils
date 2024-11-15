@@ -21,6 +21,37 @@ export default class FileUploadElement extends InputElement {
     this.setup();
   }
 
+  getElementValue() {
+    const props = this.getPropsObject();
+    const renderAsImage = props[FILE_DATA_PROPS_TYPES.DISPLAY_AS_IMAGES];
+    const isMultipleFiles = this.files.length > 1;
+    const _filesValues = this.files.map((fileData) => {
+      const fileExt = fileData.name.split('.').pop().toLowerCase();
+
+      return markup(
+        'row',
+        [
+          {
+            tag: 'div',
+            content: [
+              renderAsImage && fileData.type.startsWith('image/')
+                ? { tag: 'img', src: fileData.base64, class: 'img-preview' }
+                : { tag: 'i', class: `bi bi-filetype-${fileExt}` },
+
+              { tag: 'span', content: fileData.name, class: 'ms-3' },
+            ],
+            class: 'd-flex col-xs-12 col-md-8 align-self-center gx-2',
+          },
+        ],
+        {
+          id: fileData.id,
+          class: ['d-flex text-body-secondary py-2', isMultipleFiles ? ' border-bottom' : ''].join(' '),
+        },
+      );
+    });
+    return this.files.length ? _filesValues : 'No files selected';
+  }
+
   getFieldValue() {
     if (!this.apiControlProps) return {};
     const props = this.getPropsObject();
@@ -65,7 +96,6 @@ export default class FileUploadElement extends InputElement {
     const attributes = {
       id: props.id ?? this.id,
       type: this.type,
-      value: value,
       hidden: true,
     };
 
@@ -132,6 +162,9 @@ export default class FileUploadElement extends InputElement {
     if (!this.$p) {
       console.error('Element not rendered');
       return;
+    }
+    if (this.files.length > 0) {
+      this.files.forEach((file) => this.renderFile(file));
     }
     // this.renderTest();
     const container = `#${this.id}-container`;
