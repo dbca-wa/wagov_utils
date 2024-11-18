@@ -1,11 +1,20 @@
-import { CONTROL_VALIDATION_PROPS_TYPES } from '../controls/utils/control-props-types';
+import { CONTROL_VALIDATION_PROPS_TYPES, DATE_DATA_PROPS_TYPES } from '../controls/utils/control-props-types';
+import { ELEMENT_TYPES } from '../controls/utils/element-types';
 
 export const runInputFieldValidations = (value, control) => {
-  const validationProps = control.validationControlProps?.getPropsValues();
+  const validationProps = control.getPropsObject();
   const errors = [];
   const strValue = value?.toString() ?? '';
   if (validationProps[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]) {
-    if ((typeof value === 'boolean' && !value) || value === null || strValue.length === 0) {
+    if (control.elementType === ELEMENT_TYPES.DATE_PICKER_JQ && validationProps[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+      if (!value[0] || !value[1]) {
+        errors.push('Please select a valid date range');
+        return errors;
+      } else if (value[0] && value[1] && value[0] > value[1]) {
+        errors.push('Start date must be before end date');
+        return errors;
+      }
+    } else if ((typeof value === 'boolean' && !value) || value === null || strValue.length === 0) {
       errors.push('This field is required');
       return errors;
     }

@@ -42,6 +42,7 @@ export const DATE_DATA_PROPS_TYPES = {
   DEFAULT_VALUE: 'defaultValue',
   DISABLE_WEEKENDS: 'disableWeekends',
   DISABLE_WEEKDAYS: 'disableWeekdays',
+  IS_DATE_RANGE: 'isDateRange',
   HOUR_FORMAT: 'hourFormat',
   ENABLE_DATE_INPUT: 'enableDateInput',
   ENABLE_TIME_INPUT: 'enableTimeInput',

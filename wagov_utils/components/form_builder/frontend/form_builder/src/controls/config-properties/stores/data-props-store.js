@@ -150,6 +150,15 @@ export const dateDataPropertiesStore = {
     options: undefined,
     value: '',
   },
+  [DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]: {
+    name: 'isDateRange',
+    title: 'Enable Date Range',
+    type: 'boolean',
+    placeholder: 'to',
+    required: false,
+    options: undefined,
+    value: true,
+  },
   [DATE_DATA_PROPS_TYPES.ENABLE_DATE_INPUT]: {
     name: 'enableDateInput',
     title: 'Enable Date Input',

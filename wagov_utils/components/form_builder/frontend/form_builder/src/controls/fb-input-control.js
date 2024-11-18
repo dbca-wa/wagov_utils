@@ -8,6 +8,7 @@ import {
   CONTROL_DATA_PROPS_TYPES,
   CONTROL_PROPS_TYPES,
   CONTROL_VALIDATION_PROPS_TYPES,
+  DATE_DATA_PROPS_TYPES,
 } from './utils/control-props-types';
 import { BasicAPIProps } from './config-properties/api-props/basic-api-properties';
 import { InputFieldValidationProps } from './config-properties/validation-props/input-validation-properties';
@@ -80,18 +81,27 @@ export default class InputControl extends Control {
   }
 
   getElementValue() {
+    const element = $(this.getIdSelector());
     if (this.elementType === INPUT_TYPES.RADIO) {
-      return $(this.getIdSelector()).find('input[type="radio"]:checked').val() ?? '';
+      return element.find('input[type="radio"]:checked').val() ?? '';
     }
     if (this.type === INPUT_TYPES.CHECK_BOX) {
-      return $(this.getIdSelector()).is(':checked');
+      return element.is(':checked');
     }
     if (this.type === INPUT_TYPES.NUMBER) {
-      return $(this.getIdSelector()).val() ? parseFloat($(this.getIdSelector()).val()) : null;
+      return element.val() ? parseFloat(element.val()) : null;
+    }
+    if (this.elementType === ELEMENT_TYPES.DATE_PICKER_JQ) {
+      const props = this.getPropsObject();
+      if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+        return [element.datepicker('getDate'), $(this.getIdSelector() + '-end').datepicker('getDate')];
+      }
+      return element.datepicker('getDate');
     }
     const props = this.getPropsObject();
-    if (props[CONTROL_PROPS_TYPES.DISPLAY_MASK]) return $(this.getIdSelector()).cleanVal();
-    return $(this.getIdSelector()).val().trim();
+    if (props[CONTROL_PROPS_TYPES.DISPLAY_MASK]) return element.cleanVal();
+
+    return element.val().trim();
   }
 
   getFieldValue() {

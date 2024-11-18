@@ -88,6 +88,7 @@ export class DatePickerDataProperties extends BaseDataProps {
     const definition = [
       // DATE_DATA_PROPS_TYPES.ENABLE_DATE_INPUT,
       // DATE_DATA_PROPS_TYPES.ENABLE_TIME_INPUT,
+      DATE_DATA_PROPS_TYPES.IS_DATE_RANGE,
       CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE,
       DATE_DATA_PROPS_TYPES.DISABLE_WEEKENDS,
 

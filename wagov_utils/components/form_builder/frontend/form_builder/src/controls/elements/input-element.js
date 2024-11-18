@@ -7,6 +7,7 @@ import {
   CONTROL_DATA_PROPS_TYPES,
   CONTROL_PROPS_TYPES,
   CONTROL_VALIDATION_PROPS_TYPES,
+  DATE_DATA_PROPS_TYPES,
 } from '../utils/control-props-types';
 import { InputFieldDataProperties } from '../config-properties/data-props/data-properties';
 import { ELEMENT_TYPES } from '../utils/element-types';
@@ -90,6 +91,21 @@ export default class InputElement extends InputControl {
     this.label.required = props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED] === true;
     this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
     this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
+
+    if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+      return super.render(
+        markup(
+          'div',
+          [
+            markup('div', markup('input', '', { ...attributes, ...attr }), { class: 'col-auto' }),
+            markup('div', markup('input', '', { ...attributes, ...attr, id: `${attributes.id}-end` }), {
+              class: 'col-auto',
+            }),
+          ],
+          { class: 'row g-3 align-items-center' },
+        ),
+      );
+    }
 
     return super.render(markup('input', '', { ...attributes, ...attr }));
   }

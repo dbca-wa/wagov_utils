@@ -24,6 +24,7 @@ export default class FileUploadElement extends InputElement {
   getElementValue() {
     const props = this.getPropsObject();
     const renderAsImage = props[FILE_DATA_PROPS_TYPES.DISPLAY_AS_IMAGES];
+    const fileTypes = props[FILE_DATA_PROPS_TYPES.FILE_TYPES] ?? [];
     const isMultipleFiles = this.files.length > 1;
     const _filesValues = this.files.map((fileData) => {
       const fileExt = fileData.name.split('.').pop().toLowerCase();
@@ -39,6 +40,11 @@ export default class FileUploadElement extends InputElement {
                 : { tag: 'i', class: `bi bi-filetype-${fileExt}` },
 
               { tag: 'span', content: fileData.name, class: 'ms-3' },
+              {
+                tag: 'span',
+                content: fileTypes ? fileTypes.find((type) => type.value === fileData.fileType)?.label : '',
+                class: 'ms-3',
+              },
             ],
             class: 'd-flex col-xs-12 col-md-8 align-self-center gx-2',
           },
@@ -76,10 +82,10 @@ export default class FileUploadElement extends InputElement {
     const errors = [];
     let errorMessage = '';
     if (props[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED] && this.files.length === 0) {
-      errors.push('At least one file is required');
+      errors.push('You must upload at least one file');
     }
     if (props[FILE_DATA_PROPS_TYPES.FILE_TYPES] && this.files.some((file) => !file.fileType)) {
-      errors.push('All files must have a type');
+      errors.push('Select a file type for each file');
     }
     if (errors.length > 0) {
       errorMessage = props[CONTROL_VALIDATION_PROPS_TYPES.ERROR_MESSAGE] || errors.join(', ');

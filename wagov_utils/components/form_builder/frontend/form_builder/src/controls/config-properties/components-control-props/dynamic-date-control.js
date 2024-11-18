@@ -39,10 +39,12 @@ export class DynamicDateControl {
   notifyValueChange(value) {
     this.changeHandler.fn({
       data: { ...this.changeHandler.context },
-      value: {
-        type: this.valueType,
-        ...value,
-      },
+      value: this.valueType
+        ? {
+            type: this.valueType,
+            ...value,
+          }
+        : '',
     });
   }
 
@@ -86,6 +88,10 @@ export class DynamicDateControl {
       const _this = e.data;
       _this.handleRelativeConditionChange();
     });
+    $(`#${this.id} button.clear-date`).on('click', this, (e) => {
+      const _this = e.data;
+      _this.handleDateTypeChange('');
+    });
 
     // Initial setup
     this.handleDateTypeChange(this.value?.type);
@@ -99,6 +105,7 @@ export class DynamicDateControl {
     if (value === DATE_CONTROL_PROP_TYPES.FIXED.value) {
       $(`#${this.fixedRadioId}-render`).show();
       $(`#${this.relativeRadioId}-render`).hide();
+      $(`#${this.id} button.clear-date`).show();
 
       if (this.valueDate) {
         $(`#${this.fixedRadioId}-render input`).trigger('change');
@@ -106,7 +113,14 @@ export class DynamicDateControl {
     } else if (value === DATE_CONTROL_PROP_TYPES.RELATIVE.value) {
       $(`#${this.fixedRadioId}-render`).hide();
       $(`#${this.relativeRadioId}-render`).show();
+      $(`#${this.id} button.clear-date`).show();
       this.handleRelativeConditionChange();
+    } else if (value === '') {
+      $(`#${this.id} input[type="radio"][name="${this.mainButtonsName}"]`).prop('checked', false);
+      $(`#${this.fixedRadioId}-render`).hide();
+      $(`#${this.relativeRadioId}-render`).hide();
+      $(`#${this.id} button.clear-date`).hide();
+      this.notifyValueChange(null);
     }
   }
   handleRelativeDateChange(value) {
@@ -145,7 +159,6 @@ export class DynamicDateControl {
 
   renderRelative() {
     const name = this.relativeButtonsName;
-    const types = [RELATIVE_DATE_TYPES.TODAY, RELATIVE_DATE_TYPES.YESTERDAY, RELATIVE_DATE_TYPES.TOMORROW];
     const relativeRadioConfigs = Object.keys(RELATIVE_DATE_TYPES).map((key) => {
       return {
         id: this.id + '-relative-' + RELATIVE_DATE_TYPES[key].value,
@@ -247,8 +260,15 @@ export class DynamicDateControl {
       },
     );
 
+    const buttonClear = markup('button', 'Clear value', {
+      class: 'btn btn-sm btn-outline-secondary clear-date',
+      style: 'margin-left: 10px; display: none;',
+      type: 'button',
+    });
+
     dateElement.append(buttonFixed);
     dateElement.append(buttonRelative);
+    dateElement.append(buttonClear);
 
     return dateElement;
   }
