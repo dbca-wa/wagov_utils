@@ -65,7 +65,13 @@ export class ControlProp {
       children.reverse();
     }
     return markup('div', children, {
-      class: ['mb-3', 'control-prop', this.prop.type === 'boolean' ? 'form-check' : ''].join(' '),
+      class: [
+        'mb-3',
+        'control-prop',
+        this.prop.type === 'boolean' ? 'form-check' : '',
+        this.prop.addDivider ? 'border-bottom pb-3' : '',
+      ].join(' '),
+      style: this.prop.hide ? 'display: none;' : '',
     });
   }
 

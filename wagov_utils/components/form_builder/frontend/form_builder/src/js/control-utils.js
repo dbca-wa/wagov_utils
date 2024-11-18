@@ -37,6 +37,9 @@ export const getDatepickerOptionsFromProps = (props) => {
     options.maxDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]);
   }
 
+  if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+    options.numberOfMonths = 2;
+  }
   return options;
 };
 

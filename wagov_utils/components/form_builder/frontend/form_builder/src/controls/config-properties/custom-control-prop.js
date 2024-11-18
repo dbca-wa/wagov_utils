@@ -27,7 +27,10 @@ export class CustomControlProp extends ControlProp {
       this.control.render(),
     ];
 
-    return markup('div', children, { class: 'form-check mb-3' });
+    return markup('div', children, {
+      class: ['mb-3', this.prop.addDivider ? 'border-bottom pb-3' : ''].join(' '),
+      style: this.prop.hide ? 'display: none;' : '',
+    });
   }
 
   addChangeEvent(context, cb) {

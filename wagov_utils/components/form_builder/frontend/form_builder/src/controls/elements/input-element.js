@@ -93,12 +93,18 @@ export default class InputElement extends InputControl {
     this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
 
     if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+      const endDateAttributes = {
+        ...attributes,
+        id: `${attributes.id}-end`,
+        placeholder: props[DATE_DATA_PROPS_TYPES.PLACEHOLDER_END] ?? '',
+        value: props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END],
+      };
       return super.render(
         markup(
           'div',
           [
             markup('div', markup('input', '', { ...attributes, ...attr }), { class: 'col-auto' }),
-            markup('div', markup('input', '', { ...attributes, ...attr, id: `${attributes.id}-end` }), {
+            markup('div', markup('input', '', { ...endDateAttributes, ...attr }), {
               class: 'col-auto',
             }),
           ],

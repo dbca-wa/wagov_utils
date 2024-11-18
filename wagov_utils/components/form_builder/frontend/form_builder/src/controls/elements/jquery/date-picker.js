@@ -46,9 +46,14 @@ export default class DatePicker extends InputElement {
         }
       });
     if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+      const endDatePickerOptions = getDatepickerOptionsFromProps({
+        ...props,
+        [DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]: props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END],
+      });
+
       $(this.getIdSelector() + '-end')
         .datepicker({
-          ...datePickerOptions,
+          ...endDatePickerOptions,
         })
         .on('change', { control, props, datePickerOptions }, function (event) {
           const { control, props, datePickerOptions } = event.data;
@@ -77,6 +82,7 @@ export default class DatePicker extends InputElement {
   modifyProps(props) {
     const values = {
       [DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]: getRelativeDateValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]),
+      [DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END]: getRelativeDateValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END]),
       [CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]: getRelativeDateValue(props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]),
       [CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]: getRelativeDateValue(props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]),
     };

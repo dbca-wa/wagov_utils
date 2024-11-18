@@ -40,6 +40,8 @@ export const DATE_PROPS_TYPES = {
 };
 export const DATE_DATA_PROPS_TYPES = {
   DEFAULT_VALUE: 'defaultValue',
+  DEFAULT_VALUE_END: 'defaultValueEnd',
+  PLACEHOLDER_END: 'placeholderEnd',
   DISABLE_WEEKENDS: 'disableWeekends',
   DISABLE_WEEKDAYS: 'disableWeekdays',
   IS_DATE_RANGE: 'isDateRange',

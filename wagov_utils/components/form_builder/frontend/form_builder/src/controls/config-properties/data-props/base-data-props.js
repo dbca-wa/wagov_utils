@@ -11,7 +11,9 @@ export class BaseDataProps extends BaseControlProps {
 
   renderInParent() {
     if (this.$p) {
-      this.$p.empty().append(this.render());
+      this.$p.empty();
+      const rendered = this.render();
+      this.$p.append(rendered);
     }
     super.addChangeEvents(this, this._onDataPropsChange);
   }

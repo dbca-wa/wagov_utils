@@ -2,10 +2,11 @@ import {
   CONTROL_API_PROPS_TYPES,
   CONTROL_PROPS_TYPES,
   CONTROL_VALIDATION_PROPS_TYPES,
+  DATE_DATA_PROPS_TYPES,
 } from '../controls/utils/control-props-types';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
-import { activateTooltips, getDatepickerOptionsFromProps } from '../js/control-utils';
+import { activateTooltips, getDatepickerOptionsFromProps, getRelativeDateFromValue } from '../js/control-utils';
 import { BuildArea } from '../js/fb-build-area';
 import Control from '../js/fb-control';
 import { appSelectors } from '../js/selectors';
@@ -187,6 +188,38 @@ export default class ControlEdition extends Control {
         alert('Minimum length must be less than the Maximum value');
         $('#validation-tab').trigger('click');
         return;
+      }
+      if (_this.control.elementType === ELEMENT_TYPES.DATE_PICKER_JQ) {
+        let minDate = null;
+        let maxDate = null;
+        if (props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]) {
+          minDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]);
+        }
+        if (props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]) {
+          maxDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]);
+        }
+        if (minDate && maxDate) {
+          if (minDate > maxDate) {
+            alert('Minimum default date must be earlier than the Maximum default date');
+            $('#validation-tab').trigger('click');
+            return;
+          }
+        }
+        let startDefaultDate = null;
+        let endDefaultDate = null;
+        if (props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]) {
+          startDefaultDate = getRelativeDateFromValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]);
+        }
+        if (props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END]) {
+          endDefaultDate = getRelativeDateFromValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END]);
+        }
+        if (startDefaultDate && endDefaultDate) {
+          if (startDefaultDate > endDefaultDate) {
+            alert('Start default date must be earlier than the End default date');
+            $('#data-tab').trigger('click');
+            return;
+          }
+        }
       }
     }
     if (props[CONTROL_API_PROPS_TYPES.FIELD_NAME] != undefined) {

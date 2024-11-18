@@ -1,5 +1,6 @@
 import {
   CONTROL_DATA_PROPS_TYPES,
+  CONTROL_PROPS_TYPES,
   DATASOURCE_PROPS_TYPES,
   DATE_DATA_PROPS_TYPES,
   FILE_DATA_PROPS_TYPES,
@@ -88,9 +89,11 @@ export class DatePickerDataProperties extends BaseDataProps {
     const definition = [
       // DATE_DATA_PROPS_TYPES.ENABLE_DATE_INPUT,
       // DATE_DATA_PROPS_TYPES.ENABLE_TIME_INPUT,
-      DATE_DATA_PROPS_TYPES.IS_DATE_RANGE,
-      CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE,
       DATE_DATA_PROPS_TYPES.DISABLE_WEEKENDS,
+      DATE_DATA_PROPS_TYPES.IS_DATE_RANGE,
+      DATE_DATA_PROPS_TYPES.DEFAULT_VALUE,
+      DATE_DATA_PROPS_TYPES.PLACEHOLDER_END,
+      DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END,
 
       // DATE_DATA_PROPS_TYPES.DISABLE_WEEKDAYS,
       // DATE_DATA_PROPS_TYPES.HOUR_FORMAT,
@@ -98,12 +101,23 @@ export class DatePickerDataProperties extends BaseDataProps {
 
     super(definition, dateDataPropertiesStore);
     this.fillInProps(props);
+
+    if (this.props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+      this.modifyPropVisibility(DATE_DATA_PROPS_TYPES.PLACEHOLDER_END, false);
+      this.modifyPropVisibility(DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END, false);
+    }
   }
 
   _onDataPropsChange(e) {
     const { context: _this, prop } = e.data;
     const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
     _this.modifyPropValue(prop.name, value);
+
+    if (prop.name === DATE_DATA_PROPS_TYPES.IS_DATE_RANGE) {
+      _this.modifyPropVisibility(DATE_DATA_PROPS_TYPES.PLACEHOLDER_END, !value);
+      _this.modifyPropVisibility(DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END, !value);
+      _this.renderInParent();
+    }
     _this.editor._renderPreviewControl();
   }
 }

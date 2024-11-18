@@ -46,6 +46,12 @@ export class BaseControlProps {
     }
   }
 
+  modifyPropVisibility(propName, hide = true) {
+    if (this.props[propName]) {
+      this.props[propName].prop.hide = hide;
+    }
+  }
+
   addChangeEvents(context, cb) {
     Object.values(this.props).map((prop) => prop.addChangeEvent(context, cb));
   }
