@@ -29,6 +29,7 @@ export class EditableGrid extends RowBlock {
 
   setup() {
     this.elementType = LAYOUT_TYPES.EDIT_GRID;
+    this.dropableType = LAYOUT_TYPES.EDIT_DROPABLE;
 
     this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] =
       this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] ||

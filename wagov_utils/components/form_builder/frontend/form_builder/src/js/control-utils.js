@@ -6,6 +6,7 @@ import {
   DATE_PERIOD_CONDITIONS,
   DATE_PERIOD_RANGE_TYPES,
   DATE_PERIOD_TYPES,
+  GENERAL_DATE_FORMAT,
 } from '../controls/utils/constants';
 import { Tooltip } from 'bootstrap';
 import { CONTROL_VALIDATION_PROPS_TYPES, DATE_DATA_PROPS_TYPES } from '../controls/utils/control-props-types';
@@ -95,7 +96,7 @@ export const getRelativeDateFromValue = (config) => {
     return '';
   }
 };
-export const getRelativeDateValue = (config, dateFormat = 'dd-MMM-yyyy') => {
+export const getRelativeDateValue = (config, dateFormat = GENERAL_DATE_FORMAT) => {
   const date = getRelativeDateFromValue(config);
   if (date) return format(date, dateFormat);
   return '';

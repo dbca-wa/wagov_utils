@@ -20,41 +20,47 @@ export const runInputFieldValidations = (value, control) => {
     }
   }
 
-  if (validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_LENGTH]) {
-    if (strValue.length < validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_LENGTH]) {
-      errors.push(`Minimum length is ${validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_LENGTH]}`);
+  const minTextLength = validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_LENGTH];
+  if (minTextLength) {
+    if (strValue.length < minTextLength) {
+      errors.push(`Minimum length is ${minTextLength}`);
     }
   }
-  if (validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_LENGTH]) {
-    if (strValue.length > validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_LENGTH]) {
-      errors.push(`Maximum length is ${validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_LENGTH]}`);
+  const maxLength = validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_LENGTH];
+  if (maxLength) {
+    if (strValue.length > maxLength) {
+      errors.push(`You have exceeded the maximum length: ${maxLength} characters`);
     }
   }
-  if (validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_WORD_LENGTH]) {
+  const minWordLength = validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_WORD_LENGTH];
+  if (minWordLength) {
     const words = strValue.split(' ');
-    if (words.length < validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_WORD_LENGTH]) {
-      errors.push(`Minimum words is ${validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_WORD_LENGTH]}`);
+    if (words.length < minWordLength) {
+      errors.push(`Please, type at least ${minWordLength} word${minWordLength > 1 ? 's' : ''}`);
     }
   }
-  if (validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_WORD_LENGTH]) {
+  const maxWordLength = validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_WORD_LENGTH];
+  if (maxWordLength) {
     const words = strValue.split(' ');
-    if (words.length > validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_WORD_LENGTH]) {
-      errors.push(`Maximum words is ${validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_WORD_LENGTH]}`);
+    if (words.length > maxWordLength) {
+      errors.push(`Please, use up to ${maxWordLength} word${maxWordLength > 1 ? 's' : ''}`);
     }
   }
-  if (validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_CHECKED]) {
-    if (value.length < validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_CHECKED]) {
+  const minChecked = validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_CHECKED];
+  if (minChecked) {
+    if (value.length < minChecked) {
       errors.push(
         validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_CHECKED_ERROR_MESSAGE] ||
-          `Minimum checked is ${validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_CHECKED]}`,
+          `Please, select at least ${minChecked} option${minChecked > 1 ? 's' : ''}`,
       );
     }
   }
-  if (validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_CHECKED]) {
-    if (value.length > validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_CHECKED]) {
+  const maxChecked = validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_CHECKED];
+  if (maxChecked) {
+    if (value.length > maxChecked) {
       errors.push(
         validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_CHECKED_ERROR_MESSAGE] ||
-          `Maximum checked is ${validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_CHECKED]}`,
+          `Select no more than ${maxChecked} option${maxChecked > 1 ? 's' : ''}`,
       );
     }
   }

@@ -135,6 +135,9 @@ export const markup = function (tag, content = '', attributes = {}) {
     string: (content) => {
       setElementContent(field, field.innerHTML + content);
     },
+    number: (content) => {
+      setElementContent(field, field.innerHTML + content);
+    },
     object: (config) => {
       const { tag, content, ...data } = config;
       return field.appendChild(markup(tag, content, data));

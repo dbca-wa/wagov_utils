@@ -126,7 +126,7 @@ export default class InputControl extends Control {
     if (errors.length > 0) {
       errorMessage = validationProps[CONTROL_VALIDATION_PROPS_TYPES.ERROR_MESSAGE] || errors.join(', ');
     }
-    $(this.getIdSelector()).parent().find(`.${CLASS_INVALID_FIELD_VALUE}`).text(errorMessage);
+    $(`#render-${this.id}`).find(`.${CLASS_INVALID_FIELD_VALUE}`).first()?.text(errorMessage);
     return errors.length === 0;
   }
 
@@ -231,5 +231,9 @@ export default class InputControl extends Control {
     if (props[CONTROL_DATA_PROPS_TYPES.MULTI] && this.renderer) {
       this.renderer.afterRender();
     }
+  }
+  getDefaultValue() {
+    const props = this.getPropsObject();
+    return props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
   }
 }

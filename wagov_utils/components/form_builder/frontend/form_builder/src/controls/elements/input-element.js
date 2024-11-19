@@ -50,7 +50,11 @@ export default class InputElement extends InputControl {
   render(customProps, attr = {}) {
     const props = customProps ?? this.displayControlProps.getPropsValues();
     this.modifyProps(props);
-    const value = props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
+    const values = props.values;
+    let value = props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
+    if (values && values.length > 0) {
+      value = values[0];
+    }
     const attributes = {
       id: props.id ?? this.id,
       type: this.type,
@@ -99,6 +103,9 @@ export default class InputElement extends InputControl {
         placeholder: props[DATE_DATA_PROPS_TYPES.PLACEHOLDER_END] ?? '',
         value: props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END],
       };
+      if (values && values.length > 1) {
+        endDateAttributes.value = values[1];
+      }
       return super.render(
         markup(
           'div',

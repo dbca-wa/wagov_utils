@@ -37,11 +37,15 @@ export default class DatePicker extends InputElement {
         const { control, props, datePickerOptions } = event.data;
         const date = $(this).datepicker('getDate');
         if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+          const endDateElm = $(control.getIdSelector() + '-end');
           if (date) {
-            $(control.getIdSelector() + '-end').datepicker('option', 'minDate', date);
-          } else {
-            $(control.getIdSelector() + '-end').datepicker('option', 'minDate', datePickerOptions?.minDate);
-            $(control.getIdSelector() + '-end').datepicker('setDate', null);
+            endDateElm.datepicker('option', 'minDate', date);
+            setTimeout(() => {
+              endDateElm.datepicker('show');
+            }, 100);
+            if (endDateElm.datepicker('getDate')) {
+              control.validateValue();
+            }
           }
         }
       });
@@ -58,13 +62,12 @@ export default class DatePicker extends InputElement {
         .on('change', { control, props, datePickerOptions }, function (event) {
           const { control, props, datePickerOptions } = event.data;
           const date = $(this).datepicker('getDate');
-          if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
-            if (date) {
-              $(control.getIdSelector()).datepicker('option', 'maxDate', date);
-            } else {
-              $(control.getIdSelector()).datepicker('option', 'maxDate', datePickerOptions?.maxDate);
-            }
+          if (date) {
+            $(control.getIdSelector()).datepicker('option', 'maxDate', date);
+          } else {
+            $(control.getIdSelector()).datepicker('option', 'maxDate', datePickerOptions?.maxDate);
           }
+          control.validateValue();
         });
     }
   }
@@ -87,5 +90,16 @@ export default class DatePicker extends InputElement {
       [CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]: getRelativeDateValue(props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]),
     };
     Object.assign(props, values);
+  }
+
+  getDefaultValue() {
+    const props = this.getPropsObject();
+    if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+      return [
+        getRelativeDateValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]),
+        getRelativeDateValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END]),
+      ];
+    }
+    return getRelativeDateValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]);
   }
 }

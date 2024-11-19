@@ -1,13 +1,15 @@
+import { format } from 'date-fns';
 import { activateTooltips } from '../../js/control-utils';
 import { instantiateJsonControl } from '../../js/fb-build-area';
 import { markup } from '../../js/utils';
-import { MAX_NUM_ITEMS_EDITABLE_GRID } from '../utils/constants';
+import { GENERAL_DATE_FORMAT, MAX_NUM_ITEMS_EDITABLE_GRID } from '../utils/constants';
 import {
   CONTROL_API_PROPS_TYPES,
   CONTROL_DATA_PROPS_TYPES,
   CONTROL_PROPS_TYPES,
   CONTROL_VALIDATION_PROPS_TYPES,
 } from '../utils/control-props-types';
+import { ELEMENT_TYPES } from '../utils/element-types';
 
 class Renderer {
   constructor(control, props = {}) {
@@ -66,7 +68,7 @@ export class MultiControlRenderer extends Renderer {
 
       const col = markup('div', '', { class: 'col control' });
       rowEdition.append(col);
-      this.renderControlEdition($(col), elm);
+      this.renderControlEdition($(col), elm, elm.getDefaultValue());
 
       rowData.controls.push(elm);
     }
@@ -130,7 +132,8 @@ export class MultiControlRenderer extends Renderer {
     let isValid = true;
     for (let i = 0; i < controls.length; i++) {
       const control = controls[i];
-      isValid = isValid && control.validateValue();
+      const controlValid = control.validateValue();
+      isValid &= controlValid;
     }
     if (isValid) {
       for (let i = 0; i < controls.length; i++) {
@@ -199,17 +202,17 @@ export class MultiControlRenderer extends Renderer {
   renderControlEdition(container, control, value) {
     container.empty();
     const elmProps = control.getPropsObject();
-
-    const renderedElm = control.render(
-      {
-        ...elmProps,
-        [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: [elmProps[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '', 'py-2'].join(' '),
-        [CONTROL_PROPS_TYPES.HIDE_LABEL]: true,
-        [CONTROL_PROPS_TYPES.HIDDEN]: false,
-        [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: value,
-      },
-      { 'data-control-id': control.id },
-    );
+    const renderProps = {
+      ...elmProps,
+      [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: [elmProps[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '', 'py-2'].join(' '),
+      [CONTROL_PROPS_TYPES.HIDE_LABEL]: true,
+      [CONTROL_PROPS_TYPES.HIDDEN]: false,
+      [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: value,
+    };
+    if (control.elementType === ELEMENT_TYPES.DATE_PICKER_JQ) {
+      renderProps.values = Array.isArray(value) ? value : [value];
+    }
+    const renderedElm = control.render(renderProps, { 'data-control-id': control.id });
     container.append(renderedElm);
     control.$p = container;
     control.afterRender();
@@ -217,12 +220,23 @@ export class MultiControlRenderer extends Renderer {
 
   renderControlDisplay(container, control, val = undefined) {
     const value = val != undefined ? val : control.getElementValue();
-    const controlDisplay = markup(
-      'div',
-      typeof value === 'boolean'
-        ? { tag: 'i', class: value ? 'bi bi-check fs-4 text-success' : 'text-muted', content: value ? '' : '-' }
-        : value,
-    );
+
+    let controlDisplay = '';
+    if (typeof value === 'boolean') {
+      controlDisplay = markup('div', {
+        tag: 'i',
+        class: value ? 'bi bi-check fs-4 text-success' : 'text-muted',
+        content: value ? '' : '-',
+      });
+    } else if (Array.isArray(value)) {
+      if (control.elementType === ELEMENT_TYPES.DATE_PICKER_JQ) {
+        controlDisplay = markup('div', value.map((v) => format(v, GENERAL_DATE_FORMAT)).join(' - '));
+      } else {
+        controlDisplay = markup('div', value.join(', '));
+      }
+    } else {
+      controlDisplay = markup('div', value);
+    }
     container.empty();
     container.append(controlDisplay);
   }
