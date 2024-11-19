@@ -124,7 +124,7 @@ export default class FileUploadElement extends InputElement {
       }
     }
     const isDisabled = props[CONTROL_PROPS_TYPES.DISABLED];
-    const message = isMultipleFiles ? 'Drop files to attach or ' : 'Drop a file to attach or ';
+    const message = isMultipleFiles ? 'Drop files here or' : 'Drop a file here or';
     const content = [
       super.render(props, { hidden: true, ...(isMultipleFiles ? { multiple: true } : {}), accept }),
       markup(
@@ -135,7 +135,7 @@ export default class FileUploadElement extends InputElement {
           {
             tag: 'a',
             class: isDisabled ? 'pe-none' : '',
-            content: 'browse.',
+            content: 'click to browse.',
             href: '#',
           },
         ],
