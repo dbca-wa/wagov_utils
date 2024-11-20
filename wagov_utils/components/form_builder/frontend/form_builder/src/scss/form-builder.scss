@@ -1,6 +1,7 @@
 // Variables
 $side-panel-width: 250px;
 $main-panel-padding: 20px;
+$primary-soften-color: #e9f1fa;
 
 // Mixins
 @mixin flex-center {
@@ -49,7 +50,7 @@ $main-panel-padding: 20px;
   padding-left: 10px;
   color: #004269;
   border: 2px solid #e3e3e3;
-  background-color: #e9f1fa;
+  background-color: $primary-soften-color;
   border-radius: 4px;
   width: 100%;
   max-width: $side-panel-width;
@@ -293,4 +294,33 @@ $main-panel-padding: 20px;
 
 .files-list .img-preview {
   max-width: 100px;
+}
+
+// JQuery UI Datepicker
+.ui-datepicker {
+  a.ui-state-default {
+    background: #ffffff;
+    border: none;
+    text-align: center;
+  }
+
+  a.ui-state-default.ui-state-hover {
+    background: #e8e8e8;
+    border: none;
+    text-align: center;
+    border-radius: 50px;
+    font-weight: medium;
+  }
+  .ui-state-default.ui-state-active {
+    background: $primary-soften-color;
+    color: #000;
+    border: none;
+    text-align: center;
+    border-radius: 50px;
+    font-weight: bold;
+  }
+
+  .ui-datepicker-header {
+    background: $primary-soften-color;
+  }
 }

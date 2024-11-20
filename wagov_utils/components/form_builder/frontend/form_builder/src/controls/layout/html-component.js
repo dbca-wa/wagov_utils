@@ -8,6 +8,7 @@ import { LAYOUT_TYPES } from '../utils/layout-types';
 
 const defaultSettings = {
   tag: 'div',
+  [CONTROL_PROPS_TYPES.HIDE_LABEL]: true,
 };
 
 export class HTMLComponent extends LayoutControl {

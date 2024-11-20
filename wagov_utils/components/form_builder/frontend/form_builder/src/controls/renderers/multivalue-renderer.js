@@ -253,7 +253,9 @@ export class MultiControlRenderer extends Renderer {
     for (let i = 0; i < this.controls.length; i++) {
       const elm = this.controls[i];
       const elmProps = elm.getPropsObject();
-      const fieldLabel = elmProps[CONTROL_PROPS_TYPES.LABEL] || elmProps[CONTROL_API_PROPS_TYPES.FIELD_NAME];
+      const fieldLabel = elmProps[CONTROL_PROPS_TYPES.HIDE_LABEL]
+        ? ''
+        : elmProps[CONTROL_PROPS_TYPES.LABEL] || elmProps[CONTROL_API_PROPS_TYPES.FIELD_NAME];
       const col = markup('div', fieldLabel, { class: 'col' });
       header.append(col);
     }
