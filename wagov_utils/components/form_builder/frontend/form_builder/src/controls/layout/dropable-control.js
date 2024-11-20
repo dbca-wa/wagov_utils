@@ -157,11 +157,11 @@ export class DropableControl extends LayoutControl {
   }
 
   canDropControl(control) {
-    if (this.dropableType === LAYOUT_TYPES.EDIT_DROPABLE) {
-      if ([LAYOUT_TYPES.CONTAINER, LAYOUT_TYPES.ROW_COLUMNS, LAYOUT_TYPES.EDIT_GRID].includes(control.elementType)) {
-        return false;
-      }
-    }
+    // if (this.dropableType === LAYOUT_TYPES.EDIT_DROPABLE) {
+    //   if ([LAYOUT_TYPES.CONTAINER, LAYOUT_TYPES.ROW_COLUMNS, LAYOUT_TYPES.EDIT_GRID].includes(control.elementType)) {
+    //     return false;
+    //   }
+    // }
     return true;
   }
 

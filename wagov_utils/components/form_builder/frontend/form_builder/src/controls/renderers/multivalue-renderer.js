@@ -195,23 +195,41 @@ export class MultiControlRenderer extends Renderer {
       const control = controls[i];
       const props = control.getPropsObject();
       const container = $(`#${rowId} .control`)[i];
-      _this.renderControlEdition($(container), control, row.values[props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]);
+      const fieldName = props[CONTROL_API_PROPS_TYPES.FIELD_NAME];
+      _this.renderControlEdition($(container), control, fieldName ? row.values[fieldName] : row.values);
     }
     row.isEditing = true;
     $(`#${rowId} .actions .save-row, #${rowId} .actions .cancel-row`).show();
     $(`#${rowId} .actions .edit-row, #${rowId} .actions .remove-row`).hide();
   }
 
-  renderControlEdition(container, control, value) {
+  renderControlEdition(container, control, value, isChild = false) {
     container.empty();
     const elmProps = control.getPropsObject();
     const renderProps = {
       ...elmProps,
       [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: [elmProps[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '', 'py-2'].join(' '),
-      [CONTROL_PROPS_TYPES.HIDE_LABEL]: true,
+      [CONTROL_PROPS_TYPES.HIDE_LABEL]: !isChild,
       [CONTROL_PROPS_TYPES.HIDDEN]: false,
       [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: value,
     };
+    const hasChildren = control.children && control.children.length > 0;
+    if (hasChildren) {
+      const innerContainer = markup('div', '', {
+        class: [isChild ? 'col' : 'row'].join(' '),
+      });
+      container.append(innerContainer);
+      for (let i = 0; i < control.children.length; i++) {
+        const elm = control.children[i];
+        const fieldName = elm.getPropsObject()[CONTROL_API_PROPS_TYPES.FIELD_NAME];
+        const val = isChild && elm.children ? value : fieldName ? value[fieldName] : value;
+        const col = markup('div', '', { class: 'col' });
+        innerContainer.append(col);
+        this.renderControlEdition($(col), elm, val, true);
+      }
+      return;
+    }
+
     if (control.elementType === ELEMENT_TYPES.DATE_PICKER_JQ) {
       renderProps.values = Array.isArray(value) ? value : [value];
     }
@@ -221,9 +239,30 @@ export class MultiControlRenderer extends Renderer {
     control.afterRender();
   }
 
-  renderControlDisplay(container, control, val = undefined) {
+  renderControlDisplay(container, control, val = undefined, isChild = false) {
+    const hasChildren = control.children && control.children.length > 0;
     const value = val != undefined ? val : control.getElementValue();
+    if (hasChildren) {
+      const innerContainer = markup('div', '', {
+        class: [isChild ? 'col' : 'row'].join(' '),
+      });
+      container.empty();
+      container.append(innerContainer);
+      for (let i = 0; i < control.children.length; i++) {
+        const elm = control.children[i];
+        const elmProps = elm.getPropsObject();
+        const col = markup('div', '', { class: 'col' });
+        innerContainer.append(col);
+        this.renderControlDisplay(
+          $(col),
+          elm,
+          elm.children ? value : value[elmProps[CONTROL_API_PROPS_TYPES.FIELD_NAME]],
+          true,
+        );
+      }
 
+      return;
+    }
     let controlDisplay = '';
     if (typeof value === 'boolean') {
       controlDisplay = markup('div', {
@@ -241,7 +280,14 @@ export class MultiControlRenderer extends Renderer {
       controlDisplay = markup('div', value);
     }
     container.empty();
-    container.append(controlDisplay);
+    if (isChild) {
+      container.append(
+        markup('span', control?.label ? `${control.label.text}: ` : '', { class: 'fw-medium' }),
+        controlDisplay,
+      );
+    } else {
+      container.append(controlDisplay);
+    }
   }
 
   render() {

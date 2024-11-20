@@ -86,7 +86,13 @@ export default class LayoutControl extends Control {
 
   getDefaultValue() {
     const values = {};
-    this.children.forEach((elm) => Object.assign(values, elm.getDefaultValue()));
+    this.children.forEach((elm) => {
+      const props = elm.getPropsObject();
+      const defaultValue = elm.getDefaultValue();
+      const fieldName = props['fieldName']; // Hardcoded fieldName
+
+      Object.assign(values, fieldName ? { [fieldName]: defaultValue } : defaultValue);
+    });
     return values;
   }
 

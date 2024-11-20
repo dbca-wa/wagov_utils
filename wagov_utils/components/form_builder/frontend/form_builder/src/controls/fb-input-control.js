@@ -82,6 +82,10 @@ export default class InputControl extends Control {
 
   getElementValue() {
     const element = $(this.getIdSelector());
+    if (!element) {
+      console.log('Element not found', { elem: this });
+      return '';
+    }
     if (this.elementType === INPUT_TYPES.RADIO) {
       return element.find('input[type="radio"]:checked').val() ?? '';
     }

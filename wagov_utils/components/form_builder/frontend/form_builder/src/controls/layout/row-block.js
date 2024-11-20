@@ -6,7 +6,9 @@ import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../utils/contro
 import { CONTROL_TYPES } from '../utils/control-types';
 import { LAYOUT_TYPES } from '../utils/layout-types';
 
-const defaultSettings = {};
+const defaultSettings = {
+  [LAYOUT_CONTROL_PROPS_TYPES.DISPLAY_DIRECTION]: 'row',
+};
 
 export class RowBlock extends LayoutControl {
   elementType = LAYOUT_TYPES.ROW_COLUMNS;
