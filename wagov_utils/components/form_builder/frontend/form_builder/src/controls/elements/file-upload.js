@@ -256,6 +256,8 @@ export default class FileUploadElement extends InputElement {
         fileData.base64 = base64String;
         _this.files.push(fileData);
         _this.renderFile(fileData);
+
+        _this.validateValue();
       };
       reader.readAsDataURL(file);
     } catch (error) {

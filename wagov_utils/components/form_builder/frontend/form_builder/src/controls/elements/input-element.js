@@ -12,6 +12,8 @@ import {
 import { InputFieldDataProperties } from '../config-properties/data-props/data-properties';
 import { ELEMENT_TYPES } from '../utils/element-types';
 import { InputFieldValidationProps } from '../config-properties/validation-props/input-validation-properties';
+import { GENERAL_DATE_FORMAT } from '../utils/constants';
+import { format } from 'date-fns';
 
 const defaultSettings = {
   type: 'text',
@@ -96,28 +98,33 @@ export default class InputElement extends InputControl {
     this.description = props[CONTROL_PROPS_TYPES.DESCRIPTION];
     this.tooltip = props[CONTROL_PROPS_TYPES.TOOLTIP];
 
-    if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
-      const endDateAttributes = {
-        ...attributes,
-        id: `${attributes.id}-end`,
-        placeholder: props[DATE_DATA_PROPS_TYPES.PLACEHOLDER_END] ?? '',
-        value: props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END],
-      };
-      if (values && values.length > 1) {
-        endDateAttributes.value = values[1];
+    if (this.elementType === ELEMENT_TYPES.DATE_PICKER_JQ) {
+      if (value) {
+        attributes.value = format(value, GENERAL_DATE_FORMAT);
       }
-      return super.render(
-        markup(
-          'div',
-          [
-            markup('div', markup('input', '', { ...attributes, ...attr }), { class: 'col-auto' }),
-            markup('div', markup('input', '', { ...endDateAttributes, ...attr }), {
-              class: 'col-auto',
-            }),
-          ],
-          { class: 'row g-3 align-items-center' },
-        ),
-      );
+      if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+        const endDateAttributes = {
+          ...attributes,
+          id: `${attributes.id}-end`,
+          placeholder: props[DATE_DATA_PROPS_TYPES.PLACEHOLDER_END] ?? '',
+          value: props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END],
+        };
+        if (values && values.length > 1) {
+          endDateAttributes.value = format(values[1], GENERAL_DATE_FORMAT);
+        }
+        return super.render(
+          markup(
+            'div',
+            [
+              markup('div', markup('input', '', { ...attributes, ...attr }), { class: 'col-auto' }),
+              markup('div', markup('input', '', { ...endDateAttributes, ...attr }), {
+                class: 'col-auto',
+              }),
+            ],
+            { class: 'row g-3 align-items-center' },
+          ),
+        );
+      }
     }
 
     return super.render(markup('input', '', { ...attributes, ...attr }));

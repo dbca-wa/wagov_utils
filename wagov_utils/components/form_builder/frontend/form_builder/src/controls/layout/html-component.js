@@ -1,17 +1,16 @@
-import Control from '../../js/fb-control';
+import LayoutControl from '../fb-layout-control';
 import { markup } from '../../js/utils';
 import { CONTROL_PROPS_TYPES, LAYOUT_CONTROL_PROPS_TYPES } from '../utils/control-props-types';
 import { HTMLComponentDisplayProps } from '../config-properties/display-props/layout-display-properties';
 import { CONTROL_TYPES } from '../utils/control-types';
 import Label from '../elements/basics/label';
-import { BasicDataProperties } from '../config-properties/data-props/data-properties';
 import { LAYOUT_TYPES } from '../utils/layout-types';
 
 const defaultSettings = {
   tag: 'div',
 };
 
-export class HTMLComponent extends Control {
+export class HTMLComponent extends LayoutControl {
   elementType = LAYOUT_TYPES.HTML_CONTENT;
   constructor(attr = {}, props = {}) {
     let _props = Object.assign({}, defaultSettings, props);
@@ -20,6 +19,11 @@ export class HTMLComponent extends Control {
     this.label = new Label(props['label']); // Default label
 
     this.setup();
+  }
+
+  toDisplay(container) {
+    const htmlContent = this.renderControl();
+    container.append(htmlContent);
   }
   setup() {
     this.container_class = this.props?.container_class || 'html-block';
@@ -56,5 +60,12 @@ export class HTMLComponent extends Control {
     }
 
     return markup('div', elements, { id: props.id ?? this.id });
+  }
+
+  getDefaultValue() {
+    return this.render();
+  }
+  getElementValue() {
+    return this.render();
   }
 }

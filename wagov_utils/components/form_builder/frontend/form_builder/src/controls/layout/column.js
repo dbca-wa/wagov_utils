@@ -16,7 +16,7 @@ export class Column extends LayoutControl {
 
   toDisplay(container) {
     const props = this.props;
-    const column = markup('div', '', { id: props.id, class: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] });
+    const column = this.render(props);
     container.append(column);
     for (let i = 0; i < this.children.length; i++) {
       const control = this.children[i];

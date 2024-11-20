@@ -20,6 +20,7 @@ export class DropableControl extends LayoutControl {
     super(attr, _props);
     this.area = BuildArea.getInstance();
     this.setup();
+    this.dropableType = LAYOUT_TYPES.DROPABLE;
   }
 
   setup() {
@@ -109,7 +110,6 @@ export class DropableControl extends LayoutControl {
       cursor: 'move',
       scroll: false,
       handle: '.fb-wrapper-content',
-
       tolerance: 'pointer',
       placeholder: 'ui-state-highlight',
       cancel: `.${CLASS_EMPTY_DROPABLE}`,
@@ -118,7 +118,6 @@ export class DropableControl extends LayoutControl {
     this.$c.on('sortupdate', this, function (event, ui) {
       const _this = event.data;
       if (!ui.sender) {
-        const { areaId: sourceAreaId } = this.dataset;
         const { controlId } = ui.item[0].dataset;
         _this.reOrderChildControl(controlId);
         return;
@@ -132,6 +131,8 @@ export class DropableControl extends LayoutControl {
         const { attr, props, controlClass } = getControlFromToolbox(controlType);
         const classDef = controlClass();
         const elm = new classDef(attr, props);
+        if (!_this.canDropControl(elm)) return;
+
         if (_this.children.length === 0) {
           _this.$c.empty();
         }
@@ -149,8 +150,19 @@ export class DropableControl extends LayoutControl {
       const { areaId: sourceAreaId } = ui.sender[0].dataset;
       const { areaId: targetAreaId } = _this.$c[0].dataset;
       const { controlId } = ui.item[0].dataset;
-      _this.area.transferControl(controlId, sourceAreaId, targetAreaId);
+      if (!_this.area.transferControl(controlId, sourceAreaId, targetAreaId)) {
+        ui.sender.sortable('cancel');
+      }
     });
+  }
+
+  canDropControl(control) {
+    if (this.dropableType === LAYOUT_TYPES.EDIT_DROPABLE) {
+      if ([LAYOUT_TYPES.CONTAINER, LAYOUT_TYPES.ROW_COLUMNS, LAYOUT_TYPES.EDIT_GRID].includes(control.elementType)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   toggleEmptyDropableControl() {

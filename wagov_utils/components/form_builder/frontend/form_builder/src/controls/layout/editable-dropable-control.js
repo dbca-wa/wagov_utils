@@ -11,6 +11,7 @@ export class EditableDropableControl extends DropableControl {
   constructor(attr = {}, props = {}) {
     super(attr, props);
     this.elementType = LAYOUT_TYPES.EDIT_DROPABLE;
+    this.dropableType = LAYOUT_TYPES.EDIT_DROPABLE;
   }
 
   addChildControl(control) {
@@ -26,7 +27,7 @@ export class EditableDropableControl extends DropableControl {
   validateValue() {
     if (!this.validationControlProps) return true;
     const props = this.validationControlProps.getPropsValues();
-    const values = this.getFieldValues();
+    const values = this.getFieldValue();
     const errors = [];
     if (
       props[CONTROL_VALIDATION_PROPS_TYPES.MIN_ITEMS] &&
@@ -59,7 +60,7 @@ export class EditableDropableControl extends DropableControl {
     return errors.length === 0;
   }
 
-  getFieldValues() {
+  getFieldValue() {
     if (this.renderer) {
       return this.renderer.getValues();
     }
@@ -69,7 +70,7 @@ export class EditableDropableControl extends DropableControl {
   toDisplay(parentContainer) {
     const props = this.displayControlProps.getPropsValues();
 
-    const container = markup('div', this.dropableType, {
+    const container = markup('div', {
       class: [props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'col', 'row', 'mb-3'].join(' '),
       id: this.id,
       'data-parentAreaId': this.parentAreaId,

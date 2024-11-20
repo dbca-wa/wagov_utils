@@ -26,7 +26,7 @@ class Renderer {
   }
 
   getValues() {
-    return this.control.getFieldValues();
+    return this.control.getFieldValue();
   }
 }
 
@@ -68,7 +68,7 @@ export class MultiControlRenderer extends Renderer {
 
       const col = markup('div', '', { class: 'col control' });
       rowEdition.append(col);
-      this.renderControlEdition($(col), elm, elm.getDefaultValue());
+      this.renderControlEdition($(col), elm, elm?.getDefaultValue());
 
       rowData.controls.push(elm);
     }
@@ -130,15 +130,18 @@ export class MultiControlRenderer extends Renderer {
     const row = _this.rowsData.find((r) => r.id === rowId);
     const { controls } = row;
     let isValid = true;
-    for (let i = 0; i < controls.length; i++) {
+    let i = 0;
+    for (i = 0; i < controls.length; i++) {
       const control = controls[i];
       const controlValid = control.validateValue();
       isValid &= controlValid;
     }
     if (isValid) {
-      for (let i = 0; i < controls.length; i++) {
+      for (i = 0; i < controls.length; i++) {
         const control = controls[i];
-        row.values = { ...row.values, ...control.getFieldValue() };
+        if (typeof control.getFieldValue === 'function') {
+          row.values = { ...row.values, ...control.getFieldValue() };
+        }
         const container = $(`#${rowId} .control`)[i];
         _this.renderControlDisplay($(container), control);
       }

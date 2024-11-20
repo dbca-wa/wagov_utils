@@ -74,17 +74,19 @@ export default class LayoutControl extends Control {
     return isValid;
   }
 
-  getFieldValues() {
+  getFieldValue() {
     const values = {};
-    for (let i = 0; i < this.children.length; i++) {
-      const elm = this.children[i];
-      if (elm.children?.length > 0) {
-        Object.assign(values, elm.getFieldValues());
-      }
-      if (typeof elm?.getFieldValue === 'function') {
-        Object.assign(values, elm.getFieldValue());
-      }
-    }
+    this.children.forEach((elm) => Object.assign(values, elm.getFieldValue()));
+    return values;
+  }
+
+  getElementValue() {
+    return this.getFieldValue();
+  }
+
+  getDefaultValue() {
+    const values = {};
+    this.children.forEach((elm) => Object.assign(values, elm.getDefaultValue()));
     return values;
   }
 

@@ -1,9 +1,8 @@
 import { generateRandomId, markup } from '../../js/utils';
 import { ELEMENT_TYPES } from '../utils/element-types';
 import { ButtonDisplayProps } from '../config-properties/display-props/input-display-properties';
-import Control from '../../js/fb-control';
 import { CONTROL_PROPS_TYPES } from '../utils/control-props-types';
-import { BasicDataProperties } from '../config-properties/data-props/data-properties';
+import LayoutControl from '../fb-layout-control';
 
 const defaultSettings = {
   class: 'form-check-input',
@@ -14,7 +13,7 @@ const defaultProps = {
   [CONTROL_PROPS_TYPES.THEME]: 'primary',
 };
 
-export default class ButtonElement extends Control {
+export default class ButtonElement extends LayoutControl {
   elementType = ELEMENT_TYPES.BUTTON;
   constructor(attr = { value: 'default' }, props = {}) {
     let _attr = Object.assign({}, defaultSettings, attr);
@@ -79,7 +78,9 @@ export default class ButtonElement extends Control {
     }
 
     elements.push(markup('button', children, attributes));
-
-    return super.render(elements, containerClass);
+    return markup('div', elements, {
+      id: `render-${this.id}`,
+      class: containerClass ?? this.props.containerClass,
+    });
   }
 }

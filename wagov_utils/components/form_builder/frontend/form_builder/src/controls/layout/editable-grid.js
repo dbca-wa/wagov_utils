@@ -72,11 +72,11 @@ export class EditableGrid extends RowBlock {
     });
   }
 
-  getFieldValues() {
+  getFieldValue() {
     const props = this.getPropsObject();
     if (!props[CONTROL_API_PROPS_TYPES.FIELD_NAME] || !this.children.length) return {};
     return {
-      [props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]: this.children[0].getFieldValues(),
+      [props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]: this.children[0].getFieldValue(),
     };
   }
 }

@@ -44,16 +44,19 @@ export class BuildArea {
   transferControl(controlId, sourceAreaId, targetAreaId) {
     if (!this.dropables[sourceAreaId] || !this.dropables[targetAreaId]) {
       console.error('Invalid source or target area ID');
-      return;
+      return false;
     }
 
     const control = this.dropables[sourceAreaId].getChildControl(controlId);
     if (control) {
+      if (!this.dropables[targetAreaId].canDropControl(control)) return false;
+
       console.log('Transferring from', sourceAreaId, 'to', targetAreaId);
       this.dropables[targetAreaId].addChildControl(control);
       this.dropables[sourceAreaId].removeChildControl(controlId);
       console.log('Control transferred from', sourceAreaId, 'to', targetAreaId);
     }
+    return true;
   }
 
   getDropableControl(areaId, props = {}, attr = {}) {
@@ -144,7 +147,7 @@ export class BuildArea {
       const isValid = _this.area.validateValue();
       if (isValid) {
         console.log('Form is valid');
-        console.log(_this.area.getFieldValues());
+        console.log(_this.area.getFieldValue());
       } else {
         console.log('Form is invalid');
       }
