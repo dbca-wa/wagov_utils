@@ -2,6 +2,7 @@ export const ELEMENT_CATEGORIES_TYPES = {
   ELEMENT: 'element',
   MULTIPLE_CHOICE: 'elem-multiple-choice',
   LAYOUT: 'layout',
+  DATA: 'data',
 };
 export const ELEMENT_CATEGORIES = {
   [ELEMENT_CATEGORIES_TYPES.ELEMENT]: {
@@ -18,5 +19,10 @@ export const ELEMENT_CATEGORIES = {
     name: ELEMENT_CATEGORIES_TYPES.LAYOUT,
     label: 'Layout',
     icon: 'bi bi-layout-three-columns',
+  },
+  [ELEMENT_CATEGORIES_TYPES.DATA]: {
+    name: ELEMENT_CATEGORIES_TYPES.DATA,
+    label: 'Data',
+    icon: 'bi bi-database',
   },
 };
