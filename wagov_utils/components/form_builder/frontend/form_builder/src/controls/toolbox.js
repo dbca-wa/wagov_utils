@@ -1,4 +1,4 @@
-import { ELEMENT_CATEGORIES, ELEMENT_CATEGORIES_TYPES } from './utils/element-categories';
+import { ELEMENT_CATEGORIES_TYPES } from './utils/element-categories';
 import { ELEMENT_TYPES } from './utils/element-types';
 import { LAYOUT_TYPES } from './utils/layout-types';
 
@@ -85,6 +85,8 @@ export const FORM_CONTROLS = {
       type: LAYOUT_TYPES.CONTAINER,
       icon: 'bi bi-columns',
     },
+  ],
+  [ELEMENT_CATEGORIES_TYPES.DATA]: [
     {
       label: 'Edit Grid',
       type: LAYOUT_TYPES.EDIT_GRID,
