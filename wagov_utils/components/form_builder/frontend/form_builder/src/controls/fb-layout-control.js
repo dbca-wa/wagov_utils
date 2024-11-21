@@ -2,6 +2,7 @@ import { CONTROL_TYPES } from './utils/control-types';
 import Label from './elements/basics/label';
 import Control from '../js/fb-control';
 import { generateRandomId, markup } from '../js/utils';
+import { CONTROL_API_PROPS_TYPES } from './utils/control-props-types';
 
 export default class LayoutControl extends Control {
   container_class = 'formarea-control';
@@ -76,8 +77,10 @@ export default class LayoutControl extends Control {
 
   getFieldValue() {
     const values = {};
+    const props = this.apiControlProps?.getPropsValues() ?? {};
     this.children.forEach((elm) => Object.assign(values, elm.getFieldValue()));
-    return values;
+    const fieldName = props[CONTROL_API_PROPS_TYPES.FIELD_NAME] ?? '';
+    return fieldName ? { [fieldName]: values } : values;
   }
 
   getElementValue() {

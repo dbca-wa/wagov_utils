@@ -92,5 +92,10 @@ export const FORM_CONTROLS = {
       type: LAYOUT_TYPES.EDIT_GRID,
       icon: 'bi bi-layout-three-columns',
     },
+    {
+      label: 'Section',
+      type: LAYOUT_TYPES.SECTION,
+      icon: 'bi bi-layout-split',
+    },
   ],
 };

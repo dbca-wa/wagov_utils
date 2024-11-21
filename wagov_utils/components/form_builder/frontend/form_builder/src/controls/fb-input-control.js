@@ -30,7 +30,7 @@ function extractLabelProps(props = {}) {
 }
 
 export default class InputControl extends Control {
-  container_class = '';
+  container_class = 'py-2';
   elementType;
   description;
   tooltip;
@@ -83,7 +83,7 @@ export default class InputControl extends Control {
   getElementValue() {
     const element = $(this.getIdSelector());
     if (!element) {
-      console.log('Element not found', { elem: this });
+      console.error('Element not found', { elem: this });
       return '';
     }
     if (this.elementType === INPUT_TYPES.RADIO) {

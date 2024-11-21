@@ -30,6 +30,7 @@
     "handlebars-loader": "^1.7.3",
     "jquery": "^3.7.1",
     "jquery-mask-plugin": "^1.14.16",
+    "jquery-toast-plugin": "^1.3.2",
     "jquery-ui": "^1.14.0",
     "webpack-node-externals": "^3.0.0"
   },

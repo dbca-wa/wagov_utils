@@ -82,13 +82,13 @@ export class RowBlock extends LayoutControl {
     if (this.$p) {
       const props = this.displayControlProps.getPropsValues();
       this.$p.empty().append(this.renderControl());
-
+      const container = this.$p.find('.row')?.first() ?? this.$p.find(this.getIdSelector());
       for (let i = 0; i < this.children.length; i++) {
         const dropable = this.children[i];
         const { id, size, width } = props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS][i];
 
         dropable.props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] = `col-${size}-${width}`;
-        dropable.setContainer(this.$p.find(this.getIdSelector()), true);
+        dropable.setContainer(container, true);
       }
     }
   }
@@ -96,9 +96,11 @@ export class RowBlock extends LayoutControl {
   toDisplay(container) {
     const parent = this.render();
     container.append(parent);
+    const row = $(parent).find('.row')?.first();
+
     for (let i = 0; i < this.children.length; i++) {
       const column = this.children[i];
-      column.toDisplay(parent);
+      column.toDisplay(row);
     }
   }
 
@@ -136,6 +138,7 @@ export class RowBlock extends LayoutControl {
 
   render(customProps, includeDropables = false) {
     const nodes = [];
+    nodes.push(markup('div', '', { class: 'row' }));
 
     return markup('div', nodes, { class: this.container_class, id: this.id });
   }

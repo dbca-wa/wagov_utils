@@ -20,6 +20,7 @@ import DatePicker from './elements/jquery/date-picker';
 import FileUploadElement from './elements/file-upload';
 import { EditableGrid } from './layout/editable-grid';
 import { EditableDropableControl } from './layout/editable-dropable-control';
+import { SectionComponent } from './layout/section-component';
 
 export const CONTROLS_STORE = {
   [ELEMENT_TYPES.INPUT]: {
@@ -282,16 +283,6 @@ export const LAYOUT_STORE = {
     icon: 'fa fa-font',
     controlClass: () => ContainerBlock,
   },
-  [LAYOUT_TYPES.EDIT_GRID]: {
-    description: 'A grid for editing',
-    props: {
-      [CONTROL_PROPS_TYPES.LABEL]: 'Editable Grid',
-      [CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT]: 'Table',
-    },
-    attr: {},
-    icon: 'fa fa-font',
-    controlClass: () => EditableGrid,
-  },
   [LAYOUT_TYPES.HTML_CONTENT]: {
     description: 'A block of custom HTML code',
     props: {
@@ -306,7 +297,29 @@ export const LAYOUT_STORE = {
   },
 };
 
-export const BUILDER_TOOLBOX = Object.assign({}, CONTROLS_STORE, SPECIAL_INPUT_STORE, LAYOUT_STORE);
+export const DATA_STORE = {
+  [LAYOUT_TYPES.EDIT_GRID]: {
+    description: 'A grid for editing',
+    props: {
+      [CONTROL_PROPS_TYPES.LABEL]: 'Editable Grid',
+      [CONTROL_API_PROPS_TYPES.FIELD_NAME_DEFAULT]: 'Table',
+    },
+    attr: {},
+    icon: 'fa fa-font',
+    controlClass: () => EditableGrid,
+  },
+  [LAYOUT_TYPES.SECTION]: {
+    description: 'A section',
+    props: {
+      [CONTROL_PROPS_TYPES.LABEL]: 'Section',
+    },
+    attr: {},
+    icon: 'fa fa-font',
+    controlClass: () => SectionComponent,
+  },
+};
+
+export const BUILDER_TOOLBOX = Object.assign({}, CONTROLS_STORE, SPECIAL_INPUT_STORE, LAYOUT_STORE, DATA_STORE);
 
 export const getControlFromToolbox = (type) => {
   try {

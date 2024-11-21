@@ -55,8 +55,9 @@ export class BuildArea {
       this.dropables[targetAreaId].addChildControl(control);
       this.dropables[sourceAreaId].removeChildControl(controlId);
       console.log('Control transferred from', sourceAreaId, 'to', targetAreaId);
+      return true;
     }
-    return true;
+    return false;
   }
 
   getDropableControl(areaId, props = {}, attr = {}) {

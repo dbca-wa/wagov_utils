@@ -152,16 +152,27 @@ export class DropableControl extends LayoutControl {
       const { controlId } = ui.item[0].dataset;
       if (!_this.area.transferControl(controlId, sourceAreaId, targetAreaId)) {
         ui.sender.sortable('cancel');
+        console.error('Transfer failed');
       }
     });
   }
 
   canDropControl(control) {
-    // if (this.dropableType === LAYOUT_TYPES.EDIT_DROPABLE) {
-    //   if ([LAYOUT_TYPES.CONTAINER, LAYOUT_TYPES.ROW_COLUMNS, LAYOUT_TYPES.EDIT_GRID].includes(control.elementType)) {
-    //     return false;
-    //   }
-    // }
+    if (this.dropableType === LAYOUT_TYPES.EDIT_DROPABLE) {
+      if (
+        [LAYOUT_TYPES.CONTAINER, LAYOUT_TYPES.ROW_COLUMNS, LAYOUT_TYPES.EDIT_GRID, LAYOUT_TYPES.SECTION].includes(
+          control.elementType,
+        )
+      ) {
+        const { props } = getControlFromToolbox(control.elementType);
+        $.toast({
+          text: `Unable to add a ${props.label} in this area`,
+          showHideTransition: 'slide',
+          position: 'top-right',
+        });
+        return false;
+      }
+    }
     return true;
   }
 
@@ -229,7 +240,7 @@ export class DropableControl extends LayoutControl {
     const props = this.displayControlProps.getPropsValues();
     const isRowDisplay = props[LAYOUT_CONTROL_PROPS_TYPES.DISPLAY_DIRECTION] === 'row';
     const container = markup('div', '', {
-      class: [props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'col', isRowDisplay ? 'row' : '', 'my-3'].join(' '),
+      class: [props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'col', isRowDisplay ? 'row' : ''].join(' '),
       id: this.id,
       'data-parentAreaId': this.parentAreaId,
       'data-areaId': this.areaId,
