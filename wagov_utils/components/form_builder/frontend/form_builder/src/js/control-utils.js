@@ -24,6 +24,7 @@ export const getDatepickerOptionsFromProps = (props, isStartDate = false) => {
     changeMonth: true,
     changeYear: true,
     dateFormat: 'dd-mm-yy',
+    yearRange: 'c-100:c+10',
   };
   const isDateRange = props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE];
 
