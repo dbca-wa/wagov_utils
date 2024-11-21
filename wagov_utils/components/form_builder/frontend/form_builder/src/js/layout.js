@@ -95,6 +95,7 @@ export default class LayoutController {
         console.error(error);
       }
     });
+    this.buildArea.area.toggleEmptyDropableControl();
   }
 
   addMenuButtonsEvents() {
