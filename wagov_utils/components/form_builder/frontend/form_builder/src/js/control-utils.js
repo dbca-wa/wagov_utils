@@ -19,23 +19,36 @@ export const activateTooltips = (parent, selector = '') => {
   [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
 };
 
-export const getDatepickerOptionsFromProps = (props) => {
+export const getDatepickerOptionsFromProps = (props, isStartDate = false) => {
   const options = {
     changeMonth: true,
     changeYear: true,
     dateFormat: 'dd-mm-yy',
   };
+  const isDateRange = props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE];
+
+  let maxDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]);
+  let minDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]);
+  let defaultDate = getRelativeDateFromValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]);
+  let defaultEndDate = getRelativeDateFromValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END]);
+
+  if (isDateRange && !isStartDate) {
+    if (defaultDate && !minDate) {
+      minDate = defaultDate;
+    }
+  }
+
+  options.defaultDate = isStartDate ? (defaultDate ? defaultDate : null) : defaultEndDate ? defaultEndDate : null;
+
   if (props[DATE_DATA_PROPS_TYPES.DISABLE_WEEKENDS] == true) {
     options.beforeShowDay = $.datepicker.noWeekends;
   }
-  if (props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]) {
-    options.defaultDate = getRelativeDateFromValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]);
+
+  if (minDate) {
+    options.minDate = minDate;
   }
-  if (props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]) {
-    options.minDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]);
-  }
-  if (props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]) {
-    options.maxDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]);
+  if (maxDate) {
+    options.maxDate = maxDate;
   }
 
   if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
@@ -96,6 +109,7 @@ export const getRelativeDateFromValue = (config) => {
     return '';
   }
 };
+
 export const getRelativeDateValue = (config, dateFormat = GENERAL_DATE_FORMAT) => {
   const date = getRelativeDateFromValue(config);
   if (date) return format(date, dateFormat);
@@ -157,4 +171,40 @@ const getFilteredDate = (date, condition, period) => {
     default:
       return date;
   }
+};
+
+export const validateDatesEdges = (startDate, endDate, minDate, maxDate) => {
+  const errors = [];
+  if (!startDate && !endDate && !minDate && !maxDate) return errors;
+  if (minDate && maxDate) {
+    if (minDate > maxDate) {
+      errors.push('The Min date must be earlier than the Max date');
+    }
+  }
+  if (startDate && maxDate) {
+    if (startDate > maxDate) {
+      errors.push("The start date can't be later than the Max date");
+    }
+  }
+  if (startDate && minDate) {
+    if (startDate < minDate) {
+      errors.push("The start date can't be earlier than the Min date");
+    }
+  }
+  if (startDate && endDate) {
+    if (startDate > endDate) {
+      errors.push('The start date must be earlier or the same as the End date');
+    }
+  }
+  if (endDate && maxDate) {
+    if (endDate > maxDate) {
+      errors.push("The End date can't be later than the Max date");
+    }
+  }
+  if (endDate && minDate) {
+    if (endDate < minDate) {
+      errors.push("The End date can't be earlier than the Min date");
+    }
+  }
+  return errors;
 };

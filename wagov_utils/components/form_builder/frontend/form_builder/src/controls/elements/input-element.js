@@ -110,7 +110,11 @@ export default class InputElement extends InputControl {
           value: props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END],
         };
         if (values && values.length > 1) {
-          endDateAttributes.value = format(values[1], GENERAL_DATE_FORMAT);
+          try {
+            endDateAttributes.value = format(values[1], GENERAL_DATE_FORMAT);
+          } catch (error) {
+            endDateAttributes.value = values[1];
+          }
         }
         return super.render(
           markup(

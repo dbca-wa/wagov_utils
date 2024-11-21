@@ -46,6 +46,10 @@ export class BaseControlProps {
     }
   }
 
+  showProp(propName) {
+    this.modifyPropVisibility(propName, false);
+  }
+
   hideProp(propName) {
     this.modifyPropVisibility(propName, true);
   }

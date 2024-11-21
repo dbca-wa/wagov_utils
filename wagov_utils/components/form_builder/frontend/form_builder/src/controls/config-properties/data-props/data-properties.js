@@ -102,10 +102,13 @@ export class DatePickerDataProperties extends BaseDataProps {
     super(definition, dateDataPropertiesStore);
     this.fillInProps(props);
 
-    if (this.props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
-      this.modifyPropVisibility(DATE_DATA_PROPS_TYPES.PLACEHOLDER_END, false);
-      this.modifyPropVisibility(DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END, false);
-    }
+    this.modifyLocalProps();
+  }
+
+  modifyLocalProps() {
+    const isDateRange = this.props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]?.prop?.value;
+    this.modifyPropVisibility(DATE_DATA_PROPS_TYPES.PLACEHOLDER_END, !isDateRange);
+    this.modifyPropVisibility(DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END, !isDateRange);
   }
 
   _onDataPropsChange(e) {

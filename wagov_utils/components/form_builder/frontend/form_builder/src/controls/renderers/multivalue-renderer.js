@@ -276,8 +276,10 @@ export class MultiControlRenderer extends Renderer {
       } else {
         controlDisplay = markup('div', value.join(', '));
       }
+    } else if (control.elementType === ELEMENT_TYPES.DATE_PICKER_JQ) {
+      controlDisplay = markup('div', format(value, GENERAL_DATE_FORMAT));
     } else {
-      controlDisplay = markup('div', value);
+      controlDisplay = markup('div', `${value}`);
     }
     container.empty();
     if (isChild) {

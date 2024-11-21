@@ -143,8 +143,7 @@ export class DynamicTableControl {
                 e.preventDefault();
                 const { rowId } = e.target.dataset;
                 if (rowId) {
-                  debugger;
-                  document.querySelector(`#${this.id} ${rowId}`).remove();
+                  document.querySelector(`#${_this.id} #${rowId}`).remove();
                 }
                 _this.changeHandler.fn({ data: { ..._this.changeHandler.context }, value: _this.extractData() });
               },

@@ -168,7 +168,7 @@ export const dateDataPropertiesStore = {
     placeholder: 'to',
     required: false,
     options: undefined,
-    value: true,
+    value: false,
   },
   [DATE_DATA_PROPS_TYPES.PLACEHOLDER_END]: {
     name: 'placeholderEnd',

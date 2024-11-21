@@ -297,8 +297,9 @@ export default class FileUploadElement extends InputElement {
             },
             {
               tag: 'button',
-              content: { tag: 'i', class: 'bi bi-trash' },
-              class: 'btn btn-sm  btn-outline-danger flex-shrink-0 me-2',
+              // content: { tag: 'i', class: 'bi bi-trash' },
+              content: 'Delete',
+              class: 'btn btn-sm  btn-danger flex-shrink-0 me-2',
               'data-file-id': fileData.id,
             },
           ],

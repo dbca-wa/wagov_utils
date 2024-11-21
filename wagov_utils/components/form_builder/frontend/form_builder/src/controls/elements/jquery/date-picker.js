@@ -26,9 +26,11 @@ export default class DatePicker extends InputElement {
   }
 
   afterRender() {
-    const props = this.getPropsObject();
-    const datePickerOptions = getDatepickerOptionsFromProps(props);
     const control = this;
+    const props = this.getPropsObject();
+
+    const datePickerOptions = getDatepickerOptionsFromProps(props, true);
+
     $(this.getIdSelector())
       .datepicker({
         ...datePickerOptions,
@@ -39,7 +41,6 @@ export default class DatePicker extends InputElement {
         if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
           const endDateElm = $(control.getIdSelector() + '-end');
           if (date) {
-            endDateElm.datepicker('option', 'minDate', date);
             setTimeout(() => {
               endDateElm.datepicker('show');
             }, 100);
@@ -50,10 +51,7 @@ export default class DatePicker extends InputElement {
         }
       });
     if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
-      const endDatePickerOptions = getDatepickerOptionsFromProps({
-        ...props,
-        [DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]: props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END],
-      });
+      const endDatePickerOptions = getDatepickerOptionsFromProps(props);
 
       $(this.getIdSelector() + '-end')
         .datepicker({
@@ -61,12 +59,6 @@ export default class DatePicker extends InputElement {
         })
         .on('change', { control, props, datePickerOptions }, function (event) {
           const { control, props, datePickerOptions } = event.data;
-          const date = $(this).datepicker('getDate');
-          if (date) {
-            $(control.getIdSelector()).datepicker('option', 'maxDate', date);
-          } else {
-            $(control.getIdSelector()).datepicker('option', 'maxDate', datePickerOptions?.maxDate);
-          }
           control.validateValue();
         });
     }

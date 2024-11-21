@@ -6,7 +6,12 @@ import {
 } from '../controls/utils/control-props-types';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
-import { activateTooltips, getDatepickerOptionsFromProps, getRelativeDateFromValue } from '../js/control-utils';
+import {
+  activateTooltips,
+  getDatepickerOptionsFromProps,
+  getRelativeDateFromValue,
+  validateDatesEdges,
+} from '../js/control-utils';
 import { BuildArea } from '../js/fb-build-area';
 import Control from '../js/fb-control';
 import { appSelectors } from '../js/selectors';
@@ -75,6 +80,10 @@ export default class ControlEdition extends Control {
         ..._this.control.validationControlProps?.getPropsValues(),
         ..._this.control.apiControlProps?.getPropsValues(),
       };
+
+      $m.find('#control-edition-title').text(
+        _this.initialProps[CONTROL_API_PROPS_TYPES.FIELD_NAME] || _this.control.constructor.name,
+      );
       _this._renderPreviewControl();
 
       $('#display-tab').trigger('click');
@@ -129,7 +138,10 @@ export default class ControlEdition extends Control {
       $('#preview-edition ' + this.control.getIdSelector()).mask(props[CONTROL_PROPS_TYPES.DISPLAY_MASK]);
     }
     if (this.control.elementType == ELEMENT_TYPES.DATE_PICKER_JQ) {
-      $('#preview-edition ' + this.control.getIdSelector()).datepicker(getDatepickerOptionsFromProps(props));
+      $('#preview-edition ' + this.control.getIdSelector()).datepicker(getDatepickerOptionsFromProps(props, true));
+      if (props[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
+        $('#preview-edition ' + this.control.getIdSelector() + '-end').datepicker(getDatepickerOptionsFromProps(props));
+      }
     }
     $('#preview-edition .alert.alert-danger')?.remove();
     if (Object.keys(errors).length > 0) {
@@ -190,35 +202,18 @@ export default class ControlEdition extends Control {
         return;
       }
       if (_this.control.elementType === ELEMENT_TYPES.DATE_PICKER_JQ) {
-        let minDate = null;
-        let maxDate = null;
-        if (props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]) {
-          minDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]);
-        }
-        if (props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]) {
-          maxDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]);
-        }
-        if (minDate && maxDate) {
-          if (minDate > maxDate) {
-            alert('Minimum default date must be earlier than the Maximum default date');
-            $('#validation-tab').trigger('click');
-            return;
-          }
-        }
-        let startDefaultDate = null;
-        let endDefaultDate = null;
-        if (props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]) {
-          startDefaultDate = getRelativeDateFromValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]);
-        }
-        if (props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END]) {
-          endDefaultDate = getRelativeDateFromValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END]);
-        }
-        if (startDefaultDate && endDefaultDate) {
-          if (startDefaultDate > endDefaultDate) {
-            alert('Start default date must be earlier than the End default date');
-            $('#data-tab').trigger('click');
-            return;
-          }
+        let minDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MIN_DATE]);
+        let maxDate = getRelativeDateFromValue(props[CONTROL_VALIDATION_PROPS_TYPES.MAX_DATE]);
+        let startDefaultDate = getRelativeDateFromValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]);
+        let endDefaultDate = getRelativeDateFromValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END]);
+        let dateErrors = validateDatesEdges(startDefaultDate, endDefaultDate, minDate, maxDate);
+        if (dateErrors.length > 0) {
+          _this.addError('Invalid Dates', dateErrors.join('.\n'));
+          $('#validation-tab').trigger('click');
+          _this._renderPreviewControl();
+          return;
+        } else {
+          _this.removeError('Invalid Dates');
         }
       }
     }
