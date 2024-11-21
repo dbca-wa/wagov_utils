@@ -313,9 +313,13 @@ export class MultiControlRenderer extends Renderer {
       type: 'button',
     });
 
-    divContainer.append(header);
-    divContainer.append(rows);
-    divContainer.append(buttonAdd);
+    if (this.controls.length > 0) {
+      divContainer.append(header);
+      divContainer.append(rows);
+      divContainer.append(buttonAdd);
+    } else {
+      divContainer.append(markup('div', 'No controls defined', { class: 'text-center text-muted py-3' }));
+    }
 
     return divContainer;
   }

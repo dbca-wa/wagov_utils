@@ -44,20 +44,19 @@ export class BuildArea {
   transferControl(controlId, sourceAreaId, targetAreaId) {
     if (!this.dropables[sourceAreaId] || !this.dropables[targetAreaId]) {
       console.error('Invalid source or target area ID');
-      return false;
+      return { revert: true };
     }
 
     const control = this.dropables[sourceAreaId].getChildControl(controlId);
     if (control) {
-      if (!this.dropables[targetAreaId].canDropControl(control)) return false;
-
+      if (!this.dropables[targetAreaId].canDropControl(control)) return { revert: true };
       console.log('Transferring from', sourceAreaId, 'to', targetAreaId);
       this.dropables[targetAreaId].addChildControl(control);
       this.dropables[sourceAreaId].removeChildControl(controlId);
       console.log('Control transferred from', sourceAreaId, 'to', targetAreaId);
-      return true;
+      return { success: true };
     }
-    return false;
+    return { success: false };
   }
 
   getDropableControl(areaId, props = {}, attr = {}) {

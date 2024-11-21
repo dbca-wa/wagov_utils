@@ -150,9 +150,9 @@ export class DropableControl extends LayoutControl {
       const { areaId: sourceAreaId } = ui.sender[0].dataset;
       const { areaId: targetAreaId } = _this.$c[0].dataset;
       const { controlId } = ui.item[0].dataset;
-      if (!_this.area.transferControl(controlId, sourceAreaId, targetAreaId)) {
+      const { revert } = _this.area.transferControl(controlId, sourceAreaId, targetAreaId);
+      if (revert) {
         ui.sender.sortable('cancel');
-        console.error('Transfer failed');
       }
     });
   }
