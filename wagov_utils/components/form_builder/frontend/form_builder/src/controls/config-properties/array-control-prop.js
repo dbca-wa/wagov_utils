@@ -12,7 +12,7 @@ export class ArrayControlProp extends ControlProp {
   renderProp() {
     try {
       const { structure, sortable, hidden } = this.prop.props;
-      if (hidden) return markup('div');
+      if (hidden || this.prop.hide) return markup('div');
 
       this.table = new DynamicTableControl({ id: this.id }, { structure, values: this.prop.value, sortable, hidden });
     } catch (error) {

@@ -50,6 +50,7 @@ export class RowBlock extends LayoutControl {
 
   initialColumnsSetup() {
     const props = this.displayControlProps.getPropsValues();
+    const autoAdjustColumns = props[LAYOUT_CONTROL_PROPS_TYPES.AUTO_ADJUST_COLUMNS];
     const children = this.children || [];
     for (let i = 0; i < props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS].length; i++) {
       const { id, size, width } = props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS][i];
@@ -59,7 +60,7 @@ export class RowBlock extends LayoutControl {
           props: {
             id: id,
             dropableType: this.dropableType,
-            [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col-${size}-${width}`,
+            [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col${autoAdjustColumns ? '' : `-${size}-${width}`}`,
             ...colData.props,
           },
         });
@@ -70,7 +71,7 @@ export class RowBlock extends LayoutControl {
           id,
           areaId: id,
           dropableType: this.dropableType,
-          [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col-${size}-${width}`,
+          [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col${autoAdjustColumns ? '' : `-${size}-${width}`}`,
         });
         this.children.push(dropable);
       }
@@ -81,13 +82,16 @@ export class RowBlock extends LayoutControl {
     if (parent) this.setParent(parent);
     if (this.$p) {
       const props = this.displayControlProps.getPropsValues();
-      this.$p.empty().append(this.renderControl());
+      const autoAdjustColumns = props[LAYOUT_CONTROL_PROPS_TYPES.AUTO_ADJUST_COLUMNS];
+
+      this.$p.empty().append(this.renderControl(props));
       const container = this.$p.find('.row')?.first() ?? this.$p.find(this.getIdSelector());
+
       for (let i = 0; i < this.children.length; i++) {
         const dropable = this.children[i];
         const { id, size, width } = props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS][i];
 
-        dropable.props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] = `col-${size}-${width}`;
+        dropable.props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] = `col${autoAdjustColumns ? '' : `-${size}-${width}`}`;
         dropable.setContainer(container, true);
       }
     }
@@ -107,6 +111,8 @@ export class RowBlock extends LayoutControl {
   renderControl(isDisplayMode = false) {
     const _this = this;
     const props = _this.getPropsObject();
+    props[CONTROL_PROPS_TYPES.HIDE_LABEL] = false;
+    const autoAdjustColumns = props[LAYOUT_CONTROL_PROPS_TYPES.AUTO_ADJUST_COLUMNS];
     const existingDropableIds = [..._this.children.map((child) => child.id)];
     const tmpchildren = [];
 
@@ -114,7 +120,10 @@ export class RowBlock extends LayoutControl {
       const { id, size, width } = props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS][i];
       const dropable = _this.children.find((child) => child.id === id);
       if (dropable) {
-        dropable.displayControlProps.modifyPropValue(CONTROL_PROPS_TYPES.CUSTOM_CLASS, `col-${size}-${width}`);
+        dropable.displayControlProps.modifyPropValue(
+          CONTROL_PROPS_TYPES.CUSTOM_CLASS,
+          `col${autoAdjustColumns ? '' : `-${size}-${width}`}`,
+        );
         tmpchildren.push(dropable);
         existingDropableIds.splice(existingDropableIds.indexOf(id), 1);
       } else {
@@ -123,7 +132,7 @@ export class RowBlock extends LayoutControl {
 
           dropableType: this.dropableType,
           areaId: id,
-          [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col-${size}-${width}`,
+          [CONTROL_PROPS_TYPES.CUSTOM_CLASS]: `col${autoAdjustColumns ? '' : `-${size}-${width}`}`,
         });
         tmpchildren.push(dropable);
       }

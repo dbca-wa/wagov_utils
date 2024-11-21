@@ -294,7 +294,7 @@ export class MultiControlRenderer extends Renderer {
     const divContainer = markup('div', '', { class: 'r-multi-control', id: this.id });
 
     const header = markup('div', '', {
-      class: 'row p-3 bg-dark bg-opacity-10 border border-3 border-start-0 border-end-0',
+      class: 'row p-1 bg-dark bg-opacity-10 border border-3 border-start-0 border-end-0',
     });
     for (let i = 0; i < this.controls.length; i++) {
       const elm = this.controls[i];

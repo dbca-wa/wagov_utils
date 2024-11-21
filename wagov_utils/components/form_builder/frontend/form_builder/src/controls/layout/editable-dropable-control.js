@@ -71,7 +71,7 @@ export class EditableDropableControl extends DropableControl {
     const props = this.displayControlProps.getPropsValues();
 
     const container = markup('div', '', {
-      class: [props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'col', 'row', 'mb-3'].join(' '),
+      class: [props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '', 'px-4', 'mb-3'].join(' '),
       id: this.id,
       'data-parentAreaId': this.parentAreaId,
       'data-areaId': this.areaId,

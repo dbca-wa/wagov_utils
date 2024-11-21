@@ -48,6 +48,15 @@ export const layoutPropertiesStore = {
     options: undefined,
     value: '',
   },
+  [LAYOUT_CONTROL_PROPS_TYPES.AUTO_ADJUST_COLUMNS]: {
+    name: 'autoAdjustColumns',
+    title: 'Auto Adjust Columns',
+    type: 'boolean',
+    placeholder: 'Enter a auto adjust columns',
+    required: true,
+    options: undefined,
+    value: false,
+  },
   [LAYOUT_CONTROL_PROPS_TYPES.DISPLAY_DIRECTION]: {
     name: 'displayDirection',
     title: 'Display Direction',

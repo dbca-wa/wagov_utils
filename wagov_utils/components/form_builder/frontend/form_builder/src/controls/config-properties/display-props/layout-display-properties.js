@@ -9,6 +9,7 @@ const columnsProps = [
   CONTROL_PROPS_TYPES.CUSTOM_CLASS,
   LAYOUT_CONTROL_PROPS_TYPES.DISPLAY_DIRECTION,
   LAYOUT_CONTROL_PROPS_TYPES.COLUMNS,
+  LAYOUT_CONTROL_PROPS_TYPES.AUTO_ADJUST_COLUMNS,
 ];
 const HTMLComponentProps = [
   CONTROL_PROPS_TYPES.LABEL,
@@ -42,7 +43,10 @@ export class ContainerDisplayBlock extends BaseDisplayProps {
 
 export class ColumnsDisplayProps extends BaseDisplayProps {
   constructor(type, props) {
-    const propsList = columnsProps.concat(type === LAYOUT_TYPES.EDIT_GRID ? [CONTROL_PROPS_TYPES.HIDE_LABEL] : []);
+    const propsList = columnsProps;
+    if ([LAYOUT_TYPES.SECTION, LAYOUT_TYPES.EDIT_GRID].includes(type)) {
+      propsList.push(CONTROL_PROPS_TYPES.HIDE_LABEL);
+    }
     super(propsList);
     this.fillInProps(props);
     if (props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS]) {
@@ -55,10 +59,8 @@ export class ColumnsDisplayProps extends BaseDisplayProps {
       );
     }
     if ([LAYOUT_TYPES.EDIT_GRID, LAYOUT_TYPES.CONTAINER].includes(type)) {
-      const _props = this.props[LAYOUT_CONTROL_PROPS_TYPES.COLUMNS].prop.props;
-      this.modifyProp(LAYOUT_CONTROL_PROPS_TYPES.COLUMNS, {
-        props: { ..._props, hidden: true },
-      });
+      this.hideProp(LAYOUT_CONTROL_PROPS_TYPES.COLUMNS);
+      this.hideProp(LAYOUT_CONTROL_PROPS_TYPES.AUTO_ADJUST_COLUMNS);
     }
   }
 }

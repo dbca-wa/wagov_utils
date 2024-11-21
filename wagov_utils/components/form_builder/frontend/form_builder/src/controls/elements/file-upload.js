@@ -147,7 +147,7 @@ export default class FileUploadElement extends InputElement {
 
     return markup('div', content, {
       id: this.id + '-container',
-      class: ['filecontainer', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '', 'my-3'].join(' '),
+      class: ['filecontainer', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '', 'py-2'].join(' '),
     });
   }
 

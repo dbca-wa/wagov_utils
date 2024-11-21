@@ -108,6 +108,7 @@ export const DATASOURCE_PROPS_TYPES = {
 
 export const LAYOUT_CONTROL_PROPS_TYPES = {
   COLUMNS: 'columns',
+  AUTO_ADJUST_COLUMNS: 'autoAdjustColumns',
   DISPLAY_DIRECTION: 'displayDirection',
   TITLE: 'title',
   NUM_ROWS: 'numRows',

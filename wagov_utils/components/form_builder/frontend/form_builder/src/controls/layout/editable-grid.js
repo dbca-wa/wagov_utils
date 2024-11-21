@@ -30,6 +30,7 @@ export class EditableGrid extends RowBlock {
   setup() {
     this.elementType = LAYOUT_TYPES.EDIT_GRID;
     this.dropableType = LAYOUT_TYPES.EDIT_DROPABLE;
+    this.container_class = 'editable-grid';
 
     this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] =
       this.props[CONTROL_API_PROPS_TYPES.FIELD_NAME] ||
@@ -55,7 +56,7 @@ export class EditableGrid extends RowBlock {
     const label = props[CONTROL_PROPS_TYPES.LABEL];
     const hideLabel = props[CONTROL_PROPS_TYPES.HIDE_LABEL];
     if (label && !hideLabel) {
-      nodes.push(markup('label', label, { for: this.id, class: 'mt-2' }));
+      nodes.push(markup('div', label, { class: 'editable-grid-header' }));
     }
     this.children.forEach((child) => {
       child.validationControlProps?.modifyPropValue(
@@ -67,8 +68,9 @@ export class EditableGrid extends RowBlock {
         props[CONTROL_VALIDATION_PROPS_TYPES.MAX_ITEMS],
       );
     });
-    return markup('div', [...nodes, super.render(customProps, includeDropables)], {
-      class: props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || 'container',
+    return markup('div', [...nodes, markup('div', markup('div', '', { class: 'row' }))], {
+      class: [props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] || '', this.container_class].join(' '),
+      id: this.id,
     });
   }
 
