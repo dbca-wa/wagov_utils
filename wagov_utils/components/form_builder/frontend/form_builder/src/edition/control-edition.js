@@ -6,16 +6,12 @@ import {
 } from '../controls/utils/control-props-types';
 import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
-import {
-  activateTooltips,
-  getDatepickerOptionsFromProps,
-  getRelativeDateFromValue,
-  validateDatesEdges,
-} from '../js/control-utils';
+import { activateTooltips, getDatepickerOptionsFromProps, getRelativeDateFromValue } from '../js/control-utils';
 import { BuildArea } from '../js/fb-build-area';
 import Control from '../js/fb-control';
 import { appSelectors } from '../js/selectors';
 import { compareMinMaxIntegers, generateRandomId, markup } from '../js/utils';
+import { validateDatesEdges } from '../js/validation-utils';
 import controlWrapperTemplate from '../views/control-edition/control-edition-wrapper.handlebars';
 import Modal from 'bootstrap/js/dist/modal.js';
 

@@ -86,6 +86,12 @@ export class ControlProp {
 
     if (this.prop.name === CONTROL_PROPS_TYPES.CUSTOM_CLASS || ['select', 'multi-select'].includes(this.prop.type)) {
       $(`#${this.id}`).on('change', { context, prop: this.prop }, cb);
+      if (this.prop.type === 'multi-select') {
+        $(`#${this.id}`).on('change', { context, prop: this.prop }, (event) => {
+          const values = $(event.target).val() ?? [];
+          $(`#${this.id}-values`).text(values.join(', '));
+        });
+      }
     } else if (['string', 'number', 'email', 'date', 'textarea', 'tel'].includes(this.prop.type)) {
       $(`#${this.id}`).on('input', { context, prop: this.prop }, cb);
     }
@@ -132,6 +138,7 @@ export function _renderProp(basicProps, options = [], validations = {}) {
 
   if (inputType === 'select' || inputType === 'multi-select') {
     let values = [];
+    const showValues = inputType === 'multi-select';
     if (inputType === 'multi-select') {
       generalProps.multiple = true;
       values = !Array.isArray(value) ? value.split(',') : value;
@@ -156,7 +163,12 @@ export function _renderProp(basicProps, options = [], validations = {}) {
 
       selectEl.appendChild(optionEl);
     }
-    return selectEl;
+    return showValues
+      ? markup('div', [
+          selectEl,
+          markup('span', '', { class: 'text-muted mt-2', id: `${id}-values`, style: 'font-size: 12px;' }),
+        ])
+      : selectEl;
   }
   if (inputType === 'checkbox') {
     const checkboxProps = {

@@ -272,7 +272,7 @@ export default class FileUploadElement extends InputElement {
     const renderAsImage = props[FILE_DATA_PROPS_TYPES.DISPLAY_AS_IMAGES] && fileData.type.startsWith('image/');
     const isMultipleFiles = props[FILE_DATA_PROPS_TYPES.MULTIPLE_FILES];
     const fileElement = markup(
-      'row',
+      'div',
       [
         {
           tag: 'div',
@@ -311,12 +311,15 @@ export default class FileUploadElement extends InputElement {
         class: ['d-flex text-body-secondary py-2', isMultipleFiles ? ' border-bottom' : ''].join(' '),
       },
     );
+    if (!isMultipleFiles) $(`#${this.id}-container .files-list`).addClass('p-2 border border-light');
     $(`#${this.id}-container .files-list`).show().append(fileElement);
     $(`#${fileData.id} button`).on('click', this, function (e) {
       const _this = e.data;
       const fileId = $(this).data('file-id');
       _this.files = _this.files.filter((f) => f.id !== fileId);
       $(`#${fileData.id}`).remove();
+      $(`#${_this.id}-container .files-list`).removeClass('p-2 border border-light');
+
       $(`#${_this.id}-container .file-selector`).show();
     });
     $(`#${fileData.id} select`).on('change', this, function (e) {

@@ -19,6 +19,11 @@ export const runInputFieldValidations = (value, control) => {
       return errors;
     }
   }
+  const pattern = validationProps[CONTROL_VALIDATION_PROPS_TYPES.REGEX];
+  if (pattern && !new RegExp(pattern).test(value)) {
+    errors.push("This value doesn't match the pattern " + pattern);
+    return errors;
+  }
 
   const minTextLength = validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_LENGTH];
   if (minTextLength) {
@@ -62,6 +67,42 @@ export const runInputFieldValidations = (value, control) => {
         validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_CHECKED_ERROR_MESSAGE] ||
           `Select no more than ${maxChecked} option${maxChecked > 1 ? 's' : ''}`,
       );
+    }
+  }
+  return errors;
+};
+
+export const validateDatesEdges = (startDate, endDate, minDate, maxDate) => {
+  const errors = [];
+  if (!startDate && !endDate && !minDate && !maxDate) return errors;
+  if (minDate && maxDate) {
+    if (minDate > maxDate) {
+      errors.push('The Min date must be earlier than the Max date');
+    }
+  }
+  if (startDate && maxDate) {
+    if (startDate > maxDate) {
+      errors.push("The start date can't be later than the Max date");
+    }
+  }
+  if (startDate && minDate) {
+    if (startDate < minDate) {
+      errors.push("The start date can't be earlier than the Min date");
+    }
+  }
+  if (startDate && endDate) {
+    if (startDate > endDate) {
+      errors.push('The start date must be earlier or the same as the End date');
+    }
+  }
+  if (endDate && maxDate) {
+    if (endDate > maxDate) {
+      errors.push("The End date can't be later than the Max date");
+    }
+  }
+  if (endDate && minDate) {
+    if (endDate < minDate) {
+      errors.push("The End date can't be earlier than the Min date");
     }
   }
   return errors;

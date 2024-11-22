@@ -173,39 +173,3 @@ const getFilteredDate = (date, condition, period) => {
       return date;
   }
 };
-
-export const validateDatesEdges = (startDate, endDate, minDate, maxDate) => {
-  const errors = [];
-  if (!startDate && !endDate && !minDate && !maxDate) return errors;
-  if (minDate && maxDate) {
-    if (minDate > maxDate) {
-      errors.push('The Min date must be earlier than the Max date');
-    }
-  }
-  if (startDate && maxDate) {
-    if (startDate > maxDate) {
-      errors.push("The start date can't be later than the Max date");
-    }
-  }
-  if (startDate && minDate) {
-    if (startDate < minDate) {
-      errors.push("The start date can't be earlier than the Min date");
-    }
-  }
-  if (startDate && endDate) {
-    if (startDate > endDate) {
-      errors.push('The start date must be earlier or the same as the End date');
-    }
-  }
-  if (endDate && maxDate) {
-    if (endDate > maxDate) {
-      errors.push("The End date can't be later than the Max date");
-    }
-  }
-  if (endDate && minDate) {
-    if (endDate < minDate) {
-      errors.push("The End date can't be earlier than the Min date");
-    }
-  }
-  return errors;
-};
