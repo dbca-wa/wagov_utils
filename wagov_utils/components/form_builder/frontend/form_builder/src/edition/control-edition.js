@@ -53,7 +53,7 @@ export default class ControlEdition extends Control {
   addButtonEvents() {
     $(this.getIdSelector()).on('mouseenter mouseleave', this, this._mouseAction);
     $(this.getIdSelector()).find('.act-edit').on('click', this, this._editControl);
-    $(this.getIdSelector()).find('.act-remove').on('click', this, this._removeControl);
+    $(this.getIdSelector()).find('.act-remove').on('click', this, this._preRemoveControl);
     $(this.getIdSelector()).find('.act-duplicate').on('click', this, this._duplicateControl);
   }
 
@@ -81,7 +81,7 @@ export default class ControlEdition extends Control {
         ..._this.control.apiControlProps?.getPropsValues(),
       };
 
-      $m.find('#control-edition-title').text(
+      $m.find('.modal-title').text(
         _this.initialProps[CONTROL_API_PROPS_TYPES.FIELD_NAME] || _this.control.constructor.name,
       );
       _this._renderPreviewControl();
@@ -236,8 +236,48 @@ export default class ControlEdition extends Control {
     _this.modal.hide();
   }
 
+  _preRemoveControl(event) {
+    const _this = event.data;
+    $(`#${_this.id}`).addClass('highlight-control');
+
+    if (!_this.control.children || _this.control.isEmpty()) {
+      _this._removeControl(event);
+      return;
+    }
+
+    const modalIdSelector = `#${appSelectors.modalControlDelete}`;
+    const $m = $(modalIdSelector);
+    $m.find('.btn-primary').addClass('btn-danger').text('Confirm');
+    $m.find('.modal-title').text('Remove Control');
+    $m.find('.modal-body').text('Are you sure you want to delete this control?').append('<br/>');
+    $m.find('.modal-body').append('This action will remove all the children controls as well.');
+
+    const modal = new Modal(document.querySelector(modalIdSelector), {
+      keyboard: true,
+      backdrop: true,
+    });
+    modal.toggle();
+
+    const myModalEl = document.querySelector(modalIdSelector);
+    myModalEl.addEventListener(
+      'hidden.bs.modal',
+      function (event) {
+        _this._closeModal();
+        $(`#${_this.id}`).removeClass('highlight-control');
+      },
+      { once: true },
+    );
+    $m.find('.modal-footer .btn-primary')
+      .off('click')
+      .on('click', _this, () => {
+        _this._removeControl(event);
+        modal.hide();
+      });
+  }
+
   _removeControl(event) {
     const _this = event.data;
+
     $(_this.getIdSelector()).fadeOut('fast', () => {
       $(_this.getIdSelector()).remove();
       _this.controller.onDelete(_this);
@@ -252,11 +292,15 @@ export default class ControlEdition extends Control {
 
   _closeModal() {
     const $m = $(`#${appSelectors.modalControlEdition}`);
-    $m.find('#display-tab-pane form').empty();
-    $m.find('#data-tab-pane form').empty();
-    $m.find('#validation-tab-pane form').empty();
-    $m.find('#api-tab-pane form').empty();
-    $m.find('#preview-edition').empty();
+    [
+      '#display-tab-pane form',
+      '#data-tab-pane form',
+      '#validation-tab-pane form',
+      '#api-tab-pane form',
+      '#preview-edition',
+    ].forEach((selector) => {
+      $m.find(selector).empty();
+    });
 
     if (this.hasSaved) return;
 

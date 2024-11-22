@@ -215,7 +215,9 @@ export default class LayoutController {
         id: idSelector,
       }),
     );
-    $(`#${appSelectors.modalControlEdition} .modal-body`).append(baseModalBodyEdition({ title: 'Test Modal' }));
+    const $m = $(`#${idSelector}`);
+    $m.find('.modal-body').append(baseModalBodyEdition({ title: 'Test Modal' }));
+    $m.find('.modal-dialog').addClass('modal-xl');
     const triggerTabList = document.querySelectorAll('#tabsEdition button');
     triggerTabList.forEach((triggerEl) => {
       const tabTrigger = new Tab(triggerEl);
@@ -225,5 +227,12 @@ export default class LayoutController {
         tabTrigger.show();
       });
     });
+    // Modal for Control Delete
+    const idDeleteControlModal = appSelectors.modalControlDelete;
+    this.b.append(
+      baseModalTemplate({
+        id: idDeleteControlModal,
+      }),
+    );
   }
 }

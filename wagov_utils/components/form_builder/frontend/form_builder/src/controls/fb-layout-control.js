@@ -75,6 +75,19 @@ export default class LayoutControl extends Control {
     return isValid;
   }
 
+  isEmpty() {
+    let empty = true;
+    for (let i = 0; i < this.children.length; i++) {
+      if (typeof this.children[i].isEmpty !== 'function') {
+        empty = false;
+        break;
+      }
+      const elmIsEmpty = this.children[i].isEmpty();
+      empty &= elmIsEmpty;
+    }
+    return empty;
+  }
+
   getFieldValue() {
     const values = {};
     const props = this.apiControlProps?.getPropsValues() ?? {};
