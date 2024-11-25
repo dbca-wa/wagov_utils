@@ -92,8 +92,8 @@ export class MultiControlRenderer extends Renderer {
   enableActionButtons(rowId) {
     $(`#${rowId} button.save-row`)?.on('click', this, this.saveRow);
     $(`#${rowId} button.cancel-row`)?.on('click', this, this.cancelRow);
-    $(`#${rowId} button.edit-row`)?.on('click', this, this.editRow);
-    $(`#${rowId} button.remove-row`)?.on('click', this, this.removeRow);
+    $(`#${rowId} .edit-row`)?.on('click', this, this.editRow);
+    $(`#${rowId} .remove-row`)?.on('click', this, this.removeRow);
   }
 
   additionalEvents(rowId) {
@@ -117,28 +117,39 @@ export class MultiControlRenderer extends Renderer {
       'data-rowId': rowId,
       type: 'button',
     });
-    const buttonEdit = markup('button', 'Edit', {
-      class: 'btn btn-dark edit-row',
-      'data-rowId': rowId,
-      type: 'button',
-      style: 'display: none',
-    });
-    const buttonRemove = markup('button', [{ tag: 'i', class: 'bi bi-trash' }, ''], {
-      class: 'btn btn-danger remove-row',
-      'data-rowId': rowId,
-      type: 'button',
-      style: 'display: none',
-    });
+
     const btnGroup = markup('div', [buttonSave, buttonCancel], {
       class: 'btn-group btn-group-sm',
       role: 'group',
       'aria-label': 'Actions',
     });
-    const btnGroup2 = markup('div', [buttonEdit, buttonRemove], {
-      class: 'btn-group btn-group-sm',
-      role: 'group',
-      'aria-label': 'Actions',
-    });
+
+    const btnGroup2 = markup(
+      'div',
+      [
+        markup('button', [{ tag: 'i', class: 'bi bi-three-dots' }, ''], {
+          class: 'btn btn-outline-secondary  dropdown-toggle',
+          'data-bs-toggle': 'dropdown',
+          'aria-expanded': 'false',
+        }),
+        markup(
+          'ul',
+          [
+            markup('li', markup('a', 'Edit', { class: 'dropdown-item edit-row', 'data-rowId': rowId, href: '#' })),
+            markup(
+              'li',
+              markup('a', ['Remove'], {
+                class: 'dropdown-item remove-row',
+                'data-rowId': rowId,
+                href: '#',
+              }),
+            ),
+          ],
+          { class: 'dropdown-menu' },
+        ),
+      ],
+      { class: 'btn-group btn-group-sm edit-button-group', style: 'display: none' },
+    );
     return [btnGroup, btnGroup2];
   }
 
@@ -165,7 +176,7 @@ export class MultiControlRenderer extends Renderer {
         _this.renderControlDisplay($(container), control);
       }
       row.isEditing = false;
-      $(`#${rowId} .actions .edit-row, #${rowId} .actions .remove-row`).show();
+      $(`#${rowId} .actions .edit-button-group`).show();
       $(`#${rowId} .actions .save-row, #${rowId} .actions .cancel-row`).hide();
     }
   }
@@ -184,7 +195,7 @@ export class MultiControlRenderer extends Renderer {
         _this.renderControlDisplay($(container), control, row.values[props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]);
       }
       row.isEditing = false;
-      $(`#${rowId} .actions .edit-row, #${rowId} .actions .remove-row`).show();
+      $(`#${rowId} .actions .edit-button-group`).show();
       $(`#${rowId} .actions .save-row, #${rowId} .actions .cancel-row`).hide();
     } else {
       const index = _this.rowsData.indexOf(row);
@@ -219,7 +230,7 @@ export class MultiControlRenderer extends Renderer {
     }
     row.isEditing = true;
     $(`#${rowId} .actions .save-row, #${rowId} .actions .cancel-row`).show();
-    $(`#${rowId} .actions .edit-row, #${rowId} .actions .remove-row`).hide();
+    $(`#${rowId} .actions .edit-button-group`).hide();
   }
 
   renderControlEdition(container, control, value, isChild = false) {
