@@ -8,7 +8,7 @@ import { DatePickerDataProperties } from '../../config-properties/data-props/dat
 import { ELEMENT_TYPES } from '../../utils/element-types';
 import InputElement from '../input-element';
 import { DatePickerValidationProps } from '../../config-properties/validation-props/date-picker-validation-properties';
-import { getDatepickerOptionsFromProps, getRelativeDateValue } from '../../../js/control-utils';
+import { getDatepickerOptionsFromProps, getFixedDateSetup, getRelativeDateValue } from '../../../js/control-utils';
 import { INPUT_TYPES } from '../../utils/input-types';
 
 const defaultSettings = {
@@ -93,5 +93,36 @@ export default class DatePicker extends InputElement {
       ];
     }
     return getRelativeDateValue(props[DATE_DATA_PROPS_TYPES.DEFAULT_VALUE]);
+  }
+
+  setInitialValue(value) {
+    try {
+      if (Array.isArray(value) && value.length === 2) {
+        if (value.every((v) => typeof v === 'string')) {
+          this.dataControlProps.modifyPropValue(
+            DATE_DATA_PROPS_TYPES.DEFAULT_VALUE,
+            getFixedDateSetup(new Date(value[0])),
+          );
+          this.dataControlProps.modifyPropValue(
+            DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END,
+            getFixedDateSetup(new Date(value[1])),
+          );
+        } else if (value.every((v) => v instanceof Date)) {
+          this.dataControlProps.modifyPropValue(DATE_DATA_PROPS_TYPES.DEFAULT_VALUE, getFixedDateSetup(value[0]));
+          this.dataControlProps.modifyPropValue(DATE_DATA_PROPS_TYPES.DEFAULT_VALUE_END, getFixedDateSetup(value[1]));
+        }
+      } else {
+        if (typeof value === 'string') {
+          this.dataControlProps.modifyPropValue(
+            DATE_DATA_PROPS_TYPES.DEFAULT_VALUE,
+            getFixedDateSetup(new Date(value)),
+          );
+        } else if (value instanceof Date) {
+          this.dataControlProps.modifyPropValue(DATE_DATA_PROPS_TYPES.DEFAULT_VALUE, getFixedDateSetup(value));
+        }
+      }
+    } catch (error) {
+      console.error('Error setting initial value', { error, value });
+    }
   }
 }

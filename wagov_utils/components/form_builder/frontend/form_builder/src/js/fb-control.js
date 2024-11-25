@@ -73,6 +73,7 @@ export default class Control {
   }
 
   toDisplay(container) {
+    this.$p = container;
     container.append(this.renderControl(true));
     this.addControlEvents();
     this.afterRender();

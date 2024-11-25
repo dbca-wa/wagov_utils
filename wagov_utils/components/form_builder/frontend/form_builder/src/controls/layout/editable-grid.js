@@ -81,4 +81,9 @@ export class EditableGrid extends RowBlock {
       [props[CONTROL_API_PROPS_TYPES.FIELD_NAME]]: this.children[0].getFieldValue(),
     };
   }
+
+  setInitialValue(value) {
+    if (!value) return;
+    this.children[0].setInitialValue(value);
+  }
 }

@@ -17,6 +17,7 @@ import { runInputFieldValidations } from '../js/validation-utils';
 import { INPUT_TYPES } from './utils/input-types';
 import { BuildArea } from '../js/fb-build-area';
 import { MultivalueRenderer } from './renderers/multivalue-renderer';
+import { MultipleChoiceDataProperties } from './config-properties/data-props/multiple-choice-data-props';
 
 function extractLabelProps(props = {}) {
   const labelProps = {};
@@ -72,6 +73,19 @@ export default class InputControl extends Control {
     };
     return json;
   }
+
+  setInitialValue(value) {
+    try {
+      if (this.dataControlProps && this.dataControlProps instanceof MultipleChoiceDataProperties) {
+        this.dataControlProps.datasourceProperties.modifyPropValue(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, value);
+      } else {
+        this.dataControlProps.modifyPropValue(CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE, value);
+      }
+    } catch (error) {
+      console.error('Error setting initial value', { error, value });
+    }
+  }
+
   getAttributes() {
     const attributes = {};
     for (let key in this.attr) {

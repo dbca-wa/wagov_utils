@@ -1,13 +1,18 @@
 import { DropableControl } from './dropable-control';
 import { markup } from '../../js/utils';
 import { MultiControlRenderer } from '../renderers/multivalue-renderer';
-import { CONTROL_PROPS_TYPES, CONTROL_VALIDATION_PROPS_TYPES } from '../utils/control-props-types';
+import {
+  CONTROL_DATA_PROPS_TYPES,
+  CONTROL_PROPS_TYPES,
+  CONTROL_VALIDATION_PROPS_TYPES,
+} from '../utils/control-props-types';
 import { LAYOUT_TYPES } from '../utils/layout-types';
 import { CLASS_INVALID_FIELD_VALUE } from '../utils/constants';
 
 const defaultSettings = {};
 
 export class EditableDropableControl extends DropableControl {
+  initialValues;
   constructor(attr = {}, props = {}) {
     super(attr, props);
     this.elementType = LAYOUT_TYPES.EDIT_DROPABLE;
@@ -82,6 +87,7 @@ export class EditableDropableControl extends DropableControl {
       parentContainer.append(container);
       this.renderer = new MultiControlRenderer(this, this.children, {
         ...this.validationControlProps.getPropsValues(),
+        [CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE]: this.initialValues,
       });
       container.append(this.renderer.render());
       this.renderer.afterRender();
@@ -89,5 +95,9 @@ export class EditableDropableControl extends DropableControl {
     container.append(invalidField);
 
     return container;
+  }
+
+  setInitialValue(value) {
+    this.initialValues = value;
   }
 }

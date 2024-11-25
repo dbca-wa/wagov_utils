@@ -46,14 +46,17 @@ export class MultiControlRenderer extends Renderer {
     return this.rowsData.every((row) => !row.isEditing);
   }
 
-  addRow() {
+  addRow(initialValues = {}) {
     const maxItems = this.props[CONTROL_VALIDATION_PROPS_TYPES.MAX_ITEMS] || MAX_NUM_ITEMS_EDITABLE_GRID;
     if (this.rowsData.length >= maxItems) {
       return;
     }
     const index = $(`#${this.id} .rows .row`).length;
     const rowId = `row-${this.id}-${index}`;
-    const rowEdition = markup('div', '', { class: 'row py-2 border-1 border-bottom ', id: rowId });
+    const rowEdition = markup('div', '', {
+      class: 'row py-2 border-1 border-bottom justify-content-between',
+      id: rowId,
+    });
 
     const rowData = {
       id: rowId,
@@ -65,6 +68,11 @@ export class MultiControlRenderer extends Renderer {
 
     for (let i = 0; i < this.controls.length; i++) {
       const elm = instantiateJsonControl(this.controls[i].toJSON());
+      const elmProps = elm.getPropsObject();
+      const fieldName = elmProps[CONTROL_API_PROPS_TYPES.FIELD_NAME];
+      if (fieldName && initialValues[fieldName]) {
+        elm.setInitialValue(initialValues[fieldName]);
+      }
 
       const col = markup('div', '', { class: 'col control' });
       rowEdition.append(col);
@@ -72,7 +80,7 @@ export class MultiControlRenderer extends Renderer {
 
       rowData.controls.push(elm);
     }
-    const col = markup('div', this.getButtons(rowId), { class: 'col-sm-1 actions' });
+    const col = markup('div', this.getButtons(rowId), { class: 'col-md-2 col-lg-2 actions' });
     this.rowsData.push(rowData);
     rowEdition.append(col);
     this.enableActionButtons(rowId);
@@ -307,7 +315,7 @@ export class MultiControlRenderer extends Renderer {
       const col = markup('div', fieldLabel, { class: 'col' });
       header.append(col);
     }
-    header.append(markup('div', '', { class: 'col-sm-1' }));
+    header.append(markup('div', '', { class: 'col-md-2 col-lg-2' }));
 
     const rows = markup('div', '', { class: 'rows' });
     const buttonAdd = markup('button', [{ tag: 'i', class: 'bi bi-plus' }, 'Add record'], {
@@ -330,8 +338,16 @@ export class MultiControlRenderer extends Renderer {
     $(`#${this.id} button.add-row`).on('click', () => this.addRow());
 
     const minItems = this.props[CONTROL_VALIDATION_PROPS_TYPES.MIN_ITEMS] || 0;
-    for (let i = 0; i < minItems; i++) {
-      this.addRow();
+    const defaultValue = this.props[CONTROL_DATA_PROPS_TYPES.DEFAULT_VALUE];
+    if (defaultValue) {
+      for (let i = 0; i < defaultValue.length; i++) {
+        this.addRow(defaultValue[i]);
+        $(`#${this.id} .rows`).last().find('.actions .save-row').trigger('click');
+      }
+    } else {
+      for (let i = 0; i < minItems; i++) {
+        this.addRow();
+      }
     }
   }
 }

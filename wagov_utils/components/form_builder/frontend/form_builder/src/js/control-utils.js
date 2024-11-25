@@ -117,6 +117,10 @@ export const getRelativeDateValue = (config, dateFormat = GENERAL_DATE_FORMAT) =
   return '';
 };
 
+export const getFixedDateSetup = (date) => {
+  return { type: DATE_CONTROL_PROP_TYPES.FIXED.value, date };
+};
+
 const getDifferenceValue = (range, number) => {
   if (range === DATE_PERIOD_RANGE_TYPES.THIS.value) {
     return 0;

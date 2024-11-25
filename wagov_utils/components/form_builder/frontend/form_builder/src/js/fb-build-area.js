@@ -91,8 +91,8 @@ export class BuildArea {
     this.area.clearContainer();
   }
 
-  setAreaContainer(area) {
-    this.area.setContainer(area, true);
+  setAreaContainer(area, render = true) {
+    this.area.setContainer(area, render);
   }
 
   fieldNameExists(name) {
@@ -150,6 +150,7 @@ export class BuildArea {
         console.log(_this.area.getFieldValue());
       } else {
         console.log('Form is invalid');
+        e.stopImmediatePropagation();
       }
     });
 

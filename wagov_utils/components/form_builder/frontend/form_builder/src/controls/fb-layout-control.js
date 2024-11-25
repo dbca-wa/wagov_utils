@@ -65,6 +65,29 @@ export default class LayoutControl extends Control {
     return json;
   }
 
+  setInitialValue(value) {
+    try {
+      const parentProps = this.apiControlProps?.getPropsValues() ?? {};
+      const fieldName = parentProps[CONTROL_API_PROPS_TYPES.FIELD_NAME];
+      const fieldValue = fieldName ? value[fieldName] : undefined;
+      if (fieldValue) {
+        this.children.forEach((elm) => elm.setInitialValue(fieldValue));
+      } else {
+        for (let i = 0; i < this.children.length; i++) {
+          const child = this.children[i];
+          const childProps = child.apiControlProps?.getPropsValues() ?? {};
+          const childFieldName = childProps[CONTROL_API_PROPS_TYPES.FIELD_NAME];
+          const childValue = childFieldName ? value[childFieldName] : undefined;
+          if (childValue) {
+            child.setInitialValue(childValue);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error setting initial value', { error, value });
+    }
+  }
+
   validateValue() {
     let isValid = true;
 
