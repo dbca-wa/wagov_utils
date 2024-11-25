@@ -84,6 +84,7 @@ export class MultiControlRenderer extends Renderer {
     this.rowsData.push(rowData);
     rowEdition.append(col);
     this.enableActionButtons(rowId);
+    this.additionalEvents(rowId);
 
     activateTooltips(rowEdition);
   }
@@ -93,6 +94,16 @@ export class MultiControlRenderer extends Renderer {
     $(`#${rowId} button.cancel-row`)?.on('click', this, this.cancelRow);
     $(`#${rowId} button.edit-row`)?.on('click', this, this.editRow);
     $(`#${rowId} button.remove-row`)?.on('click', this, this.removeRow);
+  }
+
+  additionalEvents(rowId) {
+    $(`#${rowId} input`)?.on('keydown', this, (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
+        $(`#${rowId} .actions .save-row`).trigger('click');
+      }
+    });
   }
 
   getButtons(rowId) {
