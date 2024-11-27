@@ -52,13 +52,30 @@ class FormBuilder {
     const form = this.viewer.form;
     form.on('submit', { viewer: this.viewer, fb: this }, (e) => {
       const { viewer, fb } = e.data;
-      const data = viewer.getFormData();
-      console.log({ formData: data });
+      const formData = viewer.getFormData();
+
+      console.log({ formData: formData });
+      formData.entries().forEach((entry, key) => {
+        console.log({ entry, key });
+      });
       if (fb.onSubmit) {
-        fb.onSubmit(data);
+        fb.onSubmit(formData);
       } else if (submitData) {
-        const { url, method } = submitData;
-        // Axios call
+        const { url, method, data: inputData, headers } = submitData;
+        /* fetch(url, {
+          method: method ?? 'POST',
+          headers: {
+            // 'Content-Type': 'application/json',
+            ...headers,
+          },
+          body: formData,
+        }); */
+        console.log({
+          method: method ?? 'POST',
+          url,
+          data: { ...inputData, ...formData },
+          headers,
+        });
       }
     });
   }

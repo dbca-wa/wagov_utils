@@ -1,4 +1,4 @@
-import { markup } from './utils';
+import { DataURIToBlob, markup } from './utils';
 import { BuildArea, instantiateJsonControl } from './fb-build-area';
 
 const formViewerSel = 'formviewer';
@@ -43,7 +43,19 @@ export default class ViewerLayoutController {
   }
 
   getFormData() {
-    return this.buildArea.area.getFieldValue();
+    const formData = new FormData();
+    const data = this.buildArea.area.getFieldValue();
+    Object.keys(data).forEach((key) => {
+      const value = data[key];
+      if (Array.isArray(value) && value.length > 0 && value[0].hasOwnProperty('base64')) {
+        value.forEach((file, index) => {
+          formData.append(`${key}[${index}]`, DataURIToBlob(file.base64));
+        });
+      } else {
+        formData.append(key, value);
+      }
+    });
+    return formData;
   }
 
   insertModals() {}

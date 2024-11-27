@@ -40,7 +40,7 @@ $('#app').formBuilder('render', {
   formData: storedForm ? JSON.parse(storedForm) : [],
   //   onSubmit
   submitData: {
-    url: 'https://formbuilder-api.com',
+    url: 'http://127.0.0.1:3000/form-submission',
     method: 'POST',
     headers: {
       'X-Api-Key': '12345',
