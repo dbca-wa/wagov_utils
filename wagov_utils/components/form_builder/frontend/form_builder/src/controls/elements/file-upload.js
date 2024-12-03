@@ -9,6 +9,7 @@ import {
 } from '../utils/control-props-types';
 import { ELEMENT_TYPES } from '../utils/element-types';
 import InputElement from './input-element';
+import { fileIcons } from '../../js/images.js';
 
 const defaultSettings = {};
 
@@ -279,9 +280,9 @@ export default class FileUploadElement extends InputElement {
           content: [
             renderAsImage
               ? { tag: 'img', src: fileData.base64, class: 'img-preview' }
-              : { tag: 'i', class: `bi bi-filetype-${fileExt}` },
+              : // : { tag: 'i', class: `bi bi-filetype-${fileExt}` },
+                { tag: 'img', src: fileIcons[fileExt], style: 'width: 25px; height: 25px;' },
 
-            // : { tag: 'img', src: `../../images/file-extension-icons/48px/${fileExt}.png` },
             { tag: 'span', content: fileData.name, class: 'ms-3' },
           ],
           class: 'd-flex col-xs-12 col-md-8 align-self-center gx-2',

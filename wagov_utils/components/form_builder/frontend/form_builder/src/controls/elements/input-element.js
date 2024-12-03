@@ -57,11 +57,15 @@ export default class InputElement extends InputControl {
     if (values && values.length > 0) {
       value = values[0];
     }
+    const formControlSizeClass = props[CONTROL_PROPS_TYPES.SIZE]
+      ? `form-control-${props[CONTROL_PROPS_TYPES.SIZE]}`
+      : '';
     const attributes = {
       id: props.id ?? this.id,
       type: this.type,
       placeholder: props[CONTROL_PROPS_TYPES.PLACEHOLDER] ?? '',
-      class: (this.attr.class ?? '').concat(' ', props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? ''),
+      class: [this.attr.class ?? '', formControlSizeClass, props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? ''].join(' '),
+
       value: value,
     };
 

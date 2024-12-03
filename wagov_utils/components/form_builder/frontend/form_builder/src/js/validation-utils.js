@@ -1,10 +1,14 @@
 import { CONTROL_VALIDATION_PROPS_TYPES, DATE_DATA_PROPS_TYPES } from '../controls/utils/control-props-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
+import * as EmailValidator from 'email-validator';
 
 export const runInputFieldValidations = (value, control) => {
   const validationProps = control.getPropsObject();
   const errors = [];
   const strValue = value?.toString() ?? '';
+
+  validateEmail(value, control, errors);
+
   if (validationProps[CONTROL_VALIDATION_PROPS_TYPES.REQUIRED]) {
     if (control.elementType === ELEMENT_TYPES.DATE_PICKER_JQ && validationProps[DATE_DATA_PROPS_TYPES.IS_DATE_RANGE]) {
       if (!value[0] || !value[1]) {
@@ -70,6 +74,13 @@ export const runInputFieldValidations = (value, control) => {
     }
   }
   return errors;
+};
+
+const validateEmail = (value, control, errors) => {
+  if (control.type != ELEMENT_TYPES.EMAIL) return;
+  if (value && !EmailValidator.validate(value)) {
+    errors.push('Enter a valid email address');
+  }
 };
 
 export const validateDatesEdges = (startDate, endDate, minDate, maxDate) => {

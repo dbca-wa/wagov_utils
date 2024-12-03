@@ -51,7 +51,7 @@ export default class ButtonElement extends LayoutControl {
     const className = [
       'btn',
       `btn-${props[CONTROL_PROPS_TYPES.THEME]}`,
-      props[CONTROL_PROPS_TYPES.SIZE] ? `${props[CONTROL_PROPS_TYPES.SIZE]}` : '',
+      props[CONTROL_PROPS_TYPES.SIZE] ? `btn-${props[CONTROL_PROPS_TYPES.SIZE]}` : '',
       props[CONTROL_PROPS_TYPES.CUSTOM_CLASS] ?? '',
     ];
 

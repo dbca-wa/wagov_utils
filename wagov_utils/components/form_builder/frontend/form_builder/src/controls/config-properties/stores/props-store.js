@@ -198,8 +198,8 @@ export const propertiesStore = {
     required: false,
     options: [
       { value: '', text: 'Normal' },
-      { value: 'btn-sm', text: 'Small' },
-      { value: 'btn-lg', text: 'Large' },
+      { value: 'sm', text: 'Small' },
+      { value: 'lg', text: 'Large' },
     ],
     value: '',
   },

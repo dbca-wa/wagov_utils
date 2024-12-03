@@ -85,6 +85,7 @@ export class MultiControlRenderer extends Renderer {
     rowEdition.append(col);
     this.enableActionButtons(rowId);
     this.additionalEvents(rowId);
+    $(rowEdition).find('input')?.first()?.trigger('focus');
 
     activateTooltips(rowEdition);
   }
@@ -348,7 +349,7 @@ export class MultiControlRenderer extends Renderer {
     if (this.controls.length > 0) {
       divContainer.append(header);
       divContainer.append(rows);
-      divContainer.append(buttonAdd);
+      divContainer.append(markup('div', buttonAdd, { class: 'd-grid gap-2 col-sm-12 col-md-3 col-lg-2' }));
     } else {
       divContainer.append(markup('div', 'No controls defined', { class: 'text-center text-muted py-3' }));
     }

@@ -9,7 +9,6 @@ import './form-builder.js';
 
 /* Demo JS */
 import './demo.js';
-// import { fileIcons } from './images.js';
 
 const storedForm = window.localStorage.getItem('storedForm');
 
@@ -23,29 +22,28 @@ $('#app').formBuilder({
         checkboxControl: true,
       },
     ],
-    datePicker: ['2024-10-20T16:00:00.000Z', '2024-10-21T16:00:00.000Z'],
+    datePicker: [new Date('2024-10-30T16:00:00.000Z'), new Date('2024-10-21T16:00:00.000Z')],
     table: [
       {
         textField1: 'sadf',
         inputNumber: 123,
         selectBoxes1: ['john.doe@test.com', 'jane.doe@test.com'],
-        datePicker1: '2024-11-11T16:00:00.000Z',
+        datePicker1: new Date('2024-11-11T16:00:00.000Z'),
       },
     ],
   },
 });
 $('#app').formBuilder('build');
 
-$('#app').formBuilder('render', {
-  formData: storedForm ? JSON.parse(storedForm) : [],
-  //   onSubmit
-  submitData: {
-    url: 'http://127.0.0.1:3000/form-submission',
-    method: 'POST',
-    headers: {
-      'X-Api-Key': '12345',
-    },
-    data: {},
-  },
-});
-console.log($('#app').formBuilder('getJSON'));
+// $('#app').formBuilder('render', {
+//   formData: storedForm ? JSON.parse(storedForm) : [],
+//   //   onSubmit
+//   submitData: {
+//     url: 'http://127.0.0.1:3000/form-submission',
+//     method: 'POST',
+//     headers: {
+//       'X-Api-Key': '12345',
+//     },
+//     data: {},
+//   },
+// });

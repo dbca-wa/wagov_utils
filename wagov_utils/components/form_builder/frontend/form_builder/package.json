@@ -26,6 +26,7 @@
     "bootstrap-icons": "^1.11.3",
     "brace": "^0.11.1",
     "date-fns": "^4.1.0",
+    "email-validator": "^2.0.4",
     "handlebars": "^4.7.8",
     "handlebars-loader": "^1.7.3",
     "jquery": "^3.7.1",
