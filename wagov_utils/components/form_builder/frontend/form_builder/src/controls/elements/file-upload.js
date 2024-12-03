@@ -38,7 +38,8 @@ export default class FileUploadElement extends InputElement {
             content: [
               renderAsImage && fileData.type.startsWith('image/')
                 ? { tag: 'img', src: fileData.base64, class: 'img-preview' }
-                : { tag: 'i', class: `bi bi-filetype-${fileExt}` },
+                : // : { tag: 'i', class: `bi bi-filetype-${fileExt}` },
+                  { tag: 'img', src: fileIcons[fileExt], style: 'width: 25px; height: 25px;' },
 
               { tag: 'span', content: fileData.name, class: 'ms-3' },
               {
