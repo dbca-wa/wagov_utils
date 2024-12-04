@@ -1,111 +1,211 @@
-import { CONTROLS_STORE } from '../controls/toolbox-store';
-import ControlEdition from '../edition/control-edition';
 import baseModalTemplate from '../views/control-edition/base-modal.handlebars';
 import baseModalBodyEdition from '../views/control-edition/base-modal-edition.handlebars';
 
 import { markup } from './utils';
 import { appSelectors } from './selectors';
 
-import Tab from 'bootstrap/js/dist/tab.js';
-import Control from './fb-control';
-import { CONTROL_TYPES } from '../controls/utils/control-types';
 import { ELEMENT_TYPES } from '../controls/utils/element-types';
+import { CLASS_DROPABLE_BLOCKS } from '../controls/utils/constants';
+import { BuildArea, instantiateJsonControl } from './fb-build-area';
+
+import Tab from 'bootstrap/js/dist/tab.js';
+import builderTemplate from '../views/builder/container.handlebars';
+import { ELEMENT_CATEGORIES } from '../controls/utils/element-categories';
+import { LAYOUT_TYPES } from '../controls/utils/layout-types';
 
 const formAreaSel = 'formarea';
+
 const controlsSel = 'formcomponents';
+const formBuilderSel = 'formbuilder';
+const formViewerSel = 'formviewer';
+
+const MODES = {
+  EDIT: 'edit',
+  PREVIEW: 'preview',
+};
+
 export default class LayoutController {
-  constructor(builderElement, body) {
-    this.b = builderElement; // HTML
-    this.body = body;
-    this.formArea = undefined;
+  formControls = [];
+  constructor(formBuilder, formControls) {
+    this.b = formBuilder.$builder; // HTML
+    this.formControls = formControls;
+    BuildArea.getInstance().setBuilder(formBuilder);
+    this.buildArea = BuildArea.getInstance();
     this.controlsPanel = undefined;
+    this.mode = MODES.EDIT;
   }
 
-  initialLayout(controls) {
-    this.body.push(new Control({}, { containerClass: 'container' }, CONTROL_TYPES.BLOCK, 'formbuilder'));
-    let formbuilder = markup('div', '', { id: 'formbuilder' });
-    let controlsPanel = markup('div', '', { id: controlsSel, class: controlsSel });
-    let builderArea = markup('div', '', {
-      id: formAreaSel,
-      class: formAreaSel,
-      'data-content': 'Drag a field from the right to this area',
-    });
+  initialBuilderLayout() {
+    this.b.empty();
+    this.b.append(builderTemplate({}));
 
-    this.b.append(formbuilder);
+    this.toggleMode(MODES.EDIT);
 
-    const formbuilderElement = $('#formbuilder');
-    formbuilderElement.append(controlsPanel);
-    formbuilderElement.append(builderArea);
-    this.formArea = $(`#${formAreaSel}`);
-
-    this.controlsPanel = $(`#${controlsSel}`);
-
-    this.formArea.sortable({
-      placeholder: 'ui-state-highlight',
-      helper: 'clone',
-      cursor: 'move',
-      scroll: false,
-      tolerance: 'pointer',
-    });
-    this.formArea.on('sortupdate', this, function (event, ui) {
-      const _this = event.data;
-      if (ui.sender) {
-        ui.sender.sortable('cancel');
-        try {
-          const data = ui.item[0].dataset;
-          const controlType = data.controlType;
-          const { attr, props, controlClass } = CONTROLS_STORE[controlType];
-          const elm = new controlClass(attr, props);
-          const nodeOffset = ui.offset.top;
-          _this.insertControl(this, elm, nodeOffset);
-        } catch (error) {
-          console.log("Couldn't append element", error);
-        }
-      }
-    });
-
-    $(`.${formAreaSel}`).disableSelection();
-
-    $(`.${controlsSel}`).sortable({
-      helper: 'clone',
-      cursor: 'move',
-      scroll: false,
-      tolerance: 'pointer',
-      placeholder: 'ui-state-highlight',
-      connectWith: `.${formAreaSel}`,
-    });
-
-    this.loadFormControls(controls, this.controlsPanel);
-    $(`.${controlsSel}`).disableSelection();
-
+    this.addMenuButtonsEvents();
     this.insertModals();
   }
 
-  loadFormControls(controls, parent) {
-    controls.forEach((control) => {
-      if (!control.label) return;
-      const controlElement = markup('div', markup('span', control.label), {
-        class: 'control draggable-control',
-        'data-controlType': control.type,
+  loadFormControls(parent) {
+    Object.keys(this.formControls).forEach((category) => {
+      const { name, label, icon } = ELEMENT_CATEGORIES[category];
+      const collapseId = `category-${name}-collapse`;
+      const categoryElement = markup('a', label, {
+        class: 'category-group ',
+        'data-bs-toggle': 'collapse',
+        href: `#${collapseId}`,
+        role: 'button',
+        'aria-expanded': 'false',
+        'aria-controls': `${collapseId}`,
       });
 
-      parent.append(controlElement);
+      parent.append(categoryElement);
+      const catContainer = markup('div', '', {
+        class: ['category-container collapse', 'show'].join(' '),
+        id: collapseId,
+      });
+      parent.append(catContainer);
+      this.formControls[name].forEach((control) => {
+        if (!control.label) return;
+        const controlElement = markup(
+          'div',
+          [markup('i', '', { class: control.icon }), markup('span', control.label)],
+          {
+            class: 'control draggable-control ',
+            'data-controlType': control.type,
+            'data-label': control.label,
+            'data-icon': control.icon,
+          },
+        );
+
+        catContainer.append(controlElement);
+      });
     });
   }
 
-  renderForm() {
-    this.formArea.append(markup('h2', 'Form Builder DBCA', {}));
-    const defaultElements = [
-      ELEMENT_TYPES.INPUT,
-      ELEMENT_TYPES.INPUT_NUMBER,
-      ELEMENT_TYPES.SELECT,
-      ELEMENT_TYPES.CHECK_BOX,
-    ];
-    defaultElements.forEach((element) => {
-      const { attr, props, controlClass } = CONTROLS_STORE[element];
-      const elm = new controlClass(attr, props);
-      this.insertControl(this.formArea, elm);
+  renderFormBuilder(initialJson = []) {
+    this.initialBuilderLayout();
+    this.buildArea.clearAreaContainer();
+
+    initialJson.forEach((control) => {
+      try {
+        const element = instantiateJsonControl(control);
+
+        this.buildArea.area.addControl(this.buildArea.area.$c, element);
+      } catch (error) {
+        console.error(error);
+      }
     });
+    this.buildArea.area.toggleEmptyDropableControl();
+  }
+
+  addMenuButtonsEvents() {
+    $('#btn-mode').on('click', this, function (event) {
+      const layout = event.data;
+      layout.toggleMode();
+    });
+    $('#btn-save-form').on('click', this, function (event) {
+      const layout = event.data;
+      const formJson = layout.buildArea.toJSON();
+      console.log('Saving form', formJson);
+      window.localStorage.setItem('storedForm', JSON.stringify(formJson));
+    });
+    $('#btn-print-form').on('click', this, function (event) {
+      const layout = event.data;
+      const formJson = layout.buildArea.toJSON();
+      console.log('The form', formJson);
+    });
+    $('#btn-load-form').on('click', this, function (event) {
+      const layout = event.data;
+      const storedForm = window.localStorage.getItem('storedForm');
+      if (!storedForm) return;
+      layout.renderFormBuilder(JSON.parse(storedForm));
+    });
+    $('#btn-new-form').on('click', this, function (event) {
+      window.localStorage.removeItem('storedForm');
+    });
+    $('#btn-load-default').on('click', this, function (event) {
+      const layout = event.data;
+      const defaultElements = [
+        // LAYOUT_TYPES.HTML_CONTENT,
+        // ELEMENT_TYPES.FILE_UPLOAD,
+        // LAYOUT_TYPES.ROW_COLUMNS,
+        LAYOUT_TYPES.EDIT_GRID,
+        // ELEMENT_TYPES.INPUT_NUMBER,
+        // ELEMENT_TYPES.INPUT,
+        // ELEMENT_TYPES.SELECT,
+        // ELEMENT_TYPES.CHECK_BOX,
+        // ELEMENT_TYPES.RADIO,
+        // ELEMENT_TYPES.BUTTON,
+      ];
+
+      layout.buildArea.clearAreaContainer();
+      layout.renderFormBuilder(defaultElements.map((el) => ({ elementType: el })));
+    });
+  }
+
+  toggleMode(mode) {
+    this.mode = mode ? mode : this.mode === MODES.EDIT ? MODES.PREVIEW : MODES.EDIT;
+    if (this.mode === MODES.EDIT) {
+      $('#btn-mode')
+        .empty()
+        .append(' Preview &nbsp;', markup('i', '', { class: 'bi bi-eye' }));
+      this.enableEditMode();
+    } else {
+      $('#btn-mode')
+        .empty()
+        .append(' Edit &nbsp;', markup('i', '', { class: 'bi bi-pencil' }));
+      this.enableViewMode();
+    }
+  }
+
+  enableEditMode() {
+    $(`#${formViewerSel}`)
+      .empty()
+      .append(markup('form', '', { class: 'needs-validation', novalidate: '' }));
+
+    $(`#${formBuilderSel}`).addClass(formBuilderSel);
+    $(`#${formBuilderSel}`).append(markup('div', '', { id: controlsSel, class: 'formcomponents col-sm-2' }));
+    $(`#${formBuilderSel}`).append(
+      markup('div', '', {
+        id: formAreaSel,
+        class: 'col-sm-8 formarea fb-dropable-blocks',
+        'data-content': 'Drag a field from the right to this area',
+      }),
+    );
+
+    this.buildArea.setAreaContainer($(`#${formAreaSel}`));
+    this.controlsPanel = $(`#${controlsSel}`);
+
+    // $(`.${formAreaSel}`).disableSelection();
+
+    this.loadFormControls(this.controlsPanel);
+    $(`.${controlsSel} .category-container`).sortable({
+      helper: (e, sender) => {
+        const { label, icon } = sender[0].dataset;
+        return markup('div', [markup('i', '', { class: icon }), markup('span', `&nbsp;${label}`)], {
+          class: 'btn btn-primary',
+        });
+      },
+      cursor: 'move',
+      scroll: false,
+      revert: true,
+      revertDuration: 3000,
+      tolerance: 'pointer',
+      placeholder: 'ui-state-highlight',
+      connectWith: `.${CLASS_DROPABLE_BLOCKS}`,
+    });
+    $(`.${controlsSel} .category-container`).on('sortupdate', (sender, ui) => {
+      return;
+    });
+    $(`.${controlsSel}`).disableSelection();
+  }
+
+  enableViewMode() {
+    $(`#${formBuilderSel}`).empty();
+    $(`#${formBuilderSel}`).attr('class', '');
+
+    $(`#${controlsSel}`).empty();
+    this.buildArea.viewForm($(`#${formViewerSel} form`));
   }
 
   insertModals() {
@@ -115,7 +215,9 @@ export default class LayoutController {
         id: idSelector,
       }),
     );
-    $(`#${appSelectors.modalControlEdition} .modal-body`).append(baseModalBodyEdition({ title: 'Test Modal' }));
+    const $m = $(`#${idSelector}`);
+    $m.find('.modal-body').append(baseModalBodyEdition({ title: 'Test Modal' }));
+    $m.find('.modal-dialog').addClass('modal-xl');
     const triggerTabList = document.querySelectorAll('#tabsEdition button');
     triggerTabList.forEach((triggerEl) => {
       const tabTrigger = new Tab(triggerEl);
@@ -125,38 +227,12 @@ export default class LayoutController {
         tabTrigger.show();
       });
     });
+    // Modal for Control Delete
+    const idDeleteControlModal = appSelectors.modalControlDelete;
+    this.b.append(
+      baseModalTemplate({
+        id: idDeleteControlModal,
+      }),
+    );
   }
-
-  insertControl(areaContainer, control, nodeOffset = null) {
-    const fbControlWrapper = new ControlEdition(control, {
-      onSave: function (controlEditor) {
-        const { control } = controlEditor;
-        try {
-          $(controlEditor.getIdSelector()).find('.fb-wrapper-content').empty().append(control.renderControl());
-        } catch (error) {
-          console.log('Error saving control', error);
-        }
-      },
-    });
-
-    const renderedControl = fbControlWrapper.render();
-    $(renderedControl).find('.fb-wrapper-content').append(control.renderControl());
-    appendControlEdition(areaContainer, renderedControl, nodeOffset);
-    fbControlWrapper.addButtonEvents();
-    this.body.push(control);
-  }
-}
-
-function appendControlEdition(parent, node, nodeOffset = null) {
-  if (nodeOffset) {
-    const childNodes = parent.childNodes;
-    for (let i = 0; i < childNodes.length; i++) {
-      const child = childNodes[i];
-      if (parent.offsetTop > nodeOffset) {
-        parent.insertBefore(node, child);
-        return;
-      }
-    }
-  }
-  parent.append(node);
 }

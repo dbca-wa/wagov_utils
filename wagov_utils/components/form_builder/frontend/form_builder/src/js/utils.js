@@ -37,6 +37,23 @@ export const safeAttrName = (name) => {
   return safeAttr[name] || hyphenCase(name);
 };
 
+export const camelCase = (str) => {
+  return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+    if (+match === 0) return ''; // or if (/\s+/.test(match)) for white spaces
+    return index === 0 ? match.toLowerCase() : match.toUpperCase();
+  });
+};
+
+export const capitalize = (str) => {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+export const compareMinMaxIntegers = (min, max) => {
+  if (!Number.isInteger(min) || !Number.isInteger(max)) return false;
+  return min > max;
+};
+
 export const isPotentiallyDangerousAttribute = (attrName, attrValue) => {
   if (sanitizerConfig.backendOrder.length === 0) {
     //All backends disabled so no sanitization checks to be performed
@@ -89,7 +106,13 @@ export const bindEvents = (element, events) => {
   if (events) {
     for (const event in events) {
       if (events.hasOwnProperty(event)) {
-        element.addEventListener(event, (evt) => events[event](evt));
+        const eventObjType = getContentType(events[event]);
+        if (eventObjType === 'function') {
+          element.addEventListener(event, (evt) => events[event](evt));
+        } else if (eventObjType === 'object') {
+          const { fn, ...options } = events[event];
+          $(element).on(event, options, fn);
+        }
       }
     }
   }
@@ -110,6 +133,9 @@ export const markup = function (tag, content = '', attributes = {}) {
 
   const appendContent = {
     string: (content) => {
+      setElementContent(field, field.innerHTML + content);
+    },
+    number: (content) => {
       setElementContent(field, field.innerHTML + content);
     },
     object: (config) => {
@@ -161,4 +187,64 @@ export const markup = function (tag, content = '', attributes = {}) {
   bindEvents(field, events);
 
   return field;
+};
+
+export const unique = (array) => {
+  return array.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
+};
+
+/**
+ * Convert a number of bytes into a human-readable file size string
+ * @param {number} bytes - The number of bytes
+ * @return {string} - The human-readable file size
+ */
+export const formatFileSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes';
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
+/**
+ * Convert a human-readable file size string into bytes
+ * @param {string} sizeStr - The file size string (e.g., '1GB', '1gb')
+ * @return {number} - The number of bytes
+ */
+export const parseFileSize = (sizeStr) => {
+  const units = ['bytes', 'kb', 'mb', 'gb', 'tb'];
+  const regex = /^(\d+(?:\.\d+)?)\s*(bytes|kb|mb|gb|tb)$/i;
+  const match = sizeStr.match(regex);
+
+  if (!match) {
+    return undefined;
+  }
+
+  const value = parseFloat(match[1]);
+  const unit = match[2].toLowerCase();
+  const exponent = units.indexOf(unit);
+
+  return value * Math.pow(1024, exponent);
+};
+
+export const splitAPIFieldName = (fieldName) => {
+  const regex = /(\D+)(\d*)$/;
+  const match = fieldName.match(regex);
+  if (!match) {
+    return { field: fieldName, n: 0 };
+  }
+  const n = match[2] ? parseInt(match[2]) : 0;
+  const index = fieldName.lastIndexOf(match[2]);
+
+  return { field: fieldName.substring(0, index), n };
+};
+
+export const DataURIToBlob = (dataURI) => {
+  const splitDataURI = dataURI.split(',');
+  const byteString = splitDataURI[0].indexOf('base64') >= 0 ? atob(splitDataURI[1]) : decodeURI(splitDataURI[1]);
+  const mimeString = splitDataURI[0].split(':')[1].split(';')[0];
+
+  const ia = new Uint8Array(byteString.length);
+  for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+
+  return new Blob([ia], { type: mimeString });
 };
