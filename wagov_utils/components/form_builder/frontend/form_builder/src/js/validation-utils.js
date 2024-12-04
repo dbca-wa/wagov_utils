@@ -23,10 +23,14 @@ export const runInputFieldValidations = (value, control) => {
       return errors;
     }
   }
+
   const pattern = validationProps[CONTROL_VALIDATION_PROPS_TYPES.REGEX];
-  if (pattern && !new RegExp(pattern).test(value)) {
-    errors.push("This value doesn't match the pattern " + pattern);
-    return errors;
+  if (pattern) {
+    const regex = new RegExp([pattern.startsWith('^') ? '' : '^', pattern, pattern.endsWith('$') ? '' : '$'].join(''));
+    if (!regex.test(value)) {
+      errors.push("This value doesn't match the pattern " + pattern);
+      return errors;
+    }
   }
 
   const minTextLength = validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_LENGTH];
