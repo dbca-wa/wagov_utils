@@ -37,28 +37,37 @@ export class ControlProp {
   }
 
   renderProp() {
+    const isBoolean = this.prop.type === 'boolean';
+    const isHTML = this.prop.type === 'html';
     const children = [
       markup('label', this.prop.title, {
         for: this.id,
         class: [
-          'fw-medium',
-          this.prop.type === 'boolean' ? 'form-check-label' : 'form-label',
+          'align-content-end',
+          [isBoolean ? '' : 'fw-medium', isHTML ? 'col-sm-12' : isBoolean ? 'col-sm-12' : 'col-sm-12 col-md-3'].join(
+            ' ',
+          ),
+          isBoolean ? 'form-check-label' : 'form-label',
           this.prop.type === 'hidden' ? 'd-none' : '',
         ].join(' '),
       }),
-      _renderProp(
-        {
-          id: this.id,
-          type: this.prop.type,
-          value: this.prop.value,
-          name: this.prop.name,
-          placeholder: this.prop.placeholder,
-          structure: this.prop.structure,
-          addEmptyOption: this.prop.addEmptyOption,
-          className: this.prop.className,
-        },
-        this.prop.options,
-        { required: this.prop.required, min: this.prop.min, max: this.prop.max },
+      markup(
+        'div',
+        _renderProp(
+          {
+            id: this.id,
+            type: this.prop.type,
+            value: this.prop.value,
+            name: this.prop.name,
+            placeholder: this.prop.placeholder,
+            structure: this.prop.structure,
+            addEmptyOption: this.prop.addEmptyOption,
+            className: this.prop.className,
+          },
+          this.prop.options,
+          { required: this.prop.required, min: this.prop.min, max: this.prop.max },
+        ),
+        { class: isHTML ? 'col-sm-12' : 'col-sm-12 col-md-9' },
       ),
     ];
     if (this.prop.type === 'boolean') {
@@ -66,7 +75,7 @@ export class ControlProp {
     }
     return markup('div', children, {
       class: [
-        'mb-3',
+        'mb-3 row',
         'control-prop',
         this.prop.type === 'boolean' ? 'form-check' : '',
         this.prop.addDivider ? 'border-bottom pb-3' : '',

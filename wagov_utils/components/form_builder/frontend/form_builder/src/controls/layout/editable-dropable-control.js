@@ -1,6 +1,5 @@
 import { DropableControl } from './dropable-control';
 import { markup } from '../../js/utils';
-import { MultiControlRenderer } from '../renderers/multivalue-renderer';
 import {
   CONTROL_DATA_PROPS_TYPES,
   CONTROL_PROPS_TYPES,
@@ -8,6 +7,7 @@ import {
 } from '../utils/control-props-types';
 import { LAYOUT_TYPES } from '../utils/layout-types';
 import { CLASS_INVALID_FIELD_VALUE } from '../utils/constants';
+import { MultiControlRenderer } from '../renderers/multicontrol-renderer';
 
 const defaultSettings = {};
 

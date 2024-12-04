@@ -27,6 +27,21 @@ export class InputFieldDisplayProps extends BaseDisplayProps {
         ],
       });
     }
+    if (type === INPUT_TYPES.NUMBER) {
+      this.modifyPropVisibility(CONTROL_PROPS_TYPES.STEP, !this.props[CONTROL_PROPS_TYPES.SIDE_BUTTONS].prop.value);
+    }
+  }
+
+  _onDataPropsChange(e) {
+    const { context: _this, prop } = e.data;
+    const value = e.target ? (e.target.type === INPUT_TYPES.CHECK_BOX ? e.target.checked : e.target.value) : e.value;
+
+    _this.modifyPropValue(prop.name, value);
+    _this.editor._renderPreviewControl();
+    if (prop.name === CONTROL_PROPS_TYPES.SIDE_BUTTONS) {
+      _this.modifyPropVisibility(CONTROL_PROPS_TYPES.STEP, !value);
+      _this.renderInParent();
+    }
   }
 }
 
@@ -91,6 +106,8 @@ const numberProps = [
   CONTROL_PROPS_TYPES.DESCRIPTION,
   CONTROL_PROPS_TYPES.TOOLTIP,
   CONTROL_PROPS_TYPES.SIZE,
+  CONTROL_PROPS_TYPES.SIDE_BUTTONS,
+  CONTROL_PROPS_TYPES.STEP,
   CONTROL_PROPS_TYPES.CUSTOM_CLASS,
   CONTROL_PROPS_TYPES.HIDE_LABEL,
 ];

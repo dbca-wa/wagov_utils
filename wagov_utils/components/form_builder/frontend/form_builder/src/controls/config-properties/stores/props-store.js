@@ -238,7 +238,25 @@ export const propertiesStore = {
     required: false,
     options: undefined,
   },
-
+  [CONTROL_PROPS_TYPES.SIDE_BUTTONS]: {
+    name: 'sideButtons',
+    title: 'Show side buttons',
+    type: 'boolean',
+    placeholder: 'Enter a side buttons',
+    required: false,
+    options: undefined,
+    value: false,
+  },
+  [CONTROL_PROPS_TYPES.STEP]: {
+    name: 'step',
+    title: 'Step',
+    type: 'number',
+    placeholder: 'Default is 1',
+    required: false,
+    options: undefined,
+    value: false,
+    hide: true,
+  },
   [LAYOUT_CONTROL_PROPS_TYPES.TAG]: {
     name: 'tag',
     title: 'HTML tag',

@@ -30,6 +30,9 @@ export const CONTROL_PROPS_TYPES = {
   BLOCK_BUTTON: 'blockButton',
   LEFT_ICON: 'leftIcon',
   RIGHT_ICON: 'rightIcon',
+
+  SIDE_BUTTONS: 'sideButtons',
+  STEP: 'step',
 };
 
 export const DATE_PROPS_TYPES = {

@@ -18,6 +18,7 @@ import { INPUT_TYPES } from './utils/input-types';
 import { BuildArea } from '../js/fb-build-area';
 import { MultivalueRenderer } from './renderers/multivalue-renderer';
 import { MultipleChoiceDataProperties } from './config-properties/data-props/multiple-choice-data-props';
+import { NumberArrowsRenderer } from './renderers/number-arrows-renderer';
 
 function extractLabelProps(props = {}) {
   const labelProps = {};
@@ -175,6 +176,9 @@ export default class InputControl extends Control {
     if (props[CONTROL_DATA_PROPS_TYPES.MULTI]) {
       this.renderer = new MultivalueRenderer(this, element, {});
       inputGroup.push(this.renderer.render());
+    } else if (props[CONTROL_PROPS_TYPES.SIDE_BUTTONS]) {
+      this.renderer = new NumberArrowsRenderer(this, element, props);
+      inputGroup.push(this.renderer.render());
     } else {
       inputGroup.push(element);
     }
@@ -246,9 +250,8 @@ export default class InputControl extends Control {
     if (props[CONTROL_PROPS_TYPES.DISPLAY_MASK]) {
       $(this.getIdSelector()).mask(props[CONTROL_PROPS_TYPES.DISPLAY_MASK]);
     }
-    if (props[CONTROL_DATA_PROPS_TYPES.MULTI] && this.renderer) {
-      this.renderer.afterRender();
-    }
+
+    if (this.renderer) this.renderer.afterRender();
   }
   getDefaultValue() {
     const props = this.getPropsObject();

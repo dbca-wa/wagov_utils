@@ -73,6 +73,25 @@ export const runInputFieldValidations = (value, control) => {
       );
     }
   }
+
+  const minValue = validationProps[CONTROL_VALIDATION_PROPS_TYPES.MIN_VALUE];
+  if (minValue) {
+    if (value === undefined || value === null || typeof value != 'number') {
+      errors.push(`Invalid value`);
+    }
+    if (value < minValue) {
+      errors.push(`The minimum value is ${minValue}`);
+    }
+  }
+  const maxValue = validationProps[CONTROL_VALIDATION_PROPS_TYPES.MAX_VALUE];
+  if (maxValue) {
+    if (value === undefined || value === null || typeof value != 'number') {
+      errors.push(`Invalid value`);
+    }
+    if (value > maxValue) {
+      errors.push(`The maximum value is ${maxValue}`);
+    }
+  }
   return errors;
 };
 
