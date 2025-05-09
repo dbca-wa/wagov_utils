@@ -15,7 +15,7 @@ mkdir -p /app/logs/rotate11/
 mkdir -p /app/logs/rotate12/
 
 # Rotate Logs
-rm -rf /app/logs/*
+rm -rf /app/logs/rotate12/*
 mv /app/logs/rotate11/* /app/logs/rotate12/
 mv /app/logs/rotate10/* /app/logs/rotate11/
 mv /app/logs/rotate9/* /app/logs/rotate10/
