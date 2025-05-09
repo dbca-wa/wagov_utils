@@ -6,6 +6,10 @@ echo "Version 1.0.0";
 wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/health_check.sh -O /bin/health_check.sh
 chmod 755 /bin/health_check.sh
 
+# Log Rotate
+wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/log_rotate.sh -O /bin/log_rotate.sh
+chmod 755 /bin/log_rotate.sh
+
 # scheduler
 wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin-python/scheduler/scheduler.py -O /bin/scheduler.py
 chmod 755 /bin/scheduler.py
