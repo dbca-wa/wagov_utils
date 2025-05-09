@@ -27,5 +27,5 @@ mv /app/logs/rotate4/* /app/logs/rotate5/
 mv /app/logs/rotate3/* /app/logs/rotate4/
 mv /app/logs/rotate2/* /app/logs/rotate3/
 mv /app/logs/rotate1/* /app/logs/rotate2/
-mv /apps/logs/*.log
+mv /app/logs/*.log /app/logs/rotate1/
 gzip /app/logs/rotate1/*.log
