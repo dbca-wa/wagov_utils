@@ -24,7 +24,7 @@ export const runInputFieldValidations = (value, control) => {
     }
   }
 
-  const pattern = validationProps[CONTROL_VALIDATION_PROPS_TYPES.REGEX];
+  const pattern = validationProps[CONTROL_VALIDATION_PROPS_TYPES.REGEX]?.trim();
   if (pattern) {
     const regex = new RegExp([pattern.startsWith('^') ? '' : '^', pattern, pattern.endsWith('$') ? '' : '$'].join(''));
     if (!regex.test(value)) {
