@@ -1,14 +1,15 @@
 import { markup } from '../../js/utils';
-import ControlProp from './control-prop';
 
-export default class BaseControlProps {
+import { ControlPropFactory } from './control-prop-factory';
+
+export class BaseControlProps {
   props = {};
   initialProps = {};
 
   constructor(propsList = [], customPropsStore) {
     for (let i = 0; i < propsList.length; i++) {
       const prop = propsList[i];
-      let cp = new ControlProp(prop, customPropsStore);
+      let cp = ControlPropFactory.createControlProp(prop, customPropsStore);
       this.props[prop] = cp;
     }
   }
@@ -33,9 +34,29 @@ export default class BaseControlProps {
     return props;
   }
 
-  modifyProp(propName, value) {
+  modifyPropValue(propName, value) {
     if (this.props[propName]) {
       this.props[propName].prop.value = value;
+    }
+  }
+
+  modifyProp(propName, values = {}) {
+    if (this.props[propName]) {
+      this.props[propName].prop = { ...this.props[propName].prop, ...values };
+    }
+  }
+
+  showProp(propName) {
+    this.modifyPropVisibility(propName, false);
+  }
+
+  hideProp(propName) {
+    this.modifyPropVisibility(propName, true);
+  }
+
+  modifyPropVisibility(propName, hide = true) {
+    if (this.props[propName]) {
+      this.props[propName].prop.hide = hide;
     }
   }
 
