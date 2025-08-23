@@ -26,6 +26,10 @@
 @import 'demo';
 
 @import 'bootstrap/scss/bootstrap';
+$bootstrap-icons-font-dir: '~bootstrap-icons/font/fonts';
+@import 'bootstrap-icons/font/bootstrap-icons.scss';
+@import 'jquery-ui/themes/base/all.css';
+@import 'jquery-toast-plugin/dist/jquery.toast.min.css';
 
 /* App styles */
 @import 'form-builder';

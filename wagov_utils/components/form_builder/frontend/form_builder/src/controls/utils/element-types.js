@@ -4,8 +4,15 @@ export const ELEMENT_TYPES = {
   SELECT: 'select',
   CHECK_BOX: 'checkbox',
   RADIO: 'radio',
+  SELECT_BOXES: 'select-boxes',
+  BUTTON: 'button',
+  MOBILE_NUMBER: 'mobile-number',
 
-  DIVIDER: 'divider',
-  ROW: 'row',
-  CONTAINER: 'container',
+  FILE_UPLOAD: 'file-upload',
+  DATE_PICKER: 'date-picker',
+  DATE_PICKER_JQ: 'date-picker-jq',
+  TIME_PICKER: 'time-picker',
+  PASSWORD: 'password',
+  EMAIL: 'email',
+  TEXT_AREA: 'textarea',
 };

@@ -3,44 +3,93 @@
 import LayoutController from './layout';
 
 import { FORM_CONTROLS } from '../controls/toolbox';
+import ViewerLayoutController from './viewer-layout';
 
 /* eslint-disable no-plusplus */
-function FormBuilder(element, settings, $) {
-  var _ = this;
-  var dataSettings;
+class FormBuilder {
+  constructor(element, settings, $) {
+    var _ = this;
 
-  _.defaults = {
-    name: 'DBCA-FORMBUILDER',
-  };
+    _.defaults = {
+      name: 'DBCA-FORMBUILDER',
+      theme: 'default',
+      formControls: FORM_CONTROLS,
+    };
 
-  _.initials = {
-    present: true,
-  };
-  $.extend(_, _.initials);
+    _.initials = {
+      present: true,
+    };
+    $.extend(_, _.initials);
 
-  dataSettings = $(element).data('juanchi') || {};
+    _.$builder = $(element);
 
-  _.$builder = $(element);
+    _.body = [];
 
-  _.body = [];
+    _.$controlFactory = undefined;
+    _.options = $.extend({}, _.defaults, settings);
+    _.API_KEY = _.options.API_KEY || '';
+    _.initialValue = _.options.initialValue || {};
+    _.onSubmit = _.options.onSubmit || undefined;
 
-  _.layout = new LayoutController(_.$builder, _.body);
+    _.layout = new LayoutController(this, FORM_CONTROLS);
 
-  _.$controlFactory = undefined;
-  _.options = $.extend({}, _.defaults, settings, dataSettings);
+    _.originalSettings = _.options;
+  }
 
-  _.originalSettings = _.options;
+  build() {
+    const _ = this;
+    _.layout.renderFormBuilder();
+    _.$builder.find('#btn-load-form').trigger('click');
+  }
 
-  _.htmlExpr = /^(?:\s*(<[\w\W]+>)[^>]*)$/;
+  render(options) {
+    this.viewer = new ViewerLayoutController(this);
+    const formData = options.formData || [];
+    const submitData = options.submitData || {};
+    const onSubmit = options.onSubmit || undefined;
+    this.viewer.renderForm(formData, { initialValue: this.initialValue });
 
-  _.init(true);
+    const form = this.viewer.form;
+    form.on('submit', { viewer: this.viewer, fb: this }, (e) => {
+      const { viewer, fb } = e.data;
+      const formData = viewer.getFormData();
+
+      console.log({ formData: formData });
+      formData.entries().forEach((entry, key) => {
+        console.log({ entry, key });
+      });
+      if (fb.onSubmit) {
+        fb.onSubmit(formData);
+      } else if (submitData) {
+        const { url, method, data: inputData, headers } = submitData;
+        /* fetch(url, {
+          method: method ?? 'POST',
+          headers: {
+            // 'Content-Type': 'application/json',
+            ...headers,
+          },
+          body: formData,
+        }); */
+        console.log({
+          method: method ?? 'POST',
+          url,
+          data: { ...inputData, ...formData },
+          headers,
+        });
+      }
+    });
+  }
+
+  onSubmit() {}
+
+  getJSON() {
+    return this.layout.buildArea.toJSON();
+  }
+
+  widget() {
+    return this;
+  }
 }
-
-FormBuilder.prototype.init = function () {
-  const _ = this;
-  _.layout.initialLayout(FORM_CONTROLS);
-  _.layout.renderForm();
-};
 
 jQuery.fn.formBuilder = function (...args) {
   const _ = this;
