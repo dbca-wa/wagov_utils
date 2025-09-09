@@ -75,8 +75,7 @@ class SSOLoginSessionMiddleware(MiddlewareMixin):
                      response.delete_cookie('sessionid')
                      return response
             
-             if user_auth:                        
-                 user.backend = 'django.contrib.auth.backends.ModelBackend'
+             if user_auth:                                         
                  del request.session['is_authenticated']
                  try:
                     is_authenticated = request.user.is_authenticated
