@@ -8,8 +8,6 @@ import urllib.parse
 from django.contrib import messages
 # from confy import env
 from django.http import Http404, HttpResponse, JsonResponse, HttpResponseRedirect
-from ledger_api_client import managed_models
-from ledger_api_client import utils
 import datetime
 # Only required if using webtemplate2 and NOT using ledger_api_client.
 
