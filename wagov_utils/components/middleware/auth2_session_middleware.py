@@ -6,6 +6,7 @@ from django.utils.deprecation import MiddlewareMixin
 import urllib.request, json
 import urllib.parse
 from django.contrib import messages
+from django.conf import settings
 # from confy import env
 from django.http import Http404, HttpResponse, JsonResponse, HttpResponseRedirect
 import datetime
