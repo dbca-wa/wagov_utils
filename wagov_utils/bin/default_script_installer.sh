@@ -16,7 +16,9 @@ chmod 755 /bin/scheduler.py
 
 # Add azcopy to container
 mkdir /tmp/azcopy/
-wget https://aka.ms/downloadazcopy-v10-linux -O /tmp/azcopy/azcopy.tar.gz
+#wget https://aka.ms/downloadazcopy-v10-linux -O /tmp/azcopy/azcopy.tar.gz
+# Temporary pin to this version as the latest is coming up 404 not found
+wget https://github.com/Azure/azure-storage-azcopy/releases/download/v10.31.0/azcopy_linux_amd64_10.31.0.tar.gz -O /tmp/azcopy/azcopy.tar.gz
 cd /tmp/azcopy/ ; tar -xzvf azcopy.tar.gz
 # required to adjust to a later version of azcopy resolve the issue of docker builds breaking.
 azcopydir=$(ls -1 /tmp/azcopy/ | grep azcopy_linux_amd64)
