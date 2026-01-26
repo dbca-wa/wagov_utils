@@ -31,10 +31,7 @@ class SSOLoginMiddleware(MiddlewareMixin):
 
 
     def process_request(self, request):
-        request.META['HTTP_X_FIRST_NAME'] = "Jason"
-        request.META['HTTP_X_LAST_NAME'] = "Moore"
-        request.META['HTTP_REMOTE_USER'] = "jason.moore@dbca.wa.gov.au"
-        request.META['HTTP_X_EMAIL'] ="jason.moore@dbca.wa.gov.au"
+
         if request.path.startswith('/static') or request.path.startswith('/favicon') or request.path.startswith('/media'):
              pass
         else:
