@@ -28,7 +28,5 @@ def login_without_signal(request, user, backend_path: str):
     request.session[BACKEND_SESSION_KEY] = backend_path
     if session_auth_hash:
         request.session[HASH_SESSION_KEY] = session_auth_hash
-    print ("LOGIN")
-    print (user)
     # Attach user to request for this response cycle
     request.user = user
