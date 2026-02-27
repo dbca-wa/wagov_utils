@@ -7,7 +7,7 @@ setup(name='wagov_utils',
       author='Department of Biodiversity, Conservation and Attractions',
       author_email='asi@dbca.wa.gov.au',
       license='BSD',
-      packages=['wagov_utils','wagov_utils.components','wagov_utils.components.utils','wagov_utils.components.proxy','wagov_utils.components.middleware','wagov_utils.components.json_auth'
+      packages=['wagov_utils','wagov_utils.components','wagov_utils.components.utils','wagov_utils.components.proxy','wagov_utils.components.middleware','wagov_utils.components.json_auth','wagov_utils.components.log_viewer'
                 ],
       install_requires=[],
       include_package_data=True,
