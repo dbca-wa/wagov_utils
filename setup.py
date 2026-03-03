@@ -11,4 +11,7 @@ setup(name='wagov_utils',
                 ],
       install_requires=[],
       include_package_data=True,
+      package_data={
+          'wagov_utils.components.log_viewer': ['templates/log_viewer/*.html'],
+      },
       zip_safe=False)
