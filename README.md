@@ -8,28 +8,20 @@ Shared Django utilities for WA Government web applications, developed by the Dep
 pip install git+https://github.com/dbca-wa/wagov_utils.git#egg=wagov_utils
 ```
 
-To install a specific branch:
-
-```bash
-pip install git+https://github.com/dbca-wa/wagov_utils.git@<branch-name>#egg=wagov_utils
-```
-
 ---
 
-## Components
-
-### `log_viewer`
+## `log_viewer` component
 
 A reusable Django component that provides a browser-based log file viewer with real-time polling.
 
-#### Features
+### Features
 
 - Displays log files in the browser with auto-reload, line wrapping, and auto-scroll
 - Supports multiple log files via a dropdown selector
 - Secure: access is controlled by a configurable permission function
 - Integrates with your project's existing base template
 
-#### Setup
+### Setup
 
 **1. Add to `INSTALLED_APPS`:**
 
@@ -81,50 +73,6 @@ LOG_VIEWER_PERMISSION_FUNC = "myapp.utils.can_view_logs"
 def can_view_logs(user):
     return user.is_authenticated and user.is_staff
 ```
-
----
-
-### `proxy`
-
-A view function for proxying HTTP requests to a remote URL.
-
-```python
-from wagov_utils.components.proxy.views import proxy_view
-
-urlpatterns = [
-    path("proxy/<path:url>", proxy_view),
-]
-```
-
----
-
-### `middleware`
-
-Authentication middleware for WA Government SSO (Auth2). Includes:
-
-- `auth2_middleware.py` — Auth2 authentication middleware
-- `auth2_session_middleware.py` — Auth2 session middleware
-- `no_signal_login_middleware.py` — Login middleware that suppresses signals
-
----
-
-### `json_auth`
-
-Authentication backends for Auth2 SSO with JSON user support. Includes:
-
-- `auth_middleware_backend.py`
-- `auth_middleware_backend_json_user.py`
-- `auth2_sso_middleware.py`
-- `no_signal_login.py`
-
----
-
-### `utils`
-
-Shared email utilities:
-
-- `email.py` — Email helper functions
-- `email_backend.py` — Custom email backend
 
 ---
 
