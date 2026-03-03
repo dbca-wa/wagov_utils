@@ -181,6 +181,8 @@ def get_logs(request):
             last_position = int(last_position_param)
         except ValueError:
             last_position = 0
+        if last_position < 0:
+            last_position = 0
 
         new_lines = []
         current_position = last_position
