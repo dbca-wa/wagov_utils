@@ -186,9 +186,9 @@ def get_logs(request):
         current_position = last_position
 
         if os.path.exists(log_file_path):
-            with open(log_file_path, 'r') as log:
+            with open(log_file_path, 'rb') as log:
                 log.seek(last_position)
-                new_lines = log.readlines()
+                new_lines = [line.decode('utf-8', errors='replace') for line in log.readlines()]
                 current_position = log.tell()
         else:
             logger.warning(f"Log file '[{log_file_path}]' does not exist.")
