@@ -190,7 +190,12 @@ def get_logs(request):
         if os.path.exists(log_file_path):
             with open(log_file_path, 'rb') as log:
                 log.seek(last_position)
-                new_lines = [line.decode('utf-8', errors='replace') for line in log.readlines()]
+                new_lines = []
+                for _ in range(MAX_NUM_LINES_TO_READ):
+                    line = log.readline()
+                    if not line:
+                        break
+                    new_lines.append(line.decode('utf-8', errors='replace'))
                 current_position = log.tell()
         else:
             logger.warning(f"Log file '[{log_file_path}]' does not exist.")
