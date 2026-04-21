@@ -51,13 +51,16 @@ class Command(BaseCommand):
         #check STATIC_APP_NAME
         if not STATIC_APP_NAME:
             logger.error("STATIC_APP_NAME not provided.")
+            return
 
         #validate static dir
         if not (os.path.isdir(STATIC_DIRECTORY)):
             logger.error("Provided STATIC_DIRECTORY not valid.")
+            return
 
         if not (os.path.isdir(STATIC_FILES_DIRECTORY)):
             logger.error("Provided STATIC_FILES_DIRECTORY not valid.")
+            return 
 
         static_dir_list = self.get_files(STATIC_DIRECTORY)
         #convert to actual static location
