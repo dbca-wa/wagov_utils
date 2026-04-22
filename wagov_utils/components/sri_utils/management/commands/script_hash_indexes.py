@@ -68,11 +68,11 @@ class Command(BaseCommand):
 
         static_dir_list = self.get_files(STATIC_DIRECTORY)
         #convert to actual static location
-        static_dir_list = list(map(lambda file_location: (file_location, file_location.replace(STATIC_DIRECTORY,'/static')), static_dir_list))
+        static_dir_list = list(map(lambda file_location: (file_location, file_location.replace(STATIC_DIRECTORY,'/static',1)), static_dir_list))
         
         static_files_dir_list = self.get_files(STATIC_FILES_DIRECTORY)
         #convert to actual static location
-        static_files_dir_list = list(map(lambda file_location: (file_location, file_location.replace(STATIC_FILES_DIRECTORY,'/static')), static_files_dir_list))
+        static_files_dir_list = list(map(lambda file_location: (file_location, file_location.replace(STATIC_FILES_DIRECTORY,'/static',1)), static_files_dir_list))
 
         file_location_list = static_dir_list + static_files_dir_list
 
