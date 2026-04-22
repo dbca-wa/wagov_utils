@@ -54,11 +54,11 @@ class Command(BaseCommand):
             return
 
         #validate static dir
-        if not (os.path.isdir(STATIC_DIRECTORY)):
+        if not STATIC_DIRECTORY or not (os.path.isdir(STATIC_DIRECTORY)):
             logger.error("Provided STATIC_DIRECTORY not valid.")
             return
 
-        if not (os.path.isdir(STATIC_FILES_DIRECTORY)):
+        if not STATIC_FILES_DIRECTORY or not (os.path.isdir(STATIC_FILES_DIRECTORY)):
             logger.error("Provided STATIC_FILES_DIRECTORY not valid.")
             return 
 
