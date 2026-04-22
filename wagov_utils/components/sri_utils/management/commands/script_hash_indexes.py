@@ -31,10 +31,19 @@ class Command(BaseCommand):
 
     def get_files(self, directory):
         file_location_list = []
+
+        try:
+            file_hash_types = FILE_TYPES_TO_HASH
+            if isinstance(file_hash_types, str):
+                file_hash_types = json.loads(file_hash_types)
+        except Exception as e:
+            logger.error(e)
+            return []
+
         #get all files/dirs in provided directory
         items = [os.path.join(directory, e) for e in os.listdir(directory)]
 
-        files = [p for p in items if os.path.isfile(p) and os.path.splitext(p)[1] in FILE_TYPES_TO_HASH]
+        files = [p for p in items if os.path.isfile(p) and os.path.splitext(p)[1] in file_hash_types]
         dirs  = [p for p in items if os.path.isdir(p)]
 
         #add files to location list
