@@ -1,4 +1,4 @@
-from wagov_utils.components.utils.sri_utils import lookup_hash
+from wagov_utils.components.sri_utils.sri_utils import lookup_hash
 from django.template import Library
 
 register = Library()

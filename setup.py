@@ -8,7 +8,7 @@ setup(name='wagov_utils',
       author_email='asi@dbca.wa.gov.au',
       license='BSD',
       packages=['wagov_utils','wagov_utils.components','wagov_utils.components.utils','wagov_utils.components.proxy','wagov_utils.components.middleware','wagov_utils.components.json_auth'
-                ,'wagov_utils.management','wagov_utils.management.commands', 'wagov_utils.templatetags'],
+                ,'wagov_utils.components.sri_utils.management','wagov_utils.components.sri_utils.management.commands', 'wagov_utils.sri_utils.components.templatetags'],
       install_requires=[],
       include_package_data=True,
       zip_safe=False)
