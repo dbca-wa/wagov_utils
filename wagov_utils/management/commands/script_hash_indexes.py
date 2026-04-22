@@ -84,8 +84,6 @@ class Command(BaseCommand):
         with open("sri-manifest.json", "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
 
-        #TODO determine if filenames should be based on real location or static url
-
         #clear out existing files        
         for root, _, files in os.walk(SRI_FILE_STRUCTURE_DIR):
             for file in files:
