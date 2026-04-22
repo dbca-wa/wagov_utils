@@ -40,18 +40,22 @@ class Command(BaseCommand):
             logger.error(e)
             return []
 
-        #get all files/dirs in provided directory
-        items = [os.path.join(directory, e) for e in os.listdir(directory)]
+        try:
+            #get all files/dirs in provided directory
+            items = [os.path.join(directory, e) for e in os.listdir(directory)]
 
-        files = [p for p in items if os.path.isfile(p) and os.path.splitext(p)[1] in file_hash_types]
-        dirs  = [p for p in items if os.path.isdir(p)]
+            files = [p for p in items if os.path.isfile(p) and os.path.splitext(p)[1] in file_hash_types]
+            dirs  = [p for p in items if os.path.isdir(p)]
 
-        #add files to location list
-        file_location_list += files
+            #add files to location list
+            file_location_list += files
 
-        #add dir files to location list
-        for dir in dirs:
-            file_location_list += self.get_files(dir)
+            #add dir files to location list
+            for dir in dirs:
+                file_location_list += self.get_files(dir)
+        except Exception as e:
+            logger.error(e)
+            return []
 
         return file_location_list
 

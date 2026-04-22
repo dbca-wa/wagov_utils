@@ -13,6 +13,7 @@ After ensuring wagov-utils has been installed the following is required for setu
 - The environment variables STATIC_APP_NAME and STATIC_FILES_DIRECTORY_NAME should be set
 > STATIC_APP_NAME should be the name of the application that the static directory is stored in (e.g. disturbance)
 > STATIC_FILES_DIRECTORY_NAME should be the name of the folder that generated static files are stored in (e.g. staticfiles_ds)
+- Also ensure settings.BASE_DIR is set (base directory of the relevant project)
 
 Once all environments variables and configurations have been complete, the following management command can be run to generate hashes:
 
