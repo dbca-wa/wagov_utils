@@ -7,9 +7,9 @@ import base64
 import json
 
 STATIC_APP_NAME = env("STATIC_APP_NAME", "")
-STATIC_DIRECTORY = env("STATIC_DIRECTORY", os.path.join(settings.BASE_DIR, STATIC_APP_NAME, 'static'))
+STATIC_DIRECTORY = os.path.join(settings.BASE_DIR, STATIC_APP_NAME, 'static')
 STATIC_FILES_DIRECTORY_NAME = env("STATIC_FILES_DIRECTORY_NAME", "")
-STATIC_FILES_DIRECTORY = env("STATIC_FILES_DIRECTORY", os.path.join(settings.BASE_DIR, STATIC_FILES_DIRECTORY_NAME))
+STATIC_FILES_DIRECTORY = os.path.join(settings.BASE_DIR, STATIC_FILES_DIRECTORY_NAME)
 FILE_TYPES_TO_HASH = env("FILE_TYPES_TO_HASH", [".js",".css", ".png", ".jpg", ".jpeg", ".svg", ".webp", ".woff", ".woff2", ".ttf"])
 SRI_FILE_STRUCTURE_DIR = os.path.join(settings.BASE_DIR, "sri-files")
 
@@ -51,6 +51,10 @@ class Command(BaseCommand):
         #check STATIC_APP_NAME
         if not STATIC_APP_NAME:
             logger.error("STATIC_APP_NAME not provided.")
+            return
+
+        if not STATIC_FILES_DIRECTORY_NAME:
+            logger.error("STATIC_FILES_DIRECTORY_NAME not provided.")
             return
 
         #validate static dir
