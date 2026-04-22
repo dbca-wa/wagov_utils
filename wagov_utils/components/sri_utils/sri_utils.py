@@ -6,11 +6,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 SRI_FILE_STRUCTURE_DIR = os.path.join(settings.BASE_DIR, "sri-files")
+ERROR_HASH = "sha384-0"
 def lookup_hash(filename):
 
     try:
         if not filename:
             logger.error("No filename provided for hash lookup.")
+            return ERROR_HASH
 
         hashed_filename = hashlib.sha256(filename.encode()).hexdigest()
         hashed_dir = hashed_filename[:2]
@@ -23,4 +25,4 @@ def lookup_hash(filename):
         return hash
     except Exception as e:
         logger.error(e)
-        return None
+        return ERROR_HASH
