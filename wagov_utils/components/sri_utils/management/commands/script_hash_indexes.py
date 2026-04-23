@@ -64,7 +64,7 @@ class Command(BaseCommand):
 
         static_files_dir_list = self.get_files(STATIC_FILES_DIRECTORY)
         #convert to actual static location
-        file_location_list = list(map(lambda file_location: (file_location, file_location.replace(STATIC_FILES_DIRECTORY,'/static/',1)), static_files_dir_list))
+        file_location_list = list(map(lambda file_location: (file_location, file_location.replace(STATIC_FILES_DIRECTORY,'/static',1)), static_files_dir_list))
 
         #create hash tuple list
         file_hash_tuple_list = list(map(lambda file_location: (file_location[1], self.file_sha384(file_location[0])), file_location_list))
