@@ -6,7 +6,7 @@ import hashlib
 import base64
 import json
 
-STATIC_FILES_DIRECTORY = env("STATIC_FILES_DIRECTORY", "")
+STATIC_FILES_DIRECTORY = settings.STATIC_ROOT
 FILE_TYPES_TO_HASH = env("FILE_TYPES_TO_HASH", [".js",".css", ".png", ".jpg", ".jpeg", ".svg", ".webp", ".woff", ".woff2", ".ttf"])
 SRI_FILE_STRUCTURE_DIR = os.path.join(settings.BASE_DIR, "sri-files")
 
