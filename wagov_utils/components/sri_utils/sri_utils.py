@@ -1,13 +1,18 @@
 import hashlib
 from django.conf import settings
 import os
+from confy import env
 
 import logging
 logger = logging.getLogger(__name__)
 
+ENABLE_SRI_CHECK = env("ENABLE_SRI_CHECK", False)
 SRI_FILE_STRUCTURE_DIR = os.path.join(settings.BASE_DIR, "sri-files")
 ERROR_HASH = "sha384-0"
 def lookup_hash(filename):
+
+    if not ENABLE_SRI_CHECK:
+        return None
 
     try:
         if not filename:
