@@ -8,12 +8,12 @@ Includes a management script for generating hashes for all static files, a utili
 
 After ensuring wagov-utils has been installed the following is required for setup:
 
-- `wagov-utils.components.sri_utils` must be added to `INSTALLED_APPS` in settings.py
+- `wagov_utils.components.sri_utils` must be added to `INSTALLED_APPS` in settings.py
 - `sri-manifest.json` and `sri-files/*` should be added to the repository .gitignore
-- The environment variables STATIC_APP_NAME and STATIC_FILES_DIRECTORY_NAME should be set
-> STATIC_APP_NAME should be the name of the application that the static directory is stored in (e.g. disturbance)
-> STATIC_FILES_DIRECTORY_NAME should be the name of the folder that generated static files are stored in (e.g. staticfiles_ds)
-- Also ensure settings.BASE_DIR is set (base directory of the relevant project)
+- The environment variable ENABLE_SRI_CHECK should be set
+> ENABLE_SRI_CHECK should be set to True or False, defaults to False and therefore disabled
+- Ensure settings.BASE_DIR is set (base directory of the relevant project)
+- Ensure settings.STATIC_ROOT is set (static directory of relevant project)
 
 Once all environments variables and configurations have been complete, the following management command can be run to generate hashes:
 

@@ -6,10 +6,7 @@ import hashlib
 import base64
 import json
 
-STATIC_APP_NAME = env("STATIC_APP_NAME", "")
-STATIC_DIRECTORY = os.path.join(settings.BASE_DIR, STATIC_APP_NAME, 'static')
-STATIC_FILES_DIRECTORY_NAME = env("STATIC_FILES_DIRECTORY_NAME", "")
-STATIC_FILES_DIRECTORY = os.path.join(settings.BASE_DIR, STATIC_FILES_DIRECTORY_NAME)
+STATIC_FILES_DIRECTORY = settings.STATIC_ROOT
 FILE_TYPES_TO_HASH = env("FILE_TYPES_TO_HASH", [".js",".css", ".png", ".jpg", ".jpeg", ".svg", ".webp", ".woff", ".woff2", ".ttf"])
 SRI_FILE_STRUCTURE_DIR = os.path.join(settings.BASE_DIR, "sri-files")
 
@@ -60,34 +57,14 @@ class Command(BaseCommand):
         return file_location_list
 
     def handle(self, *args, **options):
-        print(FILE_TYPES_TO_HASH)
-        #check STATIC_APP_NAME
-        if not STATIC_APP_NAME:
-            logger.error("STATIC_APP_NAME not provided.")
-            return
-
-        if not STATIC_FILES_DIRECTORY_NAME:
-            logger.error("STATIC_FILES_DIRECTORY_NAME not provided.")
-            return
-
-        #validate static dir
-        if not STATIC_DIRECTORY or not (os.path.isdir(STATIC_DIRECTORY)):
-            logger.error("Provided STATIC_DIRECTORY not valid.")
-            return
 
         if not STATIC_FILES_DIRECTORY or not (os.path.isdir(STATIC_FILES_DIRECTORY)):
             logger.error("Provided STATIC_FILES_DIRECTORY not valid.")
             return 
 
-        static_dir_list = self.get_files(STATIC_DIRECTORY)
-        #convert to actual static location
-        static_dir_list = list(map(lambda file_location: (file_location, file_location.replace(STATIC_DIRECTORY,'/static',1)), static_dir_list))
-        
         static_files_dir_list = self.get_files(STATIC_FILES_DIRECTORY)
         #convert to actual static location
-        static_files_dir_list = list(map(lambda file_location: (file_location, file_location.replace(STATIC_FILES_DIRECTORY,'/static',1)), static_files_dir_list))
-
-        file_location_list = static_dir_list + static_files_dir_list
+        file_location_list = list(map(lambda file_location: (file_location, file_location.replace(STATIC_FILES_DIRECTORY,'/static',1)), static_files_dir_list))
 
         #create hash tuple list
         file_hash_tuple_list = list(map(lambda file_location: (file_location[1], self.file_sha384(file_location[0])), file_location_list))
