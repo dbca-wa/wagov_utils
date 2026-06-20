@@ -1,10 +1,14 @@
 import logging
 import hashlib
 import datetime
+import mimetypes
 import os
 import six
 
+from email.mime.image import MIMEImage
+
 from django.conf import settings
+from django.contrib.staticfiles import finders
 from django.core.mail import EmailMultiAlternatives
 from django.template import loader, Template
 from django.utils.html import strip_tags
@@ -25,6 +29,11 @@ class TemplateEmailBase(object):
     html_template = 'wagov_utils/emails/base_email.html'
     # txt_template can be None, in this case a 'tag-stripped' version of the html will be sent. (see send)
     txt_template = 'wagov_utils/emails/base-email.txt'
+    # Optional dict mapping CID name -> relative static file path for inline images.
+    # Embed images in HTML templates with src="cid:<name>".
+    # CID attachments work across Outlook desktop, Outlook web, Gmail, Apple Mail, etc.
+    # Note: data: URI images are not supported by Outlook's desktop renderer.
+    inline_images = {}
 
     def __init__(self, subject='', html_template='', txt_template=''):
         # Update
@@ -101,6 +110,26 @@ class TemplateEmailBase(object):
                 )
         if html_body:
             msg.attach_alternative(html_body, 'text/html')
+
+        if self.inline_images:
+            msg.mixed_subtype = 'related'
+            for cid_name, static_path in self.inline_images.items():
+                abs_path = finders.find(static_path)
+                if abs_path is None:
+                    static_root = getattr(settings, 'STATIC_ROOT', None)
+                    if static_root:
+                        abs_path = os.path.join(static_root, static_path)
+                if abs_path and os.path.isfile(abs_path):
+                    mime_type, _ = mimetypes.guess_type(abs_path)
+                    maintype, subtype = (mime_type or 'image/png').split('/', 1)
+                    with open(abs_path, 'rb') as f:
+                        img = MIMEImage(f.read(), _subtype=subtype)
+                    img.add_header('Content-ID', '<{}>'.format(cid_name))
+                    img.add_header('Content-Disposition', 'inline', filename=os.path.basename(abs_path))
+                    msg.attach(img)
+                else:
+                    logger.warning("Inline image not found for CID '{}': {}".format(cid_name, static_path))
+
         try:
             email_log(str(log_hash)+' '+self.subject)
             msg.send(fail_silently=False)          
