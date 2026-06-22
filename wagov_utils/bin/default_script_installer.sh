@@ -15,7 +15,7 @@ wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin-
 chmod 755 /bin/scheduler.py
 
 # Add azcopy to container
-mkdir /tmp/azcopy/
+# mkdir /tmp/azcopy/
 #wget https://aka.ms/downloadazcopy-v10-linux -O /tmp/azcopy/azcopy.tar.gz
 # Temporary pin to this version as the latest is coming up 404 not found
 # LATEST_TAG=$(wget -qO- https://api.github.com/repos/Azure/azure-storage-azcopy/releases/latest | grep -oP '"tag_name": "\K[^"]+')
