@@ -36,7 +36,7 @@ class TemplateEmailBase(object):
         return self.send(user.email, context=context)
 
 
-    def send(self, to_addresses, from_address=None, context=None, attachments=None, cc=None, bcc=None, headers=None):
+    def send(self, to_addresses, from_address=None, context=None, attachments=None, cc=None, bcc=None, headers=None, reply_to=None):
         """
         Send an email using EmailMultiAlternatives with text and html.
         :param to_addresses: a string or a list of addresses
@@ -47,6 +47,7 @@ class TemplateEmailBase(object):
                or Documents
         :param bcc:
         :param cc:
+        :param reply_to: a string or a list of addresses for the Reply-To header (optional)
         :return:
         """
         email_delivery = 'off'
@@ -81,6 +82,8 @@ class TemplateEmailBase(object):
         # build message
         if isinstance(to_addresses, six.string_types):
             to_addresses = [to_addresses]
+        if isinstance(reply_to, six.string_types):
+            reply_to = [reply_to]
         if attachments is None:
             attachments = []
         if attachments is not None and not isinstance(attachments, list):
@@ -96,7 +99,7 @@ class TemplateEmailBase(object):
             
         headers['System-Environment'] = email_instance
         msg = EmailMultiAlternatives(self.subject, txt_body, from_email=from_address, to=to_addresses,
-                attachments=_attachments, cc=cc, bcc=bcc, 
+                attachments=_attachments, cc=cc, bcc=bcc, reply_to=reply_to,
                 headers=headers
                 )
         if html_body:
