@@ -7,3 +7,6 @@ apt remove python3-wheel -y
 # apt remove linux-libc-dev -y
 rm -f /usr/bin/pebble && rm -rf /var/lib/pebble
 apt autoremove -y
+
+apt-get clean
+rm -rf /tmp/*
